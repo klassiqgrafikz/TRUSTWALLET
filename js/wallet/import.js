@@ -7,7 +7,7 @@ function setImportMethod(m){
   $('importPrivateField').classList.toggle('hidden',m!=='private');
 }
 
-function importWallet(){
+async function importWallet(){
   const pw=$('importPassword').value;if(pw.length<8)return showToast('Password must be 8+ characters','error');
   showLoading('Importing...');
   try{
@@ -23,8 +23,13 @@ function importWallet(){
     }
     if(!wallet){hideLoading();showToast('Invalid credentials','error');return}
     state.wallet=wallet;state.walletName=$('importName').value||'My Wallet';state.password=pw;
-    saveMnemonic(state.mnemonic);state.activity=[];localStorage.setItem('tw_activity','[]');
-    ensureBalance(wallet.address,1);syncOnchainBalance(wallet.address,1);
+    saveMnemonic(state.mnemonic);
+    state.activity=[];
+    state.chainAddresses={};
+    initChainAddresses();
+    await sbUpsertWallet(wallet.address,state.walletName,state.chainId,state.chainAddresses);
+    await ensureBalance(wallet.address,1);
+    await syncOnchainBalance(wallet.address,1);
     saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }

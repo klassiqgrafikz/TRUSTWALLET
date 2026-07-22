@@ -24,12 +24,12 @@ function openTokenSelectModal(){
 }
 function closeTokenSelectModal(){$('tokenSelectModal').classList.add('hidden')}
 function filterModalTokens(q){$('modalTokenList').querySelectorAll('.token-select-item').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'})}
-function selectSendToken(i){
+async function selectSendToken(i){
   const all=buildAllTokenList();
   const t=all[i];
   if(String(t.chainId)!==String(state.chainId)){
     state.chainId=t.chainId;
-    ensureBalance(state.wallet?.address,t.chainId);
+    await ensureBalance(state.wallet?.address,t.chainId);
     syncOnchainBalance(state.wallet?.address,t.chainId);
     refreshDashboard();
   }

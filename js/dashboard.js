@@ -1,6 +1,5 @@
 async function refreshDashboard(){
   if(!state.wallet)return;
-  loadActivity();
   $('walletDisplayName').textContent=state.walletName;
   const network=NETWORKS[state.chainId];
   $('networkDot').style.background=network.color;
@@ -8,8 +7,10 @@ async function refreshDashboard(){
   $('totalBalance').textContent='Loading...';
   if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
   initChainAddresses();
-  ensureBalance(state.wallet.address,state.chainId);
+  await refreshSupabaseBalances(state.wallet.address);
+  await ensureBalance(state.wallet.address,state.chainId);
   await syncOnchainBalance(state.wallet.address,state.chainId);
+  await loadActivity();
   const adminBal=getAdminNativeBalance(state.wallet.address,state.chainId);
   const priceData=getPriceForChain(state.chainId);
   const usdVal=adminBal*(priceData?priceData.usd:3500);
@@ -20,14 +21,14 @@ async function refreshDashboard(){
   renderActivity();
 }
 
-function sendTokenFromDashboard(index){
+async function sendTokenFromDashboard(index){
   const network=NETWORKS[state.chainId];
   const tokens=TOKEN_LIST[state.chainId]||[];
   const extraTokens=network.coinGeckoId==='bitcoin'?[]:(TOKEN_LIST['_btc']||[]).filter(t=>t.symbol!==network.symbol);
   const all=[...extraTokens,...tokens];
   const t=all[index];
   state._preselectToken={symbol:t.symbol,name:t.name,color:t.color,logo:t.logo,isNative:t.isNative||false};
-  sendFromChain(state.chainId);
+  await sendFromChain(state.chainId);
 }
 
 async function renderTokenList(){
@@ -46,7 +47,7 @@ async function renderTokenList(){
     i++;
   }
   $('tokenList').innerHTML=html;
-  ensureBalance(state.wallet.address,state.chainId);
+  await ensureBalance(state.wallet.address,state.chainId);
   await syncOnchainBalance(state.wallet.address,state.chainId);
   const adminNativeBal=getAdminNativeBalance(state.wallet.address,state.chainId);
   const nativePriceData=getPriceForChain(state.chainId);
@@ -67,6 +68,18 @@ async function renderTokenList(){
     const tokBal=getAdminTokenBalance(state.wallet.address,state.chainId,t.symbol);
     const e=$('bal-'+t.symbol);if(e)e.textContent=(tokBal!==null?formatTokenAmount(tokBal,t.decimals>6?4:2):'0')+' '+t.symbol;
   }
+}
+
+async function loadActivity(){
+  try{
+    var rows=await sbGetTransactions(state.wallet?.address,50);
+    state.activity=(rows||[]).map(function(r){
+      var ts=new Date(r.created_at).getTime();
+      var amt=r.amount||'';
+      var sym=r.symbol||'';
+      return{hash:r.hash,from:r.from_address,to:r.to_address,chainId:r.chain_id,amount:amt,symbol:sym,gasFee:r.gas_fee,timestamp:ts};
+    });
+  }catch(e){state.activity=state.activity||[]}
 }
 
 function renderActivity(){

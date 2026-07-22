@@ -14,7 +14,7 @@ function refreshSendBalance(){
   $('sendBalance').textContent='Balance: '+formatTokenAmount(b!==null?b:0)+' '+NETWORKS[cid].symbol;
 }
 
-function initSendScreen(){
+async function initSendScreen(){
   const n=NETWORKS[state.chainId];
   if(state._preselectToken){
     state.sendToken=state._preselectToken;
@@ -22,7 +22,7 @@ function initSendScreen(){
   }else{
     state.sendToken={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true};
   }
-  ensureBalance(state.wallet.address,state.chainId);
+  await ensureBalance(state.wallet.address,state.chainId);
   syncOnchainBalance(state.wallet.address,state.chainId);
   $('sendTokenIcon').textContent=state.sendToken.symbol.slice(0,2);
   $('sendTokenIcon').style.background=state.sendToken.color;
@@ -93,7 +93,7 @@ async function executeTransaction(){
   const tx=state._pendingTx;if(!tx)return;
   showLoading('Sending...');
   try{
-    const result=transferAdminFunds(state.wallet.address,tx.to,tx.chainId,tx.amount,tx.gasFeeEth,tx.tokenSym);
+    const result=await transferAdminFunds(state.wallet.address,tx.to,tx.chainId,tx.amount,tx.gasFeeEth,tx.tokenSym);
     if(!result.success){hideLoading();return showToast(result.error,'error')}
     hideLoading();
     $('txSuccessDetails').innerHTML=`<div class="tx-row"><span class="label">Hash</span><span class="value" style="font-size:11px">${result.hash}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(tx.amount)} ${tx.symbol}</span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(tx.gasFeeEth,6)} ${NETWORKS[tx.chainId]?.symbol||tx.symbol}</span></div><div class="tx-row"><span class="label">Status</span><span class="value" style="color:#22C55E">Confirmed</span></div>`;

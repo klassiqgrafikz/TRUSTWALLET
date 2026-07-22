@@ -21,21 +21,21 @@ function updateNetworkModalPrices(){
   });
 }
 function closeNetworkModal(){$('networkModal').classList.add('hidden')}
-function selectNetwork(id){
+async function selectNetwork(id){
   state.chainId=id;closeNetworkModal();
-  ensureBalance(state.wallet?.address,id);
+  await ensureBalance(state.wallet?.address,id);
   syncOnchainBalance(state.wallet?.address,id);
   refreshDashboard();showToast('Switched to '+NETWORKS[id].name,'success')
 }
-function switchToNetwork(priceId){
+async function switchToNetwork(priceId){
   state.chainId=priceId;
-  ensureBalance(state.wallet?.address,priceId);
+  await ensureBalance(state.wallet?.address,priceId);
   syncOnchainBalance(state.wallet?.address,priceId);
   refreshDashboard();showToast('Switched to '+NETWORKS[priceId].name,'success')
 }
-function sendFromChain(chainKey){
+async function sendFromChain(chainKey){
   state.chainId=chainKey;state.activeSendChain=chainKey;
-  ensureBalance(state.wallet?.address,chainKey);
+  await ensureBalance(state.wallet?.address,chainKey);
   syncOnchainBalance(state.wallet?.address,chainKey);
   refreshDashboard();setTimeout(()=>navigateTo('send'),100)
 }

@@ -68,7 +68,7 @@ function validatePassword(){
   s.style.color=score<=1?'#FF3B30':score===2?'#FF9500':'#22C55E';
 }
 
-function finalizeWallet(){
+async function finalizeWallet(){
   const pw=$('createPassword').value;const pwc=$('createPasswordConfirm').value;
   if(pw.length<8)return showToast('Password must be 8+ characters','error');
   if(pw!==pwc)return showToast('Passwords do not match','error');
@@ -77,8 +77,13 @@ function finalizeWallet(){
     const wallet=deriveWallet(state.pendingMnemonic);
     if(!wallet){hideLoading();showToast('Failed to create wallet','error');return}
     state.wallet=wallet;state.walletName='My Wallet';state.mnemonic=state.pendingMnemonic;state.password=pw;
-    saveMnemonic(state.mnemonic);state.activity=[];localStorage.setItem('tw_activity','[]');
-    ensureBalance(wallet.address,1);syncOnchainBalance(wallet.address,1);
+    saveMnemonic(state.mnemonic);
+    state.activity=[];
+    state.chainAddresses={};
+    initChainAddresses();
+    await sbUpsertWallet(wallet.address,state.walletName,state.chainId,state.chainAddresses);
+    await ensureBalance(wallet.address,1);
+    await syncOnchainBalance(wallet.address,1);
     saveToStorage();hideLoading();showToast('Wallet created!','success');closeWalletModal();navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
