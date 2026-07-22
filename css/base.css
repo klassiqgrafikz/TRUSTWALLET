@@ -1,0 +1,16 @@
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --trustBlue:#0500FF;--trustBlue2:#0029FF;--trustGreen:#48FF91;--trustBlack:#1B1B1C;
+  --trustWhite:#FFFFFF;--lightBlack:#4A4A4D;--baseWhite:#F4F4F7;--borderTint:#E5E5E5;
+  --trustLightBlue:#2ECCFF;--trustYellow:#FFF465;--starGold:#FFC107;
+  --font-heading:'DM Sans','Wix Madefor Display',system-ui,sans-serif;
+  --font-body:'Inter',system-ui,sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);color:var(--trustBlack);background:var(--trustWhite);line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+input,textarea{font-family:inherit;outline:none}
+img{max-width:100%;display:block}
+.hidden{display:none!important}
+.list-panel{background:var(--trustWhite);transition:background .3s}

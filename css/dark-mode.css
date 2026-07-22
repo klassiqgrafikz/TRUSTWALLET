@@ -1,0 +1,60 @@
+body.dark{--trustBlack:#F4F4F7;--trustWhite:#1B1B1C;--baseWhite:#2A2A2E;--borderTint:#3A3A3E;--lightBlack:#B0B0B4}
+body.dark .header{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
+body.dark .header .logo-text{color:var(--trustBlack)}
+body.dark .wallet-section{background:var(--trustWhite)}
+body.dark .wallet-section h2{color:var(--trustBlack)}
+body.dark .wallet-section p{color:var(--lightBlack)}
+body.dark .platform-section{color:var(--trustWhite)}
+body.dark .modal{background:#2A2A2E;color:var(--trustBlack)}
+body.dark .modal h3{color:var(--trustBlack)}
+body.dark .modal p{color:var(--lightBlack)}
+body.dark .form-input{background:#2A2A2E;color:var(--trustBlack);border-color:var(--borderTint)}
+body.dark .network-option:hover{background:#3A3A3E}
+body.dark .network-option.selected{background:#1a2a4a}
+body.dark .chain-name{color:var(--trustBlack)}
+body.dark .token-select-item:hover{background:#3A3A3E}
+body.dark .security-card{background:#2A2A2E}
+body.dark .security-card h3{color:var(--trustBlack)}
+body.dark .security-card p{color:var(--lightBlack)}
+body.dark .rating-card{background:#2A2A2E}
+body.dark .community-card{background:#2A2A2E}
+body.dark .testimonial-card{background:#2A2A2E}
+body.dark .testimonial-card p{color:var(--lightBlack)}
+body.dark .footer{background:#111113}
+body.dark .footer p{color:var(--lightBlack)}
+body.dark .footer a{color:var(--lightBlack)}
+body.dark .btn-outline{border-color:#3A3A3E;color:var(--trustBlack)}
+body.dark .btn-outline:hover{border-color:var(--trustBlue);color:var(--trustBlue)}
+body.dark .chains-table th{color:var(--trustBlack)}
+body.dark .chains-table td{color:var(--trustBlack);border-color:#3A3A3E}
+body.dark .hero{background:linear-gradient(180deg,#1a1a2e 0%,#1B1B1C 100%)}
+body.dark .hero h1{color:var(--trustBlack)}
+body.dark .hero .subtitle{color:var(--lightBlack)}
+body.dark .trust-stats{background:var(--trustWhite);border-color:#3A3A3E}
+body.dark .stat-item h4{color:var(--trustBlack)}
+body.dark .stat-item p{color:var(--lightBlack)}
+body.dark .wallet-tabs .wallet-tab{border-color:#3A3A3E;color:var(--lightBlack);background:#2A2A2E}
+body.dark .wallet-tabs .wallet-tab.active{background:var(--trustBlack);color:var(--trustWhite)}
+body.dark .gradient-section{color:var(--trustBlack)}
+body.dark .gradient-section h2{color:var(--trustBlack)}
+body.dark .gradient-section p{color:var(--lightBlack)}
+body.dark .ratings-section{background:var(--trustWhite)}
+body.dark .ratings-section h2{color:var(--trustBlack)}
+body.dark .ratings-section>p{color:var(--lightBlack)}
+body.dark #tokenList{background:#2A2A2E}
+body.dark #tokenList>div{border-color:#3A3A3E}
+body.dark #activityList{background:#2A2A2E}
+body.dark #activityList>div{color:var(--lightBlack)}
+body.dark .tx-summary{background:#2A2A2E}
+body.dark .tx-row .label{color:var(--lightBlack)}
+body.dark .tx-row .value{color:var(--trustBlack)}
+body.dark .warning-box{background:#3a2a1a;border-color:#5a4a2a;color:var(--trustBlack)}
+body.dark .mnemonic-grid .word-box{background:#2A2A2E;border-color:#3A3A3E;color:var(--trustBlack)}
+body.dark .platform-stats .platform-stat h3{color:var(--trustBlack)}
+body.dark .platform-stats .platform-stat p{color:var(--lightBlack)}
+body.dark .dash-layout{background:var(--trustWhite)}
+body.dark .dash-topbar{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
+body.dark .theme-toggle-btn{background:#2A2A2E;border-color:#3A3A3E}
+body.dark .theme-toggle-btn:hover{border-color:var(--trustBlue)}
+body.dark .screen-layout{background:var(--trustWhite)}
+body.dark .screen-topbar{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
