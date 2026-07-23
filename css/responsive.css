@@ -2,6 +2,7 @@
   .nav-links{display:none}
   .hamburger{display:flex}
   .header-actions{display:none}
+  .mobile-theme-btn{display:flex!important}
   .feature-card{grid-template-columns:1fr;text-align:center}
   .feature-card.reverse{direction:ltr}
   .security-cards{grid-template-columns:repeat(2,1fr)}
@@ -20,6 +21,7 @@
   .logo svg{height:32px}
   .logo-text{font-size:16px}
   .hamburger{width:36px;height:36px}
+  .mobile-theme-btn{width:36px;height:36px;font-size:14px;margin-right:4px}
   .stats-grid{gap:24px}
   .stat-item{min-width:calc(50% - 12px)}
   .security-cards,.testimonials,.footer-columns{grid-template-columns:1fr}

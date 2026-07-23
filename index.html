@@ -49,6 +49,9 @@
        <button class="btn btn-outline btn-sm" onclick="openWalletModal('import')">Import Wallet</button>
       <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Create Wallet</button>
     </div>
+    <button class="theme-toggle-btn mobile-theme-btn" onclick="toggleTheme()" id="themeToggleMobile" style="width:36px;height:36px;font-size:16px;display:none">
+      <span id="themeIconMobile">☀️</span>
+    </button>
     <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
       <span></span>
     </button>
@@ -61,6 +64,11 @@
   <a href="#community" onclick="closeMobileMenu()">Community</a>
   <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="openWalletModal('import');closeMobileMenu()">Import Wallet</button>
   <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="instantCreateWallet();closeMobileMenu()">Create Wallet</button>
+  <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--borderTint)">
+    <button class="theme-toggle-btn" style="width:100%;gap:8px;padding:12px;border-radius:50px;font-size:14px;font-weight:600" onclick="toggleTheme();closeMobileMenu()">
+      <span id="themeIconMenu">☀️</span> Toggle Theme
+    </button>
+  </div>
 </div>
 <div class="menu-overlay" onclick="closeMobileMenu()"></div>
 

@@ -7,8 +7,7 @@ function switchTab(btn,tab){
 
 function updateThemeIcons(isDark){
   const icon=isDark?'🌙':'☀️';
-  const el=$('themeIcon');if(el)el.textContent=icon;
-  const el2=$('themeIconMain');if(el2)el2.textContent=icon;
+  ['themeIcon','themeIconMain','themeIconMobile','themeIconMenu'].forEach(function(id){var e=$(id);if(e)e.textContent=icon});
 }
 function toggleTheme(){
   document.body.classList.toggle('dark');
