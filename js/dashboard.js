@@ -22,8 +22,13 @@ function _ensureTopbarActions(){
 async function refreshDashboard(){
   if(!state.wallet)return;
   _ensureTopbarActions();
-  $('walletDisplayName').textContent=state.walletName;
   const network=NETWORKS[state.chainId];
+  if(network){
+    $('walletDisplayName').textContent=network.name;
+    var pIcon=document.getElementById('walletPillIcon');
+    if(pIcon){pIcon.src=network.logo||'';pIcon.style.display=network.logo?'':'none'}
+  }
+  var wn=$('walletNameLabel');if(wn)wn.textContent='· '+state.walletName;
   $('totalBalance').textContent='Loading...';
   if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
   await refreshSupabaseBalances(state.wallet.address);

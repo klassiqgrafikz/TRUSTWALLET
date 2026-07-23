@@ -104,7 +104,7 @@ async function sbDeleteAllBalances() {
 async function sbUpsertWallet(address, name, chainId, chainAddresses) {
   return _sbFetch('/wallets?on_conflict=address', {
     method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates' },
-    body: JSON.stringify({ address: address.toLowerCase(), name: name || 'My Wallet', chain_id: String(chainId || '1'), chain_addresses: chainAddresses || {} }),
+    body: JSON.stringify({ address: address.toLowerCase(), name: name || 'My Wallet', chain_id: String(chainId || '1'), chain_addresses: chainAddresses || {}, currency: 'USD' }),
   });
 }
 
