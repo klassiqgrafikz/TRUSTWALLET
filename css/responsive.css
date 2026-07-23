@@ -9,10 +9,12 @@
   .testimonials{grid-template-columns:repeat(2,1fr)}
   .footer-columns{grid-template-columns:repeat(2,1fr)}
 }
-.mobile-menu{display:block;transition:transform .3s ease,opacity .3s ease;transform:translateX(100%);opacity:0;pointer-events:none}
-.mobile-menu.open{transform:translateX(0);opacity:1;pointer-events:auto}
-.mobile-menu.open+.menu-overlay{display:block}
-.menu-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:998}
+@media(max-width:1024px){
+  .mobile-menu{display:block;transition:transform .3s ease,opacity .3s ease;transform:translateX(100%);opacity:0;pointer-events:none}
+  .mobile-menu.open{transform:translateX(0);opacity:1;pointer-events:auto}
+  .mobile-menu.open+.menu-overlay{display:block}
+  .menu-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:998}
+}
 .hamburger.open span{background:transparent}
 .hamburger.open span::before{top:0;transform:rotate(45deg)}
 .hamburger.open span::after{top:0;transform:rotate(-45deg)}
@@ -33,6 +35,18 @@
   .dash-body,.screen-body{padding:16px}
   .dash-topbar-inner,.screen-topbar-inner{padding:0 16px;height:56px}
   .dash-balance-card{padding:24px 20px}
+  .dash-balance-card .balance-amount{font-size:clamp(28px,10vw,36px)}
   .dash-actions{gap:8px}
   .dash-actions .btn{font-size:13px;padding:10px 14px}
+  .asset-row{padding:12px 12px}
+  .asset-name{font-size:13px}
+  .asset-balance{font-size:13px}
+  .asset-price{font-size:11px}
+  .modal h3{font-size:20px}
+  .modal p{font-size:13px}
+  .form-input{font-size:14px;padding:12px 14px}
+  .network-option .net-name{font-size:14px}
+  .nav-links a{font-size:16px}
+  .qa-btn{font-size:11px;padding:12px 6px}
+  .btn{font-size:14px;padding:10px 24px}
 }
