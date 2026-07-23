@@ -8,8 +8,6 @@ async function refreshDashboard(){
   if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
   initChainAddresses();
   await refreshSupabaseBalances(state.wallet.address);
-  await ensureBalance(state.wallet.address,state.chainId);
-  await syncOnchainBalance(state.wallet.address,state.chainId);
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.wallet.address,state.chainId);
   const priceData=getPriceForChain(state.chainId);
@@ -17,7 +15,7 @@ async function refreshDashboard(){
   $('totalBalance').textContent=formatUsd(usdVal);
   $('balanceChange').innerHTML=`<span style="color:var(--trustGreen)">${formatTokenAmount(adminBal)} ${network.symbol}</span>`;
   renderPortfolio();
-  renderTokenList();
+  await renderTokenList();
   renderActivity();
 }
 
@@ -47,8 +45,6 @@ async function renderTokenList(){
     i++;
   }
   $('tokenList').innerHTML=html;
-  await ensureBalance(state.wallet.address,state.chainId);
-  await syncOnchainBalance(state.wallet.address,state.chainId);
   const adminNativeBal=getAdminNativeBalance(state.wallet.address,state.chainId);
   const nativePriceData=getPriceForChain(state.chainId);
   if(adminNativeBal!==null){

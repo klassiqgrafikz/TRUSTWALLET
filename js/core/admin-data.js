@@ -17,7 +17,7 @@ async function refreshSupabaseBalances(address) {
   try {
     var rows = await sbGetBalances(address);
     _balanceCache = _balanceCache || {};
-    _balanceCache[address.toLowerCase()] = {};
+    if (!_balanceCache[address.toLowerCase()]) _balanceCache[address.toLowerCase()] = {};
     (rows || []).forEach(function (r) {
       _balanceCache[address.toLowerCase()][String(r.chain_id)] = { balance: String(r.balance ?? '0'), tokens: r.tokens || {} };
     });

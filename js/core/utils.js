@@ -4,15 +4,15 @@ function showLoading(t='Loading...'){$('loadingText').textContent=t;$('loading')
 function hideLoading(){$('loading').classList.add('hidden')}
 function closeMobileMenu(){$('screen-home')&&document.querySelector('.mobile-menu').classList.remove('open')}
 
-function goHome(){
-  if(state.wallet){navigateTo('dashboard');return}
+async function goHome(){
+  if(state.wallet){await navigateTo('dashboard');return}
   document.getElementById('screen-home').classList.remove('hidden');
   ['screen-dashboard','screen-send','screen-confirm','screen-receive','screen-txSuccess'].forEach(s=>$(s).classList.add('hidden'));
   $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   window.scrollTo(0,0);
 }
 
-function navigateTo(screen){
+async function navigateTo(screen){
   const home=document.getElementById('screen-home');
   const isWallet=screen==='dashboard'||screen==='send'||screen==='confirm'||screen==='receive'||screen==='txSuccess';
   if(isWallet){
@@ -24,7 +24,7 @@ function navigateTo(screen){
     $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   }
   window.scrollTo(0,0);
-  if(screen==='dashboard'&&state.wallet)refreshDashboard();
+  if(screen==='dashboard'&&state.wallet)await refreshDashboard();
   if(screen==='receive')initReceiveScreen();
   if(screen==='send')initSendScreen();
 }
