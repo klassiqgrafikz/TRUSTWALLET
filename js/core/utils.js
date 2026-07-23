@@ -2,7 +2,8 @@ const $=id=>document.getElementById(id);
 function showToast(m,t='info'){$('toast').className='toast '+t;$('toast').textContent=m;$('toast').style.display='flex';setTimeout(()=>{$('toast').style.display='none'},3000)}
 function showLoading(t='Loading...'){$('loadingText').textContent=t;$('loading').classList.remove('hidden')}
 function hideLoading(){$('loading').classList.add('hidden')}
-function closeMobileMenu(){$('screen-home')&&document.querySelector('.mobile-menu').classList.remove('open')}
+function toggleMobileMenu(){document.querySelector('.mobile-menu').classList.toggle('open');$('hamburgerBtn').classList.toggle('open')}
+function closeMobileMenu(){document.querySelector('.mobile-menu')?.classList.remove('open');$('hamburgerBtn')?.classList.remove('open')}
 
 function goHome(){
   if(state.walletAddress){navigateTo('dashboard');return}

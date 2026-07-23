@@ -1,13 +1,25 @@
 @media(max-width:1024px){
   .nav-links{display:none}
   .hamburger{display:flex}
+  .header-actions{display:none}
   .feature-card{grid-template-columns:1fr;text-align:center}
   .feature-card.reverse{direction:ltr}
   .security-cards{grid-template-columns:repeat(2,1fr)}
   .testimonials{grid-template-columns:repeat(2,1fr)}
   .footer-columns{grid-template-columns:repeat(2,1fr)}
 }
+.mobile-menu{display:block;transition:transform .3s ease,opacity .3s ease;transform:translateX(100%);opacity:0;pointer-events:none}
+.mobile-menu.open{transform:translateX(0);opacity:1;pointer-events:auto}
+.mobile-menu.open+.menu-overlay{display:block}
+.menu-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.3);z-index:998}
+.hamburger.open span{background:transparent}
+.hamburger.open span::before{top:0;transform:rotate(45deg)}
+.hamburger.open span::after{top:0;transform:rotate(-45deg)}
 @media(max-width:640px){
+  .header-inner{padding:0 12px}
+  .logo svg{height:32px}
+  .logo-text{font-size:16px}
+  .hamburger{width:36px;height:36px}
   .stats-grid{gap:24px}
   .stat-item{min-width:calc(50% - 12px)}
   .security-cards,.testimonials,.footer-columns{grid-template-columns:1fr}

@@ -49,7 +49,7 @@
        <button class="btn btn-outline btn-sm" onclick="openWalletModal('import')">Import Wallet</button>
       <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Create Wallet</button>
     </div>
-    <button class="hamburger" id="hamburgerBtn" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()">
       <span></span>
     </button>
   </div>
@@ -62,6 +62,7 @@
   <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="openWalletModal('import');closeMobileMenu()">Import Wallet</button>
   <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="instantCreateWallet();closeMobileMenu()">Create Wallet</button>
 </div>
+<div class="menu-overlay" onclick="closeMobileMenu()"></div>
 
 <!-- LOADING -->
 <div class="loading-overlay hidden" id="loading">
