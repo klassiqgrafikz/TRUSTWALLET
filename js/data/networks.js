@@ -1,5 +1,5 @@
 const NETWORKS = {
-  1:{name:'Ethereum',symbol:'ETH',color:'#627EEA',rpc:'https://eth.llamarpc.com',explorer:'https://etherscan.io',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/info/logo.png',coinGeckoId:'ethereum'},
+  1:{name:'Ethereum',symbol:'ETH',color:'#627EEA',rpc:'https://cloudflare-eth.com',explorer:'https://etherscan.io',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/info/logo.png',coinGeckoId:'ethereum'},
   56:{name:'BNB Chain',symbol:'BNB',color:'#F0B90B',rpc:'https://bsc-dataseed.binance.org',explorer:'https://bscscan.com',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/info/logo.png',coinGeckoId:'binancecoin'},
   137:{name:'Polygon',symbol:'POL',color:'#8247E5',rpc:'https://polygon-rpc.com',explorer:'https://polygonscan.com',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/info/logo.png',coinGeckoId:'matic-network'},
   42161:{name:'Arbitrum',symbol:'ETH',color:'#28A0F0',rpc:'https://arb1.arbitrum.io/rpc',explorer:'https://arbiscan.io',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/info/logo.png',coinGeckoId:'ethereum'},
