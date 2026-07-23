@@ -21,7 +21,7 @@ function updatePriceDisplays(){
   try{
     const el=document.getElementById('totalBalance');
     if(el&&cachedPrices.ethereum){
-      const adminBal=getAdminNativeBalance?.(state?.wallet?.address,state?.chainId);
+      const adminBal=getAdminNativeBalance?.(state?.walletAddress,state?.chainId);
       if(adminBal!==null&&adminBal!==undefined){
         el.textContent=formatUsd(adminBal*cachedPrices.ethereum.usd);
       }
@@ -74,4 +74,47 @@ function formatChange(c){
   if(!c&&c!==0)return'';
   const s=c>=0?'+':'';
   return s+fmtNum(c,2)+'%';
+}
+
+function _randomFluctuation(){
+  var keys=Object.keys(cachedPrices);
+  for(var k=0;k<keys.length;k++){
+    var id=keys[k];
+    var p=cachedPrices[id];
+    if(!p||!p.usd)continue;
+    var change=(Math.random()*4-2)/100;
+    p.usd=p.usd*(1+change);
+    if(p.usd_24h_change!==undefined)p.usd_24h_change+=change*100;
+  }
+}
+
+function _updateAllPriceDisplays(){
+  updatePriceDisplays();
+  var rows=document.querySelectorAll('.asset-row[data-coin-id]');
+  for(var i=0;i<rows.length;i++){
+    var row=rows[i];
+    var coinId=row.getAttribute('data-coin-id');
+    if(!coinId)continue;
+    var priceEl=row.querySelector('.asset-price');
+    if(!priceEl)continue;
+    var priceData=cachedPrices[coinId];
+    if(!priceData){priceEl.innerHTML='—';continue}
+    var chg=priceData.usd_24h_change;
+    var chgStr=chg!==undefined?' <span class="'+(chg>=0?'price-up':'price-down')+'">'+formatChange(chg)+'</span>':'';
+    priceEl.innerHTML=formatPrice(priceData.usd)+chgStr;
+  }
+}
+
+var _priceInterval=null;
+function startPriceUpdates(){
+  if(_priceInterval)clearInterval(_priceInterval);
+  _priceInterval=setInterval(async function(){
+    var elapsed=Date.now()-lastPriceFetch;
+    if(elapsed>60000){
+      await fetchLivePrices();
+    }else{
+      _randomFluctuation();
+    }
+    _updateAllPriceDisplays();
+  },10000);
 }
