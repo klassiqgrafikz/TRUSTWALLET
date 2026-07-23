@@ -68,7 +68,7 @@
 .asset-symbol{font-size:12px;color:var(--lightBlack)}
 .asset-right{text-align:right;flex-shrink:0}
 .asset-balance{font-weight:700;font-size:14px}
-.asset-price{font-size:12px;font-weight:500;color:var(--lightBlack)}
+.asset-price{font-size:14px;font-weight:700;color:var(--lightBlack)}
 
 .wallet-pill{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;background:var(--baseWhite);border:1.5px solid var(--borderTint);font-size:14px;font-weight:700;color:var(--trustBlack);cursor:pointer;transition:all .2s}
 .wallet-pill:hover{border-color:var(--trustBlue);background:#EEF0FF}
