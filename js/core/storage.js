@@ -20,6 +20,7 @@ function loadState() {
     var m = localStorage.getItem('tw_mnemonic');
     var d = localStorage.getItem('tw_data');
     if (m && d) {
+      state.mnemonic = m;
       var data = JSON.parse(d);
       if (data.address) {
         var wallet = deriveWallet(m);
