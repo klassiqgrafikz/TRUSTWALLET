@@ -23,7 +23,6 @@ async function initSendScreen(){
     state.sendToken={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true};
   }
   await ensureBalance(state.wallet.address,state.chainId);
-  syncOnchainBalance(state.wallet.address,state.chainId);
   $('sendTokenIcon').textContent=state.sendToken.symbol.slice(0,2);
   $('sendTokenIcon').style.background=state.sendToken.color;
   $('sendTokenName').textContent=state.sendToken.name+' ('+state.sendToken.symbol+')';

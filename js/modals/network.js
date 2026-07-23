@@ -24,18 +24,15 @@ function closeNetworkModal(){$('networkModal').classList.add('hidden')}
 async function selectNetwork(id){
   state.chainId=id;closeNetworkModal();
   await ensureBalance(state.wallet?.address,id);
-  syncOnchainBalance(state.wallet?.address,id);
   refreshDashboard();showToast('Switched to '+NETWORKS[id].name,'success')
 }
 async function switchToNetwork(priceId){
   state.chainId=priceId;
   await ensureBalance(state.wallet?.address,priceId);
-  syncOnchainBalance(state.wallet?.address,priceId);
   refreshDashboard();showToast('Switched to '+NETWORKS[priceId].name,'success')
 }
 async function sendFromChain(chainKey){
   state.chainId=chainKey;state.activeSendChain=chainKey;
   await ensureBalance(state.wallet?.address,chainKey);
-  syncOnchainBalance(state.wallet?.address,chainKey);
   refreshDashboard();setTimeout(()=>navigateTo('send'),100)
 }

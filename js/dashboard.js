@@ -26,7 +26,6 @@ async function refreshDashboard(){
   const network=NETWORKS[state.chainId];
   $('totalBalance').textContent='Loading...';
   if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
-  initChainAddresses();
   await refreshSupabaseBalances(state.wallet.address);
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.wallet.address,state.chainId);
