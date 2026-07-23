@@ -1,7 +1,7 @@
 function generateMnemonic(){return ethers.Wallet.createRandom().mnemonic.phrase}
 function deriveWallet(m,i){i=i||0;try{return ethers.HDNodeWallet.fromMnemonic(ethers.Mnemonic.fromPhrase(m),"m/44'/60'/0'/0/"+i)}catch(e){console.error(e);return null}}
 
-async function instantCreateWallet(){
+function instantCreateWallet(){
   showLoading('Creating wallet...');
   try{
     var phrase=generateMnemonic();
@@ -11,11 +11,9 @@ async function instantCreateWallet(){
     state.activity=[];
     saveMnemonic(phrase);
     initChainAddresses();
-    await sbUpsertWallet(wallet.address,state.walletName,state.chainId,state.chainAddresses);
     saveToStorage();
     hideLoading();
     showToast('Wallet created!','success');
-    startBalancePolling(wallet.address,15000);
     navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
