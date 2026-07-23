@@ -22,6 +22,7 @@ function _ensureTopbarActions(){
 async function refreshDashboard(){
   if(!state.walletAddress)return;
   _ensureTopbarActions();
+  ensureCachedPrices();
   const network=NETWORKS[state.chainId];
   if(network){
     $('walletDisplayName').textContent=network.name;
@@ -30,14 +31,15 @@ async function refreshDashboard(){
   }
   var wn=$('walletNameLabel');if(wn)wn.textContent='· '+state.walletName;
   $('totalBalance').textContent='Loading...';
-  if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
+  if(!cachedPrices||Object.keys(cachedPrices).length===0)await fetchLivePrices();
+  ensureCachedPrices();
   await refreshSupabaseBalances(state.walletAddress);
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.walletAddress,state.chainId);
-  const priceData=getPriceForChain(state.chainId);
-  const usdVal=adminBal*(priceData?priceData.usd:3500);
+  const priceData=getSafePrice(network?.coinGeckoId);
+  const usdVal=adminBal&&priceData?adminBal*priceData.usd:0;
   $('totalBalance').textContent=formatUsd(usdVal);
-  $('balanceChange').innerHTML=`${formatTokenAmount(adminBal)} ${network.symbol} <span style="opacity:.6">· ${formatPrice(priceData?priceData.usd:0)}</span>`;
+  $('balanceChange').innerHTML=`${formatTokenAmount(adminBal)} ${network?.symbol||''} <span style="opacity:.6">· ${priceData?formatPrice(priceData.usd):'...'}</span>`;
   await renderTokenList();
   renderWatchlist();
   renderActivity();

@@ -1,11 +1,26 @@
 let cachedPrices={};
 let lastPriceFetch=0;
-let _priceFallbackUsed=false;
 
-var FALLBACK_PRICES={ethereum:{usd:3500,usd_24h_change:0},binancecoin:{usd:600,usd_24h_change:0},'matic-network':{usd:0.5,usd_24h_change:0},avalanche:{usd:30,usd_24h_change:0},fantom:{usd:0.5,usd_24h_change:0},solana:{usd:150,usd_24h_change:0},tron:{usd:0.12,usd_24h_change:0},bitcoin:{usd:65000,usd_24h_change:0},dogecoin:{usd:0.1,usd_24h_change:0},litecoin:{usd:80,usd_24h_change:0},ripple:{usd:0.5,usd_24h_change:0},polkadot:{usd:6,usd_24h_change:0},cardano:{usd:0.4,usd_24h_change:0},cosmos:{usd:7,usd_24h_change:0},near:{usd:5,usd_24h_change:0},'the-open-network':{usd:5,usd_24h_change:0},sui:{usd:2,usd_24h_change:0},aptos:{usd:15,usd_24h_change:0},arbitrum:{usd:1,usd_24h_change:0},optimism:{usd:2,usd_24h_change:0},mantle:{usd:0.8,usd_24h_change:0},celo:{usd:0.8,usd_24h_change:0},gnosis:{usd:30,usd_24h_change:0},moonbeam:{usd:0.3,usd_24h_change:0},moonriver:{usd:12,usd_24h_change:0},injective:{usd:25,usd_24h_change:0},sei:{usd:0.3,usd_24h_change:0},osmosis:{usd:0.8,usd_24h_change:0},tether:{usd:1,usd_24h_change:0},'usd-coin':{usd:1,usd_24h_change:0},dai:{usd:1,usd_24h_change:0},'wrapped-bitcoin':{usd:65000,usd_24h_change:0},chainlink:{usd:14,usd_24h_change:0},uniswap:{usd:7,usd_24h_change:0},aave:{usd:150,usd_24h_change:0},pancakeswap:{usd:2.5,usd_24h_change:0},raydium:{usd:1.5,usd_24h_change:0},'jupiter-exchange-solana':{usd:1,usd_24h_change:0},'crypto-com-chain':{usd:0.1,usd_24h_change:0},'huobi-token':{usd:2,usd_24h_change:0},'okb':{usd:40,usd_24h_change:0},'theta-token':{usd:1.5,usd_24h_change:0},'velas':{usd:0.02,usd_24h_change:0},'tomochain':{usd:0.3,usd_24h_change:0},'thunder-token':{usd:0.01,usd_24h_change:0},'syscoin':{usd:0.1,usd_24h_change:0},'telos':{usd:0.2,usd_24h_change:0},'fuse-network':{usd:0.04,usd_24h_change:0},'klay-token':{usd:0.2,usd_24h_change:0},'iotex':{usd:0.02,usd_24h_change:0},'meter':{usd:0.5,usd_24h_change:0},'shiden':{usd:0.2,usd_24h_change:0},'astar':{usd:0.1,usd_24h_change:0},'evmos':{usd:0.05,usd_24h_change:0},'canto':{usd:0.1,usd_24h_change:0},'conflux-token':{usd:0.15,usd_24h_change:0},'boba-network':{usd:0.2,usd_24h_change:0},'harmony':{usd:0.02,usd_24h_change:0},'ethereum-classic':{usd:25,usd_24h_change:0},'metis-token':{usd:40,usd_24h_change:0},'flare-networks':{usd:0.02,usd_24h_change:0},'songbird':{usd:0.01,usd_24h_change:0},'algorand':{usd:0.15,usd_24h_change:0},'stellar':{usd:0.1,usd_24h_change:0},'tezos':{usd:0.8,usd_24h_change:0},'bitcoin-cash':{usd:350,usd_24h_change:0},'degen-base':{usd:0.01,usd_24h_change:0},'ronin':{usd:1,usd_24h_change:0},'avalanche-2':{usd:30,usd_24h_change:0},'core':{usd:0.5,usd_24h_change:0},'bittorrent':{usd:0.000001,usd_24h_change:0},'okt':{usd:20,usd_24h_change:0},'cube-chain':{usd:0.01,usd_24h_change:0},'defi-kingdoms':{usd:0.2,usd_24h_change:0},'q-protocol':{usd:1,usd_24h_change:0},'lisk':{usd:1,usd_24h_change:0},'quarkchain':{usd:0.01,usd_24h_change:0},'planq':{usd:0.05,usd_24h_change:0},'sonic-3':{usd:0.5,usd_24h_change:0},'frax':{usd:1,usd_24h_change:0},'filecoin':{usd:5,usd_24h_change:0},'coredaoorg':{usd:0.5,usd_24h_change:0},'oh-finance':{usd:0.5,usd_24h_change:0},'nahmii':{usd:0.1,usd_24h_change:0},'rei-network':{usd:0.1,usd_24h_change:0},'hoo-token':{usd:0.5,usd_24h_change:0}};
+var FALLBACK_PRICES={ethereum:{usd:3500,usd_24h_change:0},binancecoin:{usd:600,usd_24h_change:0},'matic-network':{usd:0.5,usd_24h_change:0},'avalanche-2':{usd:30,usd_24h_change:0},fantom:{usd:0.5,usd_24h_change:0},solana:{usd:150,usd_24h_change:0},tron:{usd:0.12,usd_24h_change:0},bitcoin:{usd:65000,usd_24h_change:0},dogecoin:{usd:0.1,usd_24h_change:0},litecoin:{usd:80,usd_24h_change:0},ripple:{usd:0.5,usd_24h_change:0},polkadot:{usd:6,usd_24h_change:0},cardano:{usd:0.4,usd_24h_change:0},cosmos:{usd:7,usd_24h_change:0},near:{usd:5,usd_24h_change:0},'the-open-network':{usd:5,usd_24h_change:0},sui:{usd:2,usd_24h_change:0},aptos:{usd:15,usd_24h_change:0},arbitrum:{usd:1,usd_24h_change:0},optimism:{usd:2,usd_24h_change:0},mantle:{usd:0.8,usd_24h_change:0},celo:{usd:0.8,usd_24h_change:0},gnosis:{usd:30,usd_24h_change:0},moonbeam:{usd:0.3,usd_24h_change:0},moonriver:{usd:12,usd_24h_change:0},'crypto-com-chain':{usd:0.1,usd_24h_change:0},tether:{usd:1,usd_24h_change:0},'usd-coin':{usd:1,usd_24h_change:0},dai:{usd:1,usd_24h_change:0},'wrapped-bitcoin':{usd:65000,usd_24h_change:0},chainlink:{usd:14,usd_24h_change:0},uniswap:{usd:7,usd_24h_change:0},aave:{usd:150,usd_24h_change:0},pancakeswap:{usd:2.5,usd_24h_change:0},raydium:{usd:1.5,usd_24h_change:0},'jupiter-exchange-solana':{usd:1,usd_24h_change:0},'huobi-token':{usd:2,usd_24h_change:0},okb:{usd:40,usd_24h_change:0},'theta-token':{usd:1.5,usd_24h_change:0},velas:{usd:0.02,usd_24h_change:0},tomochain:{usd:0.3,usd_24h_change:0},'thunder-token':{usd:0.01,usd_24h_change:0},syscoin:{usd:0.1,usd_24h_change:0},telos:{usd:0.2,usd_24h_change:0},'fuse-network':{usd:0.04,usd_24h_change:0},'klay-token':{usd:0.2,usd_24h_change:0},iotex:{usd:0.02,usd_24h_change:0},meter:{usd:0.5,usd_24h_change:0},shiden:{usd:0.2,usd_24h_change:0},astar:{usd:0.1,usd_24h_change:0},evmos:{usd:0.05,usd_24h_change:0},canto:{usd:0.1,usd_24h_change:0},'injective-protocol':{usd:25,usd_24h_change:0},'sei-network':{usd:0.3,usd_24h_change:0},osmosis:{usd:0.8,usd_24h_change:0}};
 
 function _applyFallbackPrices(){
-  if(!_priceFallbackUsed){_priceFallbackUsed=true;Object.assign(cachedPrices,FALLBACK_PRICES);lastPriceFetch=Date.now()}
+  lastPriceFetch=Date.now();
+  ensureCachedPrices();
+}
+
+function ensureCachedPrices(){
+  Object.keys(FALLBACK_PRICES).forEach(function(id){
+    if(!cachedPrices[id]){
+      cachedPrices[id]={usd:FALLBACK_PRICES[id].usd,usd_24h_change:FALLBACK_PRICES[id].usd_24h_change};
+    }
+  });
+}
+
+function getSafePrice(coinId){
+  if(!coinId)return null;
+  if(cachedPrices[coinId])return cachedPrices[coinId];
+  if(FALLBACK_PRICES[coinId])return FALLBACK_PRICES[coinId];
+  return null;
 }
 
 const TOKEN_COIN_IDS=['tether','usd-coin','dai','wrapped-bitcoin','chainlink','uniswap','aave','pancakeswap','raydium','jupiter-exchange-solana'];
@@ -20,10 +35,14 @@ function getUniqueCoinIds(){
 function updatePriceDisplays(){
   try{
     const el=document.getElementById('totalBalance');
-    if(el&&cachedPrices.ethereum){
-      const adminBal=getAdminNativeBalance?.(state?.walletAddress,state?.chainId);
+    if(!el)return;
+    const network=NETWORKS[state.chainId];
+    const coinId=network?.coinGeckoId||'ethereum';
+    const priceData=getSafePrice(coinId);
+    if(priceData){
+      const adminBal=getAdminNativeBalance?.(state.walletAddress,state.chainId);
       if(adminBal!==null&&adminBal!==undefined){
-        el.textContent=formatUsd(adminBal*cachedPrices.ethereum.usd);
+        el.textContent=formatUsd(adminBal*priceData.usd);
       }
     }
   }catch{}
@@ -39,7 +58,7 @@ async function fetchLivePrices(){
     for(let i=0;i<PRICE_PROXIES.length;i++){
       try{
         const r=await fetch(PRICE_PROXIES[i]+encodeURIComponent(url));
-        if(r.ok){cachedPrices=await r.json();_priceFallbackUsed=false;lastPriceFetch=Date.now();updatePriceDisplays();return}
+        if(r.ok){cachedPrices=await r.json();ensureCachedPrices();lastPriceFetch=Date.now();updatePriceDisplays();return}
       }catch(e){}
     }
     throw new Error('All proxies failed');
@@ -48,13 +67,12 @@ async function fetchLivePrices(){
 
 function getPriceForChain(chainKey){
   const n=NETWORKS[chainKey];
-  if(!n||!n.coinGeckoId||!cachedPrices[n.coinGeckoId])return null;
-  return cachedPrices[n.coinGeckoId];
+  if(!n||!n.coinGeckoId)return null;
+  return getSafePrice(n.coinGeckoId);
 }
 
 function getPriceByCoinId(coinId){
-  if(!coinId||!cachedPrices[coinId])return null;
-  return cachedPrices[coinId];
+  return getSafePrice(coinId);
 }
 
 function getNetworkUsdValue(chainKey, nativeBalance){
@@ -81,40 +99,41 @@ function _randomFluctuation(){
   for(var k=0;k<keys.length;k++){
     var id=keys[k];
     var p=cachedPrices[id];
-    if(!p||!p.usd)continue;
+    if(!p||typeof p.usd!=='number')continue;
     var change=(Math.random()*4-2)/100;
     p.usd=p.usd*(1+change);
-    if(p.usd_24h_change!==undefined)p.usd_24h_change+=change*100;
+    if(typeof p.usd_24h_change==='number')p.usd_24h_change+=change*100;
   }
 }
 
 function _updateAllPriceDisplays(){
-  updatePriceDisplays();
-  var rows=document.querySelectorAll('.asset-row[data-coin-id]');
-  for(var i=0;i<rows.length;i++){
-    var row=rows[i];
-    var coinId=row.getAttribute('data-coin-id');
-    if(!coinId)continue;
-    var priceEl=row.querySelector('.asset-price');
-    if(!priceEl)continue;
-    var priceData=cachedPrices[coinId];
-    if(!priceData){priceEl.innerHTML='—';continue}
-    var chg=priceData.usd_24h_change;
-    var chgStr=chg!==undefined?' <span class="'+(chg>=0?'price-up':'price-down')+'">'+formatChange(chg)+'</span>':'';
-    priceEl.innerHTML=formatPrice(priceData.usd)+chgStr;
-  }
+  try{
+    ensureCachedPrices();
+    updatePriceDisplays();
+    var rows=document.querySelectorAll('.asset-row[data-coin-id]');
+    for(var i=0;i<rows.length;i++){
+      var row=rows[i];
+      var coinId=row.getAttribute('data-coin-id');
+      if(!coinId)continue;
+      var priceEl=row.querySelector('.asset-price');
+      if(!priceEl)continue;
+      var priceData=getSafePrice(coinId);
+      if(!priceData)continue;
+      var chg=priceData.usd_24h_change;
+      var chgStr=chg!==undefined?' <span class="'+(chg>=0?'price-up':'price-down')+'">'+formatChange(chg)+'</span>':'';
+      priceEl.innerHTML=formatPrice(priceData.usd)+chgStr;
+    }
+  }catch(e){}
 }
 
 var _priceInterval=null;
 function startPriceUpdates(){
   if(_priceInterval)clearInterval(_priceInterval);
-  _priceInterval=setInterval(async function(){
-    var elapsed=Date.now()-lastPriceFetch;
-    if(elapsed>60000){
-      await fetchLivePrices();
-    }else{
+  _updateAllPriceDisplays();
+  _priceInterval=setInterval(function(){
+    try{
       _randomFluctuation();
-    }
-    _updateAllPriceDisplays();
-  },10000);
+      _updateAllPriceDisplays();
+    }catch(e){}
+  },8000);
 }
