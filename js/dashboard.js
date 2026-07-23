@@ -60,15 +60,15 @@ async function renderTokenList(){
   let nativeBalStr='0';
   if(nativeBal!==null)nativeBalStr=formatTokenAmount(nativeBal);
   let html=`<div class="asset-row" onclick="navigateTo('send')"><div class="asset-left"><img src="${network.logo}" class="asset-icon" onerror="this.style.background='${network.color}';this.alt='${network.symbol}'"/><div class="asset-info"><div class="asset-name">${network.name}</div><div class="asset-symbol">${network.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${nativeBalStr} ${network.symbol}</div><div class="asset-price">${nativePriceStr} ${nativeChgStr}</div></div></div>`;
-  for(const t of allTokens){
+  allTokens.forEach(function(t,i){
     const priceInfo=t.priceId?getPriceByCoinId(t.priceId):null;
     const priceStr=priceInfo?formatPrice(priceInfo.usd):(t.isStable?'$1.00':'<span class="price-loading">...</span>');
     const chgStr=priceInfo?`<span class="${priceInfo.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(priceInfo.usd_24h_change)}</span>`:'';
     const tokBal=getAdminTokenBalance(state.wallet.address,state.chainId,t.symbol);
     const tokBalStr=tokBal!==null?formatTokenAmount(tokBal,t.decimals>6?4:2):'0';
     const tokUsd=priceInfo&&tokBal!==null?' · '+formatUsd(priceInfo.usd*tokBal):'';
-    html+=`<div class="asset-row"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="this.style.background='${t.color}';this.alt='${t.symbol}'"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;
-  }
+    html+=`<div class="asset-row" onclick="sendTokenFromDashboard(${i})"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="this.style.background='${t.color}';this.alt='${t.symbol}'"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;
+  });
   $('tokenList').innerHTML=html;
 }
 
