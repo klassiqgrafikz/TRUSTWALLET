@@ -115,15 +115,18 @@ function renderActivity(){
   el.innerHTML=items.slice(0,20).map(tx=>{
     const isIncoming=tx.from==='admin_faucet'||(addr&&tx.to?.toLowerCase()===addr&&tx.from?.toLowerCase()!==addr);
     const isAdmin=tx.from==='admin_faucet';
-    const netName=NETWORKS?.[tx.chainId]?.name||'Unknown';
+    const net=NETWORKS?.[tx.chainId];
+    const netName=net?.name||'Unknown';
+    const netLogo=net?.logo||'';
+    const netColor=net?.color||'#888';
     const ts=new Date(tx.timestamp);
     const timeStr=ts.toLocaleDateString()+' '+ts.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
     const label=isAdmin?'Received (Faucet)':isIncoming?'Received':'Sent';
     const color=isIncoming?'var(--trustGreen)':'var(--red)';
     const sign=isIncoming?'+':'−';
     return `<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--baseWhite)">
-      <div style="width:40px;height:40px;border-radius:50%;background:${isIncoming?'#E8FFE8':'#FFE8E8'};display:flex;align-items:center;justify-content:center;flex-shrink:0">
-        <span style="font-size:16px">${isIncoming?'⬇':'⬆'}</span>
+      <div style="width:40px;height:40px;border-radius:50%;background:${netColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
+        ${netLogo?`<img src="${netLogo}" style="width:24px;height:24px" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\\'font-size:12px;font-weight:700;color:#fff\\'>${(net?.symbol||'?').slice(0,2)}</span>'"/>`:`<span style="font-size:12px;font-weight:700;color:#fff">${(net?.symbol||'?').slice(0,2)}</span>`}
       </div>
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:14px">${label}</div>
