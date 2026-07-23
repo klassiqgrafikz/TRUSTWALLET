@@ -80,7 +80,7 @@ async function sbGetBalances(address) {
 }
 
 async function sbUpsertBalance(address, chainId, balance, tokens) {
-  return _sbFetch('/balances?on_conflict=(address,chain_id)', {
+  return _sbFetch('/balances?on_conflict=address,chain_id', {
     method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates' },
     body: JSON.stringify({ address: address.toLowerCase(), chain_id: String(chainId), balance: String(balance ?? '0'), tokens: tokens ?? {}, updated_at: new Date().toISOString() }),
   });
