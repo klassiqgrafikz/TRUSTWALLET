@@ -1,5 +1,21 @@
+function _ensureTopbarActions(){
+  var right=$('screen-dashboard')?.querySelector('.dash-topbar-right');
+  if(!right)return;
+  if(right.querySelector('[data-action="lock"]'))return;
+  var settingsBtn=right.querySelector('[onclick*="showSettings"]');
+  if(settingsBtn)settingsBtn.setAttribute('data-action','settings');
+  var lockBtn=document.createElement('button');
+  lockBtn.className='icon-btn';
+  lockBtn.setAttribute('data-action','lock');
+  lockBtn.setAttribute('title','Lock Wallet');
+  lockBtn.onclick=function(){lockWallet()};
+  lockBtn.innerHTML='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>';
+  right.insertBefore(lockBtn,settingsBtn?settingsBtn.nextSibling:right.firstChild);
+}
+
 async function refreshDashboard(){
   if(!state.wallet)return;
+  _ensureTopbarActions();
   $('walletDisplayName').textContent=state.walletName;
   const network=NETWORKS[state.chainId];
   $('totalBalance').textContent='Loading...';
