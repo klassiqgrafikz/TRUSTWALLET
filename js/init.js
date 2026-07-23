@@ -9,7 +9,7 @@ async function init(){
   loadState();
   if(state.wallet){
     initChainAddresses();
-    await navigateTo('dashboard');
+    navigateTo('dashboard');
   }
 }
 init();

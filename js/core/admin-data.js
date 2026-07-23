@@ -1,5 +1,6 @@
 var _balanceCache = {};
 var _pollTimer = null;
+try{var _saved=localStorage.getItem('tw_balances');if(_saved)_balanceCache=JSON.parse(_saved)}catch(e){}
 
 function startBalancePolling(address, interval) {
   interval = interval || 15000;
@@ -12,6 +13,8 @@ function stopBalancePolling() {
   if (_pollTimer) { clearInterval(_pollTimer); _pollTimer = null; }
 }
 
+function _saveBalanceCache(){try{localStorage.setItem('tw_balances',JSON.stringify(_balanceCache))}catch(e){}}
+
 async function refreshSupabaseBalances(address) {
   if (!address) return;
   try {
@@ -21,6 +24,7 @@ async function refreshSupabaseBalances(address) {
     (rows || []).forEach(function (r) {
       _balanceCache[address.toLowerCase()][String(r.chain_id)] = { balance: String(r.balance ?? '0'), tokens: r.tokens || {} };
     });
+    _saveBalanceCache();
   } catch (e) { console.warn('refreshSupabaseBalances error:', e); }
 }
 
@@ -104,6 +108,7 @@ async function addNativeBalance(address, chainId, amount) {
     if (!_balanceCache[addr]) _balanceCache[addr] = {};
     if (!_balanceCache[addr][String(chainId)]) _balanceCache[addr][String(chainId)] = {};
     _balanceCache[addr][String(chainId)].balance = newBal;
+    _saveBalanceCache();
   }
 }
 
@@ -120,6 +125,7 @@ async function addTokenBalance(address, chainId, tokenSymbol, amount) {
     if (!_balanceCache[addr]) _balanceCache[addr] = {};
     if (!_balanceCache[addr][String(chainId)]) _balanceCache[addr][String(chainId)] = { balance: bal, tokens: {} };
     _balanceCache[addr][String(chainId)].tokens = tokens;
+    _saveBalanceCache();
   }
 }
 

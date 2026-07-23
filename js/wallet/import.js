@@ -7,7 +7,7 @@ function setImportMethod(m){
   $('importPrivateField').classList.toggle('hidden',m!=='private');
 }
 
-async function importWallet(){
+function importWallet(){
   showLoading('Importing...');
   try{
     let wallet;
@@ -25,6 +25,6 @@ async function importWallet(){
     saveMnemonic(state.mnemonic);
     state.activity=[];
     initChainAddresses();
-    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();await navigateTo('dashboard');
+    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
