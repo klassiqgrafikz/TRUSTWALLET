@@ -672,6 +672,14 @@
   </div>
 </div>
 
+<!-- TX DETAIL MODAL -->
+<div class="modal-overlay hidden" id="txDetailModal" onclick="if(event.target===this)closeTxDetail()">
+  <div class="modal" style="max-width:480px;padding:24px">
+    <div class="modal-close" onclick="closeTxDetail()">&times;</div>
+    <div id="txDetailContent"></div>
+  </div>
+</div>
+
 <script src="js/data/networks.js"></script>
 <script src="js/data/price-ids.js"></script>
 <script src="js/core/state.js"></script>

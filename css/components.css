@@ -138,3 +138,7 @@
 .wallet-picker-item .wpi-name{font-weight:600;font-size:14px}
 .wallet-picker-item .wpi-addr{font-size:11px;color:var(--lightBlack);font-family:monospace;word-break:break-all}
 .wallet-picker-item .wpi-chain{font-size:11px;color:var(--trustBlue)}
+.tx-detail-row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--borderTint);gap:16px}
+.tx-detail-row:last-child{border-bottom:none}
+.tx-detail-label{font-size:12px;color:var(--lightBlack);font-weight:500;white-space:nowrap;flex-shrink:0}
+.tx-detail-value{font-size:13px;font-weight:600;color:var(--trustBlack);text-align:right;word-break:break-all}

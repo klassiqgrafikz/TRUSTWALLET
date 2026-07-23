@@ -112,7 +112,7 @@ function renderActivity(){
     return;
   }
   const addr=state.walletAddress?.toLowerCase();
-  el.innerHTML=items.slice(0,20).map(tx=>{
+  el.innerHTML=items.slice(0,20).map((tx,i)=>{
     const isIncoming=tx.from==='admin_faucet'||(addr&&tx.to?.toLowerCase()===addr&&tx.from?.toLowerCase()!==addr);
     const isAdmin=tx.from==='admin_faucet';
     const net=NETWORKS?.[tx.chainId];
@@ -124,7 +124,7 @@ function renderActivity(){
     const label=isAdmin?'Received (Faucet)':isIncoming?'Received':'Sent';
     const color=isIncoming?'var(--trustGreen)':'var(--red)';
     const sign=isIncoming?'+':'−';
-    return `<div style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--baseWhite)">
+    return `<div onclick="openTxDetail(${i})" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--baseWhite);cursor:pointer;transition:background .15s" onmouseenter="this.style.background='var(--baseWhite)'" onmouseleave="this.style.background='transparent'">
       <div style="width:40px;height:40px;border-radius:50%;background:${netColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
         ${netLogo?`<img src="${netLogo}" style="width:24px;height:24px" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\\'font-size:12px;font-weight:700;color:#fff\\'>${(net?.symbol||'?').slice(0,2)}</span>'"/>`:`<span style="font-size:12px;font-weight:700;color:#fff">${(net?.symbol||'?').slice(0,2)}</span>`}
       </div>
@@ -140,4 +140,68 @@ function renderActivity(){
   }).join('');
 }
 
-
+function openTxDetail(index){
+  var items=state.activity||[];
+  var tx=items[index];
+  if(!tx)return;
+  var isIncoming=tx.from==='admin_faucet'||(state.walletAddress?.toLowerCase()&&tx.to?.toLowerCase()===state.walletAddress?.toLowerCase()&&tx.from?.toLowerCase()!==state.walletAddress?.toLowerCase());
+  var isAdmin=tx.from==='admin_faucet';
+  var net=NETWORKS?.[tx.chainId];
+  var netName=net?.name||'Unknown';
+  var netColor=net?.color||'#888';
+  var netLogo=net?.logo||'';
+  var netSymbol=net?.symbol||'';
+  var explorer=net?.explorer||'';
+  var amt=parseFloat(tx.amount)||0;
+  var coinId=net?.coinGeckoId||'';
+  var priceData=coinId?getPriceByCoinId(coinId):null;
+  var usdPrice=priceData?priceData.usd:0;
+  var usdVal=usdPrice*amt;
+  var ts=new Date(tx.timestamp);
+  var dateStr=ts.toLocaleDateString()+' '+ts.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  var shortHash=tx.hash?tx.hash.slice(0,10)+'...'+tx.hash.slice(-8):'—';
+  var explorerUrl='';
+  if(explorer&&tx.hash){
+    if(explorer.includes('blockchair'))explorerUrl=explorer+'/transaction/'+tx.hash;
+    else explorerUrl=explorer+'/tx/'+tx.hash;
+  }
+  var label=isAdmin?'RECEIVED':isIncoming?'RECEIVED':'SENT';
+  var sign=isIncoming?'+':'−';
+  var amtStr=formatTokenAmount(amt)+' '+tx.symbol;
+  var usdStr=usdVal>0?'≈ '+formatUsd(usdVal):'';
+  $('txDetailContent').innerHTML=
+    '<div style="text-align:center;padding:16px 0">'+
+      '<div style="width:56px;height:56px;border-radius:50%;background:'+netColor+';display:flex;align-items:center;justify-content:center;margin:0 auto 12px;overflow:hidden">'+
+        (netLogo?'<img src="'+netLogo+'" style="width:32px;height:32px" onerror="iconError(this,\''+netColor+'\',\''+netSymbol+'\')"/>':'<span style="font-size:14px;font-weight:700;color:#fff">'+(netSymbol||'?').slice(0,2)+'</span>')+
+      '</div>'+
+      '<div style="font-size:12px;font-weight:700;color:'+(isIncoming?'var(--trustGreen)':'var(--red)')+';letter-spacing:.5px;margin-bottom:4px">'+label+'</div>'+
+      '<div style="font-size:28px;font-weight:800;color:var(--trustBlack);font-family:var(--font-heading)">'+sign+amtStr+'</div>'+
+      (usdStr?'<div style="font-size:14px;color:var(--lightBlack);margin-top:4px">'+usdStr+'</div>':'')+
+    '</div>'+
+    '<div style="display:flex;align-items:center;gap:6px;justify-content:center;margin:16px 0;padding:10px;background:#E8FFE8;border-radius:10px;color:#22C55E;font-size:13px;font-weight:600">'+
+      '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Confirmed'+
+    '</div>'+
+    '<div style="background:var(--baseWhite);border-radius:12px;padding:16px;margin-bottom:16px">'+
+      '<div class="tx-detail-row"><span class="tx-detail-label">From</span><span class="tx-detail-value" style="word-break:break-all;font-size:12px">'+(tx.from||'—')+'</span></div>'+
+      '<div class="tx-detail-row"><span class="tx-detail-label">To</span><span class="tx-detail-value" style="word-break:break-all;font-size:12px">'+(tx.to||'—')+'</span></div>'+
+      '<div class="tx-detail-row"><span class="tx-detail-label">Date</span><span class="tx-detail-value">'+dateStr+'</span></div>'+
+      '<div class="tx-detail-row"><span class="tx-detail-label">Network</span><span class="tx-detail-value">'+netName+'</span></div>'+
+      (tx.gasFee?'<div class="tx-detail-row"><span class="tx-detail-label">Gas Fee</span><span class="tx-detail-value">'+tx.gasFee+'</span></div>':'')+
+      (tx.hash?'<div class="tx-detail-row"><span class="tx-detail-label">TX Hash</span><span class="tx-detail-value" style="font-size:11px;word-break:break-all">'+tx.hash+'</span></div>':'')+
+    '</div>'+
+    (usdPrice>0?'<div class="tx-detail-row" style="padding:8px 0;border-bottom:none"><span class="tx-detail-label">Token Price</span><span class="tx-detail-value">'+formatUsd(usdPrice)+'</span></div>':'')+
+    '<div style="margin:16px 0"><input id="txMemoInput" type="text" class="form-input" placeholder="Add a memo..." style="border:1.5px solid var(--borderTint)"/></div>'+
+    '<div style="display:flex;gap:10px">'+
+      '<button class="btn btn-outline" style="flex:1;font-size:13px" onclick="shareTx()">Share</button>'+
+      (explorerUrl?'<button class="btn btn-primary" style="flex:1;font-size:13px" onclick="window.open(\''+explorerUrl+'\',\'_blank\')">View on Explorer</button>':'<button class="btn btn-primary" style="flex:1;font-size:13px;opacity:.5" disabled>No Explorer</button>')+
+    '</div>';
+  $('txDetailModal').classList.remove('hidden');
+}
+function closeTxDetail(){$('txDetailModal').classList.add('hidden')}
+function shareTx(){
+  var memo=$('txMemoInput')?.value?.trim();
+  var txt='Transaction from Trust Wallet';
+  if(memo)txt+=': '+memo;
+  if(navigator.share)navigator.share({title:'Transaction',text:txt});
+  else showToast('Share not supported on this device','info');
+}
