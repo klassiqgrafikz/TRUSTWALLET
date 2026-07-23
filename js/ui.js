@@ -9,6 +9,18 @@ function updateThemeIcons(isDark){
   const icon=isDark?'🌙':'☀️';
   ['themeIcon','themeIconMain','themeIconMobile','themeIconMenu'].forEach(function(id){var e=$(id);if(e)e.textContent=icon});
 }
+function toggleLangDropdown(e){
+  e.stopPropagation();
+  document.getElementById('langDropdown').classList.toggle('show');
+}
+document.addEventListener('click',function(e){
+  var dd=document.getElementById('langDropdown');
+  if(dd&&!e.target.closest('.lang-selector'))dd.classList.remove('show');
+});
+document.addEventListener('click',function(e){
+  var a=e.target.closest('.lang-dropdown a');
+  if(a){e.preventDefault();document.querySelectorAll('.lang-dropdown a').forEach(function(x){x.classList.remove('active')});a.classList.add('active');document.getElementById('langDropdown').classList.remove('show')}
+});
 function toggleTheme(){
   document.body.classList.toggle('dark');
   const isDark=document.body.classList.contains('dark');

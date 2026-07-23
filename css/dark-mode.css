@@ -68,6 +68,15 @@ body.dark footer{background:#2A2A2E;border-color:#3A3A3E}
 body.dark .footer-col h4{color:var(--trustBlack)}
 body.dark .footer-download-text h4{color:var(--trustBlack)}
 body.dark .footer-download-text p{color:var(--lightBlack)}
+body.dark .nav-dropdown{background:#252528;border-color:#3A3A3E;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+body.dark .nav-dropdown a{color:var(--trustBlack)}
+body.dark .nav-dropdown a:hover{background:#3A3A3E}
+body.dark .lang-btn{color:var(--lightBlack)}
+body.dark .lang-btn:hover{background:#3A3A3E;color:var(--trustBlack)}
+body.dark .lang-dropdown{background:#252528;border-color:#3A3A3E;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+body.dark .lang-dropdown a{color:var(--trustBlack)}
+body.dark .lang-dropdown a:hover{background:#3A3A3E}
+body.dark .lang-dropdown a.active{background:#3A3A3E}
 body.dark .platform-section .search-bar input{border-color:#3A3A3E;background:rgba(255,255,255,0.08)}
 body.dark .rating-card-sub{color:var(--lightBlack)}
 body.dark .rating-meta{color:var(--lightBlack)}
