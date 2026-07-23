@@ -28,7 +28,7 @@ function showReceiveNetworkList(){
     const addrShort=addr?addr.slice(0,10)+'...'+addr.slice(-4):'';
     const filterKey=Object.keys(filterMap).find(k=>filterMap[k]==String(c.id))||'other';
     return `<div class="network-option" data-chain-key="${filterKey}" onclick="receiveOnChain('${c.id}')">
-      <div class="net-icon"><img src="${c.logo}" onerror="this.style.background='${n.color}'" alt="${c.symbol}"/></div>
+      <div class="net-icon"><img src="${c.logo}" onerror="iconError(this,'${n.color}','${c.symbol}')" alt="${c.symbol}"/></div>
       <div style="flex:1;min-width:0"><div class="net-name">${c.name}</div><div class="net-chain">${c.symbol} · ${addrShort}</div></div>
       <div style="display:flex;gap:6px;align-items:center">
         <span style="cursor:pointer" onclick="event.stopPropagation();navigator.clipboard.writeText('${addr}').then(()=>showToast('Copied!','success'))"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lightBlack)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>

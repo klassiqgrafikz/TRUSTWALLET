@@ -3,7 +3,7 @@ function openNetworkModal(){
     const price=getPriceForChain(id);
     const priceVal=price?formatPrice(price.usd):'<span class="price-loading">...</span>';
     const chg=price&&price.usd_24h_change!=null?`<span class="${price.usd_24h_change>=0?'price-up':'price-down'}">${formatChange(price.usd_24h_change)}</span>`:'';
-    return`<div class="network-option ${id==state.chainId?'selected':''}" onclick="selectNetwork('${id}')"><div class="net-icon"><img src="${n.logo}" onerror="this.style.background='${n.color}'" alt="${n.symbol}"/></div><div><div class="net-name">${n.name}</div><div class="net-chain">${n.symbol}</div></div><div class="net-price"><div class="net-price-val">${priceVal}</div><div class="net-price-chg">${chg}</div></div><span class="net-check">${id==state.chainId?'✓':''}</span></div>`;
+    return`<div class="network-option ${id==state.chainId?'selected':''}" onclick="selectNetwork('${id}')"><div class="net-icon"><img src="${n.logo}" onerror="iconError(this,'${n.color}','${n.symbol}')" alt="${n.symbol}"/></div><div><div class="net-name">${n.name}</div><div class="net-chain">${n.symbol}</div></div><div class="net-price"><div class="net-price-val">${priceVal}</div><div class="net-price-chg">${chg}</div></div><span class="net-check">${id==state.chainId?'✓':''}</span></div>`;
   }).join('');
   $('networkModal').classList.remove('hidden');
   setTimeout(updateNetworkModalPrices,500);

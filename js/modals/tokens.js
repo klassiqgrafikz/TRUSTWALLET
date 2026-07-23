@@ -18,7 +18,7 @@ function openTokenSelectModal(){
   $('modalTokenList').innerHTML=all.map((t,i)=>{
     const header=t.netName!==lastNet?`<div style="padding:8px 12px;font-size:11px;font-weight:700;color:var(--lightBlack);text-transform:uppercase;letter-spacing:.5px;background:var(--bg,var(--baseWhite))">${t.netName}</div>`:'';
     lastNet=t.netName;
-    return header+`<div class="token-select-item" onclick="selectSendToken(${i})"><div class="ts-icon" style="background:${t.color}"><img src="${t.logo}" onerror="this.style.display='none'"/></div><div><div style="font-weight:600;font-size:14px">${t.name}</div><div style="font-size:12px;color:var(--lightBlack)">${t.symbol}${t.isNative?' (native)':''}</div></div></div>`;
+    return header+`<div class="token-select-item" onclick="selectSendToken(${i})"><div class="ts-icon" style="background:${t.color}"><img src="${t.logo}" onerror="iconError(this,'${t.color}','${t.symbol}')"/></div><div><div style="font-weight:600;font-size:14px">${t.name}</div><div style="font-size:12px;color:var(--lightBlack)">${t.symbol}${t.isNative?' (native)':''}</div></div></div>`;
   }).join('');
   $('tokenSelectModal').classList.remove('hidden');
 }

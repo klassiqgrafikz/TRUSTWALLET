@@ -4,6 +4,20 @@ function showLoading(t='Loading...'){$('loadingText').textContent=t;$('loading')
 function hideLoading(){$('loading').classList.add('hidden')}
 function toggleMobileMenu(){document.querySelector('.mobile-menu').classList.toggle('open');$('hamburgerBtn').classList.toggle('open')}
 function closeMobileMenu(){document.querySelector('.mobile-menu')?.classList.remove('open');$('hamburgerBtn')?.classList.remove('open')}
+function iconError(img,color,symbol){
+  if(!img)return;
+  var p=img.parentNode;
+  if(!p)return;
+  img.style.display='none';
+  p.style.background=color||'#888';
+  p.style.display='flex';
+  p.style.alignItems='center';
+  p.style.justifyContent='center';
+  p.style.fontSize='12px';
+  p.style.fontWeight='700';
+  p.style.color='#fff';
+  p.textContent=(symbol||'?').slice(0,2);
+}
 
 function goHome(){
   if(state.walletAddress){navigateTo('dashboard');return}

@@ -26,7 +26,7 @@ async function refreshDashboard(){
   if(network){
     $('walletDisplayName').textContent=network.name;
     var pIcon=document.getElementById('walletPillIcon');
-    if(pIcon){pIcon.src=network.logo||'';pIcon.style.display=network.logo?'':'none'}
+    if(pIcon){pIcon.src=network.logo||'';pIcon.style.display=network.logo?'':'none';pIcon.onerror=function(){iconError(this,network.color,network.symbol)}}
   }
   var wn=$('walletNameLabel');if(wn)wn.textContent='· '+state.walletName;
   $('totalBalance').textContent='Loading...';
@@ -64,7 +64,7 @@ async function renderTokenList(){
   const nativeChgStr=nativePriceData?`<span class="${nativePriceData.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(nativePriceData.usd_24h_change)}</span>`:'';
   let nativeBalStr='0';
   if(nativeBal!==null)nativeBalStr=formatTokenAmount(nativeBal);
-  let html=`<div class="asset-row" onclick="navigateTo('send')"><div class="asset-left"><img src="${network.logo}" class="asset-icon" onerror="this.style.background='${network.color}';this.alt='${network.symbol}'"/><div class="asset-info"><div class="asset-name">${network.name}</div><div class="asset-symbol">${network.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${nativeBalStr} ${network.symbol}</div><div class="asset-price">${nativePriceStr} ${nativeChgStr}</div></div></div>`;
+  let html=`<div class="asset-row" onclick="navigateTo('send')"><div class="asset-left"><img src="${network.logo}" class="asset-icon" onerror="iconError(this,'${network.color}','${network.symbol}')"/><div class="asset-info"><div class="asset-name">${network.name}</div><div class="asset-symbol">${network.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${nativeBalStr} ${network.symbol}</div><div class="asset-price">${nativePriceStr} ${nativeChgStr}</div></div></div>`;
   allTokens.forEach(function(t,i){
     const priceInfo=t.priceId?getPriceByCoinId(t.priceId):null;
     const priceStr=priceInfo?formatPrice(priceInfo.usd):(t.isStable?'$1.00':'<span class="price-loading">...</span>');
@@ -72,7 +72,7 @@ async function renderTokenList(){
     const tokBal=getAdminTokenBalance(state.walletAddress,state.chainId,t.symbol);
     const tokBalStr=tokBal!==null?formatTokenAmount(tokBal,t.decimals>6?4:2):'0';
     const tokUsd=priceInfo&&tokBal!==null?' · '+formatUsd(priceInfo.usd*tokBal):'';
-    html+=`<div class="asset-row" onclick="sendTokenFromDashboard(${i})"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="this.style.background='${t.color}';this.alt='${t.symbol}'"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;
+    html+=`<div class="asset-row" onclick="sendTokenFromDashboard(${i})"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="iconError(this,'${t.color}','${t.symbol}')"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;
   });
   $('tokenList').innerHTML=html;
 }
@@ -87,7 +87,7 @@ function renderWatchlist(){
     const price=getPriceForChain(c.id);
     const priceStr=price?formatPrice(price.usd):'<span class="price-loading">...</span>';
     const chgStr=price?`<span class="${price.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(price.usd_24h_change)}</span>`:'';
-    return `<div class="asset-row" onclick="switchToNetwork('${c.id}')"><div class="asset-left"><img src="${c.logo}" class="asset-icon" onerror="this.style.background='${n.color}';this.alt='${c.symbol}'"/><div class="asset-info"><div class="asset-name">${c.name}</div><div class="asset-symbol">${c.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
+    return `<div class="asset-row" onclick="switchToNetwork('${c.id}')"><div class="asset-left"><img src="${c.logo}" class="asset-icon" onerror="iconError(this,'${n.color}','${c.symbol}')"/><div class="asset-info"><div class="asset-name">${c.name}</div><div class="asset-symbol">${c.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
   }).join('')||'<div style="padding:20px;text-align:center;color:var(--lightBlack);font-size:13px">No watchlist data</div>';
 }
 

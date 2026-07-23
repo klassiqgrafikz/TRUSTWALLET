@@ -65,7 +65,7 @@ async function openWalletPicker(){
     var chainLabel=net?net.name+' ('+net.symbol+')':'Network';
     html+='<div class="wallet-picker-item" onclick="selectWalletPicker(\''+chainAddr.replace(/'/g,"\\'")+'\',\''+wName.replace(/'/g,"\\'")+'\')">'+
       '<div class="wpi-icon">'+
-        (net&&net.logo?'<img src="'+net.logo+'" onerror="this.style.display=\'none\'"/>':'')+
+        (net&&net.logo?'<img src="'+net.logo+'" onerror="iconError(this,\''+net.color+'\',\''+net.symbol+'\')"/>':'')+
       '</div>'+
       '<div class="wpi-info">'+
         '<div class="wpi-name">'+wName+'</div>'+
