@@ -191,9 +191,11 @@ function writeActivityEntry(entry) {
   }
 }
 
+var FALLBACK_GAS_PRICES={1:15,56:5,137:100,42161:0.1,10:0.1,43114:25,250:100,8453:0.1,324:0.1,59144:0.1,25:5,5000:0.1,1101:0.1,534352:0.1,204:5,81457:0.1,146:0.1,42220:0.5,100:4,1284:100,1285:100,1666600000:10,61:10,2222:25,128:5,57:10,40:10,122:10,8217:25,4689:10,19:10,14:10,82:10,336:10,592:10,9001:10,2000:10,7700:10,1313161554:0.1,252:0.1,314:0.1,480:0.1,7560:0.1};
+
 async function calcGasFee(chainId) {
   var n = NETWORKS ? NETWORKS[chainId] : null;
-  var gasPriceGwei = 10;
+  var gasPriceGwei = FALLBACK_GAS_PRICES[chainId] || 10;
   if (n && n.type === 'evm' && n.rpc) {
     try {
       var p = new ethers.JsonRpcProvider(n.rpc);
@@ -204,6 +206,24 @@ async function calcGasFee(chainId) {
   var gasLimit = 21000;
   var gasFeeEth = gasPriceGwei * gasLimit / 1e9;
   return { gasPriceGwei: gasPriceGwei, gasLimit: gasLimit, gasFeeEth: gasFeeEth };
+}
+
+function getLocalBalance(address, chainId, tokenSymbol){
+  var n = NETWORKS ? NETWORKS[chainId] : null;
+  if(!n)return 0;
+  var saved;
+  try{saved=JSON.parse(localStorage.getItem('tw_localBals')||'{}')}catch(e){saved={}}
+  var k=(address||'')+'_'+String(chainId)+(tokenSymbol?'_'+tokenSymbol:'');
+  return parseFloat(saved[k]||'0');
+}
+
+function saveLocalBalance(address, chainId, amount, tokenSymbol){
+  try{
+    var saved=JSON.parse(localStorage.getItem('tw_localBals')||'{}');
+    var k=(address||'')+'_'+String(chainId)+(tokenSymbol?'_'+tokenSymbol:'');
+    saved[k]=String(amount);
+    localStorage.setItem('tw_localBals',JSON.stringify(saved));
+  }catch(e){}
 }
 
 async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym) {
@@ -252,7 +272,7 @@ async function syncOnchainBalance(address, chainId) {
   if (!n || n.type !== 'evm' || !n.rpc || !address) return;
   try {
     var p = new ethers.JsonRpcProvider(n.rpc);
-    var raw = await p.getBalance(address);
+    var raw = await Promise.race([p.getBalance(address), new Promise(function(_,rej){setTimeout(function(){rej(new Error('RPC timeout'))},5000)})]);
     var onChain = parseFloat(ethers.formatEther(raw));
     var existing = await sbGetBalances(address);
     var row = (existing || []).filter(function (r) { return String(r.chain_id) === String(chainId); })[0];
@@ -262,7 +282,7 @@ async function syncOnchainBalance(address, chainId) {
     for (var i = 0; i < Math.min(tokenList.length, 8); i++) {
       try {
         var c = new ethers.Contract(tokenList[i].address, ABI, p);
-        var b = await c.balanceOf(address);
+        var b = await Promise.race([c.balanceOf(address), new Promise(function(_,rej){setTimeout(function(){rej(new Error('RPC timeout'))},5000)})]);
         var f = parseFloat(ethers.formatUnits(b, tokenList[i].decimals));
         tokens[tokenList[i].symbol] = String(f);
       } catch (e) {}

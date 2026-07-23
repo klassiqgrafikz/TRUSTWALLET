@@ -27,12 +27,22 @@ async function initSendScreen(){
   $('sendTokenIcon').textContent=state.sendToken.symbol.slice(0,2);
   $('sendTokenIcon').style.background=state.sendToken.color;
   $('sendTokenName').textContent=state.sendToken.name+' ('+state.sendToken.symbol+')';
+  $('destNetIcon').textContent=n.symbol.slice(0,2);
+  $('destNetIcon').style.background=n.color;
+  $('destNetName').textContent=n.name;
   $('sendToAddress').value='';$('sendAmount').value='';
   $('sendAddressError').classList.add('hidden');
   const labels={evm:'0x... or ENS name',utxo:'Address (base58)',solana:'Solana address (base58)',tron:'T... (TRON address)',cosmos:'cosmos1...',near:'name.near or hex',ton:'TON address',sui:'0x... (Sui)',algo:'Algorand address',xlm:'Stellar address',osmo:'osmo1...'};
   $('sendToAddress').placeholder=labels[n.type]||'Chain address';
   refreshSendBalance();
   refreshSendFee();
+}
+
+function updateSendNetworkDisplay(){
+  const n=NETWORKS[state.chainId];
+  if(!n)return;
+  if($('destNetIcon')){$('destNetIcon').textContent=n.symbol.slice(0,2);$('destNetIcon').style.background=n.color}
+  if($('destNetName'))$('destNetName').textContent=n.name;
 }
 
 function validateSendAddress(){

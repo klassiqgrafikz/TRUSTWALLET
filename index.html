@@ -367,17 +367,20 @@
     <div class="dash-topbar">
       <div class="dash-topbar-inner">
         <div class="dash-topbar-left">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--trustBlue)" stroke-width="2"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-          <span id="walletDisplayName">My Wallet</span>
+          <button class="wallet-pill" onclick="openNetworkModal()">
+            <span id="walletDisplayName">Main Wallet 1</span>
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
         </div>
         <div class="dash-topbar-right">
-          <button class="btn btn-outline btn-sm" onclick="showSettings()" style="display:flex;align-items:center;gap:6px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</button>
-          <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">
-            <span id="themeIcon">☀️</span>
+          <button class="icon-btn" onclick="showSettings()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
-          <button class="btn btn-outline btn-sm" onclick="openNetworkModal()" style="display:flex;align-items:center;gap:6px">
-            <span style="width:8px;height:8px;border-radius:50%;background:var(--trustGreen)" id="networkDot"></span>
-            <span id="currentNetworkName">Ethereum</span>
+          <button class="icon-btn" onclick="navigateTo('receive')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 15 21 21 15 21"/><line x1="21" y1="21" x2="12" y2="12"/><path d="M17 2H4a2 2 0 0 0-2 2v13"/></svg>
+          </button>
+          <button class="icon-btn" onclick="showToast('Scanner coming soon','info')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
           </button>
         </div>
       </div>
@@ -385,33 +388,35 @@
     <div class="dash-body">
       <div class="dash-body-inner">
         <div class="dash-balance-card">
-          <div class="bg-circle"></div>
-          <div class="label">Total Balance</div>
-          <div class="amount" id="totalBalance">$0.00</div>
-          <div class="change" id="balanceChange"></div>
+          <div class="balance-label">Total Balance</div>
+          <div class="balance-amount" id="totalBalance">$0.00</div>
+          <div class="balance-change" id="balanceChange"></div>
         </div>
-        <div id="portfolioSection" class="list-panel" style="border-radius:16px;overflow:hidden;margin-bottom:16px;display:none">
-          <div style="padding:16px">
-            <div style="font-size:13px;font-weight:600;color:var(--lightBlack);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px">Portfolio</div>
-            <div id="portfolioTotal" style="font-size:22px;font-weight:700;margin-bottom:12px">$0.00</div>
-            <div id="portfolioList"></div>
-          </div>
-        </div>
-        <div class="dash-actions">
-          <button class="btn btn-outline" onclick="navigateTo('send')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Send</button>
-          <button class="btn btn-outline" onclick="navigateTo('receive')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="22" x2="12" y2="2"/><polyline points="5 9 12 2 19 5"/><path d="M5 15h14"/></svg> Receive</button>
-          <button class="btn btn-outline" onclick="showToast('Swap coming soon','info')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg> Swap</button>
+        <div class="quick-actions">
+          <button class="qa-btn" onclick="navigateTo('receive')">
+            <div class="qa-icon" style="background:#E8F5E9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><line x1="12" y1="22" x2="12" y2="2"/><polyline points="5 9 12 2 19 9"/></svg></div>
+            <span>Receive</span>
+          </button>
+          <button class="qa-btn" onclick="showToast('From Binance coming soon','info')">
+            <div class="qa-icon" style="background:#FFF3E0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F7931A" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/></svg></div>
+            <span>From Binance</span>
+          </button>
+          <button class="qa-btn" onclick="showToast('Buy with cards coming soon','info')">
+            <div class="qa-icon" style="background:#E3F2FD"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1976D2" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+            <span>With Cards</span>
+          </button>
         </div>
         <div class="dash-section-header"><h3>Tokens</h3></div>
-        <div id="tokenList" class="list-panel" style="border-radius:16px;overflow:hidden;max-height:520px;overflow-y:auto"></div>
+        <div id="tokenList" class="list-panel"></div>
+        <div class="dash-section-header" style="margin-top:20px"><h3>Watchlist</h3></div>
+        <div id="watchlist" class="list-panel"></div>
+        <div class="ai-banner" onclick="showToast('Trust Wallet AI coming soon','info')">
+          <div class="ai-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0500FF" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="ai-text"><div class="ai-title">Trust Wallet AI</div><div class="ai-subtitle">Ask anything</div></div>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>
         <div class="dash-section-header" style="margin-top:20px"><h3>Activity</h3></div>
-        <div id="activityList" class="list-panel" style="border-radius:16px;overflow:hidden">
-          <div style="padding:32px;text-align:center;color:var(--lightBlack);font-size:14px">No recent transactions</div>
-        </div>
-        <div style="display:flex;gap:12px;justify-content:center;margin-top:20px;flex-wrap:wrap">
-          <button class="btn btn-outline" onclick="showSettings()" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Settings</button>
-          <button class="btn btn-outline" onclick="lockWallet()" style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Lock Wallet</button>
-        </div>
+        <div id="activityList" class="list-panel"></div>
       </div>
     </div>
   </div>
@@ -428,35 +433,52 @@
     </div>
     <div class="screen-body">
       <div class="screen-body-inner">
-    <div class="form-group">
-      <label class="form-label">Token</label>
-      <button class="form-input" style="text-align:left;cursor:pointer;display:flex;align-items:center;gap:8px" onclick="openTokenSelectModal()">
-        <span id="sendTokenIcon" class="token-icon" style="width:24px;height:24px;border-radius:50%;background:var(--trustBlue);display:flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700">ETH</span>
-        <span id="sendTokenName">Ethereum (ETH)</span>
-        <svg style="margin-left:auto" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </button>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Recipient Address</label>
-      <input class="form-input" id="sendToAddress" placeholder="0x... or ENS name" oninput="validateSendAddress()"/>
-      <p id="sendAddressError" class="form-error hidden"></p>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Amount</label>
-      <div class="amount-wrap">
-        <input class="form-input" id="sendAmount" type="number" step="any" min="0" placeholder="0.00"/>
-        <button class="amount-max" onclick="setMaxAmount()">MAX</button>
-      </div>
-      <p class="form-hint" id="sendBalance" style="text-align:right;margin-top:4px"></p>
-    </div>
-    <div class="form-group">
-      <label class="form-label">Network Fee</label>
-      <div class="tx-summary" style="margin:0">
-        <div class="tx-row" style="padding:6px 0"><span class="label">Estimated Fee</span><span class="value" id="estGasFee">~$0.50</span></div>
-        <div class="tx-row" style="padding:6px 0"><span class="label">Gas Price</span><span class="value" id="gasPrice">--</span></div>
-      </div>
-    </div>
-    <button class="btn btn-primary" style="width:100%" onclick="prepareTransaction()">Review Transaction</button>
+        <div class="form-group">
+          <label class="form-label">Token</label>
+          <button class="send-token-select" onclick="openTokenSelectModal()">
+            <span class="send-token-inner">
+              <span id="sendTokenIcon" class="token-icon-sm" style="background:var(--trustBlue)">ETH</span>
+              <span id="sendTokenName">Ethereum (ETH)</span>
+            </span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Address or Domain Name</label>
+          <div class="send-address-wrap">
+            <input class="form-input" id="sendToAddress" placeholder="0x... or ENS name" oninput="validateSendAddress()"/>
+            <button class="send-address-btn" onclick="navigator.clipboard.readText().then(t=>{if(t){$('sendToAddress').value=t;validateSendAddress()}}).catch(()=>showToast('Paste failed','error'))">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+            <button class="send-address-btn" onclick="showToast('Scanner coming soon','info')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            </button>
+          </div>
+          <p id="sendAddressError" class="form-error hidden"></p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Destination Network</label>
+          <div class="dest-network">
+            <span id="destNetIcon" class="token-icon-sm" style="background:var(--trustBlue);width:20px;height:20px;font-size:9px">ETH</span>
+            <span id="destNetName">Ethereum</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Amount</label>
+          <div class="amount-wrap">
+            <input class="form-input" id="sendAmount" type="number" step="any" min="0" placeholder="0.00"/>
+            <button class="amount-max" onclick="setMaxAmount()">MAX</button>
+          </div>
+          <p class="form-hint" id="sendBalance" style="text-align:right;margin-top:4px"></p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Network Fee</label>
+          <div class="tx-summary" style="margin:0">
+            <div class="tx-row"><span class="label">Estimated Fee</span><span class="value" id="estGasFee">~$0.50</span></div>
+            <div class="tx-row"><span class="label">Gas Price</span><span class="value" id="gasPrice">--</span></div>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="prepareTransaction()">Review Transaction</button>
       </div>
     </div>
   </div>
@@ -494,20 +516,34 @@
       </div>
     </div>
     <div class="screen-body">
-      <div class="screen-body-inner" style="text-align:center">
+      <div class="screen-body-inner">
         <div id="receiveNetworkList">
-          <p style="color:var(--lightBlack);margin-bottom:16px;font-size:14px">Select a network to receive assets</p>
-          <div id="receiveNetworks" style="max-height:400px;overflow-y:auto"></div>
+          <div class="receive-filter" id="receiveFilter">
+            <button class="filter-chip active" data-filter="all" onclick="filterReceive('all')">All</button>
+            <button class="filter-chip" data-filter="btc" onclick="filterReceive('btc')">BTC</button>
+            <button class="filter-chip" data-filter="eth" onclick="filterReceive('eth')">ETH</button>
+            <button class="filter-chip" data-filter="sol" onclick="filterReceive('sol')">SOL</button>
+            <button class="filter-chip" data-filter="bnb" onclick="filterReceive('bnb')">BNB</button>
+          </div>
+          <div id="receiveNetworks"></div>
         </div>
         <div id="receiveAddressView" class="hidden">
-          <button class="btn btn-outline btn-sm" style="margin-bottom:12px;padding:6px 14px" onclick="showReceiveNetworkList()">← Change Network</button>
-          <p style="color:var(--lightBlack);margin-bottom:16px;font-size:14px">Scan QR code or copy address</p>
-          <div id="qrContainer" style="width:200px;height:200px;margin:0 auto 20px;border-radius:16px;border:1px solid var(--borderTint);display:flex;align-items:center;justify-content:center;background:var(--trustWhite);overflow:hidden"></div>
-          <div style="background:var(--baseWhite);border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:8px;margin-bottom:16px">
-            <div style="flex:1;font-size:13px;word-break:break-all;font-family:monospace;color:var(--lightBlack);text-align:left" id="receiveAddress"></div>
+          <button class="btn btn-outline btn-sm" style="margin-bottom:12px;padding:6px 14px" onclick="showReceiveNetworkList()">← Back</button>
+          <div class="receive-warning">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FF9800"><path d="M1 21h22L12 2 1 21z"/><line x1="12" y1="14" x2="12" y2="9" stroke="#fff" stroke-width="2"/><circle cx="12" cy="17" r="1" fill="#fff"/></svg>
+            Only send <strong id="receiveNetworkLabel">Ethereum</strong> network assets to this address
+          </div>
+          <div id="qrContainer" class="receive-qr-box"></div>
+          <div class="receive-addr-box">
+            <div class="receive-addr" id="receiveAddress"></div>
             <button class="btn btn-primary btn-sm" id="copyAddressBtn" onclick="copyReceiveAddress()">Copy</button>
           </div>
-          <p style="font-size:12px;color:var(--lightBlack)">Only send <strong id="receiveNetworkLabel">Ethereum</strong> network assets to this address</p>
+          <div class="receive-actions">
+            <button class="btn btn-outline btn-sm" onclick="copyReceiveAddress()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg> Copy</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Set Amount coming soon','info')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.51-1 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1.51 1 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Set Amount</button>
+            <button class="btn btn-outline btn-sm" onclick="showToast('Share coming soon','info')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share</button>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Deposit from exchange coming soon','info')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="22" x2="12" y2="2"/><polyline points="5 9 12 2 19 9"/></svg> Deposit from exchange</button>
+          </div>
         </div>
       </div>
     </div>
