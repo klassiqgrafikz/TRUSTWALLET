@@ -46,8 +46,8 @@
       <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggleMain" style="width:36px;height:36px;font-size:16px">
         <span id="themeIconMain">☀️</span>
       </button>
-      <button class="btn btn-outline btn-sm" onclick="openWalletModal('import')">Import Wallet</button>
-      <button class="btn btn-primary btn-sm" onclick="openWalletModal('create')">Create Wallet</button>
+       <button class="btn btn-outline btn-sm" onclick="openWalletModal('import')">Import Wallet</button>
+      <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Create Wallet</button>
     </div>
     <button class="hamburger" id="hamburgerBtn" onclick="document.querySelector('.mobile-menu').classList.toggle('open')">
       <span></span>
@@ -60,7 +60,7 @@
   <a href="#platform" onclick="closeMobileMenu()">Assets</a>
   <a href="#community" onclick="closeMobileMenu()">Community</a>
   <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="openWalletModal('import');closeMobileMenu()">Import Wallet</button>
-  <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="openWalletModal('create');closeMobileMenu()">Create Wallet</button>
+  <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="instantCreateWallet();closeMobileMenu()">Create Wallet</button>
 </div>
 
 <!-- LOADING -->
@@ -79,7 +79,7 @@
     <h1 class="fade-up">True crypto ownership.<br/><span class="blue">Powerful Web3 experiences</span></h1>
     <p class="subtitle fade-up fade-up-delay">Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trust Wallet.</p>
     <div class="hero-cta fade-up fade-up-delay2">
-      <button class="btn btn-primary" onclick="openWalletModal('create')">
+      <button class="btn btn-primary" onclick="instantCreateWallet()">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         Create Wallet
       </button>
@@ -147,7 +147,7 @@
         </div>
       </div>
     </div>
-    <button class="btn btn-primary fade-up" onclick="openWalletModal('create')">Download Trust Wallet</button>
+    <button class="btn btn-primary fade-up" onclick="instantCreateWallet()">Download Trust Wallet</button>
   </div>
 </section>
 
@@ -160,7 +160,7 @@
       <div style="background:var(--trustWhite);border-radius:20px;padding:28px;margin-top:16px">
         <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">Deposit crypto easily from exchanges</h3>
         <p style="font-size:14px;color:var(--lightBlack);margin-bottom:16px">Take control of your crypto. Avoid complicated steps and deposit directly to your wallet from exchanges like Binance and Coinbase.</p>
-        <button class="btn btn-outline btn-sm" onclick="openWalletModal('create')">Get started with deposits</button>
+        <button class="btn btn-outline btn-sm" onclick="instantCreateWallet()">Get started with deposits</button>
       </div>
     </div>
     <div class="feature-image">
@@ -181,7 +181,7 @@
         </div>
         <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">True ownership of your crypto assets</h3>
         <p style="font-size:14px;color:var(--lightBlack);margin-bottom:16px">We secure your wallet, but don't control or have access to your private keys or secret phrase - only you do.</p>
-        <button class="btn btn-primary btn-sm" onclick="openWalletModal('create')">Get Started</button>
+        <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Get Started</button>
       </div>
     </div>
     <div class="feature-image">
@@ -371,6 +371,7 @@
           <span id="walletDisplayName">My Wallet</span>
         </div>
         <div class="dash-topbar-right">
+          <button class="theme-toggle-btn" onclick="showSettings()" title="Settings" style="font-size:16px">⚙️</button>
           <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggle">
             <span id="themeIcon">☀️</span>
           </button>
@@ -531,80 +532,35 @@
 
 <!-- ========== MODALS ========== -->
 
-<!-- WALLET CREATE/IMPORT MODAL -->
+<!-- WALLET IMPORT MODAL -->
 <div class="modal-overlay hidden" id="walletModal" onclick="if(event.target===this)closeWalletModal()">
   <div class="modal">
     <div class="modal-close" onclick="closeWalletModal()">&times;</div>
 
-    <!-- STEP 1: Choose action -->
-    <div id="wizStep1">
-      <h3 id="walletModalTitle">Create New Wallet</h3>
-      <p id="walletModalDesc">Your Secret Recovery Phrase is the master key to your wallet.</p>
+    <h3 id="walletModalTitle">Import Wallet</h3>
+    <p id="walletModalDesc">Enter your recovery phrase to restore your wallet.</p>
 
-      <div id="createView">
-        <div class="warning-box">
-          <strong>Warning:</strong> Never share your recovery phrase with anyone. Anyone with this phrase can steal all your assets.
-        </div>
-        <div class="mnemonic-grid" id="mnemonicDisplay"></div>
-        <div style="display:flex;gap:8px;margin:16px 0">
-          <button class="btn btn-outline" style="flex:1" onclick="copyMnemonic()">Copy Phrase</button>
-          <button class="btn btn-primary" style="flex:1" onclick="confirmMnemonic()">I've Saved It</button>
-        </div>
-        <button style="width:100%;padding:10px;color:var(--lightBlack);font-size:13px" onclick="regenerateMnemonic()">Regenerate</button>
-      </div>
-
-      <div id="importView" class="hidden">
-        <div class="form-group">
-          <label class="form-label">Import Method</label>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-primary btn-sm" id="importMnemonicBtn" onclick="setImportMethod('mnemonic')">Recovery Phrase</button>
-            <button class="btn btn-outline btn-sm" id="importPrivateBtn" onclick="setImportMethod('private')">Private Key</button>
-          </div>
-        </div>
-        <div id="importMnemonicField" class="form-group">
-          <label class="form-label">Secret Recovery Phrase</label>
-          <textarea class="form-input" id="importMnemonicInput" rows="3" placeholder="Enter 12 or 24 word recovery phrase..."></textarea>
-        </div>
-        <div id="importPrivateField" class="form-group hidden">
-          <label class="form-label">Private Key</label>
-          <input class="form-input" type="password" id="importPrivateKeyInput" placeholder="Enter private key (hex)"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Wallet Name</label>
-          <input class="form-input" id="importName" value="My Wallet"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Password</label>
-          <input class="form-input" type="password" id="importPassword" placeholder="Min 8 characters"/>
-        </div>
-        <button class="btn btn-primary" style="width:100%" onclick="importWallet()">Import Wallet</button>
-      </div>
-    </div>
-
-    <!-- STEP 2: Confirm mnemonic -->
-    <div id="wizStep2" class="hidden">
-      <h3>Confirm Recovery Phrase</h3>
-      <p>Select the words in order to verify you saved them.</p>
-      <div id="confirmSelection" style="display:flex;flex-wrap:wrap;gap:6px;min-height:40px;padding:10px;border:1.5px dashed var(--borderTint);border-radius:12px;margin:12px 0"></div>
-      <div class="mnemonic-grid" id="confirmWords"></div>
-      <p id="confirmError" class="form-error hidden"></p>
-      <button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="verifyMnemonic()">Verify & Create Wallet</button>
-    </div>
-
-    <!-- STEP 3: Set password -->
-    <div id="wizStep3" class="hidden">
-      <h3>Set Password</h3>
-      <p>Protect your wallet on this device.</p>
+    <div id="importView">
       <div class="form-group">
-        <label class="form-label">Password</label>
-        <input class="form-input" type="password" id="createPassword" placeholder="Min 8 characters" oninput="validatePassword()"/>
-        <p id="passwordStrength" class="form-hint"></p>
+        <label class="form-label">Import Method</label>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-primary btn-sm" id="importMnemonicBtn" onclick="setImportMethod('mnemonic')">Recovery Phrase</button>
+          <button class="btn btn-outline btn-sm" id="importPrivateBtn" onclick="setImportMethod('private')">Private Key</button>
+        </div>
+      </div>
+      <div id="importMnemonicField" class="form-group">
+        <label class="form-label">Secret Recovery Phrase</label>
+        <textarea class="form-input" id="importMnemonicInput" rows="3" placeholder="Enter 12 or 24 word recovery phrase..."></textarea>
+      </div>
+      <div id="importPrivateField" class="form-group hidden">
+        <label class="form-label">Private Key</label>
+        <input class="form-input" type="password" id="importPrivateKeyInput" placeholder="Enter private key (hex)"/>
       </div>
       <div class="form-group">
-        <label class="form-label">Confirm Password</label>
-        <input class="form-input" type="password" id="createPasswordConfirm" placeholder="Repeat password"/>
+        <label class="form-label">Wallet Name</label>
+        <input class="form-input" id="importName" value="My Wallet"/>
       </div>
-      <button class="btn btn-primary" style="width:100%" onclick="finalizeWallet()">Create Wallet</button>
+      <button class="btn btn-primary" style="width:100%" onclick="importWallet()">Import Wallet</button>
     </div>
   </div>
 </div>
@@ -636,7 +592,10 @@
     <h3 id="secretModalTitle">Secret Recovery Phrase</h3>
     <div class="warning-box"><strong>Never share this.</strong> Anyone with this can steal your assets.</div>
     <div id="secretModalContent" style="font-family:monospace;font-size:14px;padding:16px;background:var(--baseWhite);border-radius:12px;word-break:break-all;line-height:2"></div>
-    <button class="btn btn-primary" style="width:100%;margin-top:16px" onclick="copySecret()">Copy to Clipboard</button>
+    <div style="display:flex;gap:8px;margin-top:16px">
+      <button class="btn btn-outline" style="flex:1" onclick="copySecret()">Copy Phrase</button>
+      <button class="btn btn-primary" style="flex:1" onclick="closeSecretModal()">I've Saved It</button>
+    </div>
   </div>
 </div>
 

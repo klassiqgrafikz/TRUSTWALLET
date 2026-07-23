@@ -8,7 +8,6 @@ function setImportMethod(m){
 }
 
 async function importWallet(){
-  const pw=$('importPassword').value;if(pw.length<8)return showToast('Password must be 8+ characters','error');
   showLoading('Importing...');
   try{
     let wallet;
@@ -18,11 +17,11 @@ async function importWallet(){
       wallet=deriveWallet(phrase);state.mnemonic=phrase;
     }else{
       const pk=$('importPrivateKeyInput').value.trim();if(!pk){hideLoading();showToast('Enter private key','error');return}
-      try{wallet=new ethers.Wallet(pk)}catch{wallet=null}
+      try{wallet=new ethers.Wallet(pk)}catch(e){wallet=null}
       state.mnemonic='';
     }
     if(!wallet){hideLoading();showToast('Invalid credentials','error');return}
-    state.wallet=wallet;state.walletName=$('importName').value||'My Wallet';state.password=pw;
+    state.wallet=wallet;state.walletName=$('importName').value||'My Wallet';state.password='';
     saveMnemonic(state.mnemonic);
     state.activity=[];
     state.chainAddresses={};
