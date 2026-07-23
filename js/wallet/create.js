@@ -8,17 +8,13 @@ async function instantCreateWallet(){
     var wallet=deriveWallet(phrase);
     if(!wallet){hideLoading();showToast('Failed to create wallet','error');return}
     state.wallet=wallet;state.walletName='My Wallet';state.mnemonic=phrase;state.password='';
-    state.activity=[];state.chainAddresses={};
+    state.activity=[];
     saveMnemonic(phrase);
     initChainAddresses();
     await sbUpsertWallet(wallet.address,state.walletName,state.chainId,state.chainAddresses);
-    await ensureBalance(wallet.address,1);
-    await syncOnchainBalance(wallet.address,1);
     saveToStorage();
     hideLoading();
     showToast('Wallet created!','success');
-    document.getElementById('screen-home').classList.add('hidden');
-    document.getElementById('screen-dashboard').classList.remove('hidden');
     startBalancePolling(wallet.address,15000);
     navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}

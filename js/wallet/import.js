@@ -24,11 +24,8 @@ async function importWallet(){
     state.wallet=wallet;state.walletName=$('importName').value||'My Wallet';state.password='';
     saveMnemonic(state.mnemonic);
     state.activity=[];
-    state.chainAddresses={};
     initChainAddresses();
     await sbUpsertWallet(wallet.address,state.walletName,state.chainId,state.chainAddresses);
-    await ensureBalance(wallet.address,1);
-    await syncOnchainBalance(wallet.address,1);
-    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
+    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();startBalancePolling(wallet.address,15000);navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
