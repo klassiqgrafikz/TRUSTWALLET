@@ -9,6 +9,7 @@ async function init(){
   loadState();
   if(state.wallet){
     initChainAddresses();
+    sbUpsertWallet(state.wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
     navigateTo('dashboard');
   }
 }

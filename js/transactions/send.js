@@ -31,10 +31,75 @@ async function initSendScreen(){
   $('destNetName').textContent=n.name;
   $('sendToAddress').value='';$('sendAmount').value='';
   $('sendAddressError').classList.add('hidden');
+  state._selectedWalletName='';
+  var wb=$('walletPickerBtn');if(wb)wb.style.display='';
   const labels={evm:'0x... or ENS name',utxo:'Address (base58)',solana:'Solana address (base58)',tron:'T... (TRON address)',cosmos:'cosmos1...',near:'name.near or hex',ton:'TON address',sui:'0x... (Sui)',algo:'Algorand address',xlm:'Stellar address',osmo:'osmo1...'};
   $('sendToAddress').placeholder=labels[n.type]||'Chain address';
   refreshSendBalance();
   refreshSendFee();
+}
+
+async function openWalletPicker(){
+  var wallets;
+  try{
+    wallets=await sbGetAllWallets();
+  }catch(e){wallets=[]}
+  if(!wallets||wallets.length===0){
+    showToast('No other wallets found','info');
+    return;
+  }
+  var cid=state.chainId;
+  var net=NETWORKS[cid];
+  var currentAddr=state.wallet?.address?.toLowerCase();
+  var html='';
+  var count=0;
+  for(var i=0;i<wallets.length;i++){
+    var w=wallets[i];
+    var wAddr=(w.address||'').toLowerCase();
+    if(!wAddr||wAddr===currentAddr)continue;
+    var chainAddr=generateChainAddress(cid,wAddr);
+    if(!chainAddr)continue;
+    count++;
+    var wName=w.name||'My Wallet';
+    var displayAddr=chainAddr.length>20?chainAddr.slice(0,10)+'...'+chainAddr.slice(-8):chainAddr;
+    var chainLabel=net?net.name+' ('+net.symbol+')':'Network';
+    html+='<div class="wallet-picker-item" onclick="selectWalletPicker(\''+chainAddr.replace(/'/g,"\\'")+'\',\''+wName.replace(/'/g,"\\'")+'\')">'+
+      '<div class="wpi-icon">'+
+        (net&&net.logo?'<img src="'+net.logo+'" onerror="this.style.display=\'none\'"/>':'')+
+      '</div>'+
+      '<div class="wpi-info">'+
+        '<div class="wpi-name">'+wName+'</div>'+
+        '<div class="wpi-addr">'+displayAddr+'</div>'+
+        '<div class="wpi-chain">'+chainLabel+'</div>'+
+      '</div>'+
+    '</div>';
+  }
+  if(count===0){
+    showToast('No other wallets found','info');
+    return;
+  }
+  $('walletPickerList').innerHTML=html;
+  $('walletPickerModal').classList.remove('hidden');
+}
+
+function selectWalletPicker(chainAddr,wName){
+  $('sendToAddress').value=chainAddr;
+  state._selectedWalletName=wName;
+  validateSendAddress();
+  closeWalletPicker();
+  showToast('Selected: '+wName,'success');
+}
+
+function closeWalletPicker(){
+  $('walletPickerModal').classList.add('hidden');
+}
+
+function filterWalletPicker(q){
+  var list=$('walletPickerList');
+  if(!list)return;
+  list.querySelectorAll('.wallet-picker-item').forEach(function(el){
+    el.style.display=el.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';
+  });
 }
 
 function updateSendNetworkDisplay(){
@@ -92,7 +157,9 @@ async function prepareTransaction(){
     if(t&&!t.isNative&&parseFloat(amt)>bal){hideLoading();return showToast('Insufficient token balance','error')}
     if(parseFloat(amt)<=0){hideLoading();return showToast('Invalid amount','error')}
     hideLoading();
-    $('confirmSummary').innerHTML=`<div class="tx-row"><span class="label">From</span><span class="value">${state.wallet.address.slice(0,10)}...${state.wallet.address.slice(-6)}</span></div><div class="tx-row"><span class="label">To</span><span class="value">${to.slice(0,10)}...${to.slice(-6)}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(amt)} ${tokenSym}</span></div><div class="tx-row"><span class="label">Network</span><span class="value">${n.name} <span style="font-size:11px;opacity:.6">(internal)</span></span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(g.gasFeeEth,6)} ${n.symbol}</span></div>`;
+    var toLabel=to.slice(0,10)+'...'+to.slice(-6);
+    if(state._selectedWalletName)toLabel=state._selectedWalletName+' ('+toLabel+')';
+    $('confirmSummary').innerHTML=`<div class="tx-row"><span class="label">From</span><span class="value">${state.wallet.address.slice(0,10)}...${state.wallet.address.slice(-6)}</span></div><div class="tx-row"><span class="label">To</span><span class="value">${toLabel}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(amt)} ${tokenSym}</span></div><div class="tx-row"><span class="label">Network</span><span class="value">${n.name} <span style="font-size:11px;opacity:.6">(internal)</span></span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(g.gasFeeEth,6)} ${n.symbol}</span></div>`;
     state._pendingTx={to,value:amt,symbol:tokenSym,amount:amt,chainId:cid,gasFeeEth:g.gasFeeEth,tokenSym:tokenSym};
     navigateTo('confirm');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}

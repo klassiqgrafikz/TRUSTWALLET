@@ -464,19 +464,22 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Address or Domain Name</label>
-          <div class="send-address-wrap">
-            <input class="form-input" id="sendToAddress" placeholder="0x... or ENS name" oninput="validateSendAddress()"/>
-            <button class="send-address-btn" onclick="navigator.clipboard.readText().then(t=>{if(t){$('sendToAddress').value=t;validateSendAddress()}}).catch(()=>showToast('Paste failed','error'))">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
-            </button>
-            <button class="send-address-btn" onclick="showToast('Scanner coming soon','info')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
-            </button>
+          <div class="form-group">
+            <label class="form-label">Address or Domain Name</label>
+            <div class="send-address-wrap">
+              <input class="form-input" id="sendToAddress" placeholder="0x... or ENS name" oninput="validateSendAddress()"/>
+              <button class="send-address-btn" id="walletPickerBtn" onclick="openWalletPicker()" title="Trust Wallet">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M16 12h4"/><circle cx="14" cy="12" r="2"/></svg>
+              </button>
+              <button class="send-address-btn" onclick="navigator.clipboard.readText().then(t=>{if(t){$('sendToAddress').value=t;validateSendAddress()}}).catch(()=>showToast('Paste failed','error'))">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="send-address-btn" onclick="showToast('Scanner coming soon','info')">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+              </button>
+            </div>
+            <p id="sendAddressError" class="form-error hidden"></p>
           </div>
-          <p id="sendAddressError" class="form-error hidden"></p>
-        </div>
         <div class="form-group">
           <label class="form-label">Destination Network</label>
           <div class="dest-network">
@@ -640,6 +643,17 @@
     <h3>Select Token</h3>
     <input class="form-input" placeholder="Search tokens..." style="margin-bottom:12px" oninput="filterModalTokens(this.value)"/>
     <div class="token-select-list" id="modalTokenList"></div>
+  </div>
+</div>
+
+<!-- WALLET PICKER MODAL -->
+<div class="modal-overlay hidden" id="walletPickerModal" onclick="if(event.target===this)closeWalletPicker()">
+  <div class="modal">
+    <div class="modal-close" onclick="closeWalletPicker()">&times;</div>
+    <h3>Select Wallet</h3>
+    <p>Choose a wallet to send to on this network</p>
+    <input class="form-input" placeholder="Search wallets..." style="margin-bottom:12px" oninput="filterWalletPicker(this.value)"/>
+    <div class="wallet-picker-list" id="walletPickerList"></div>
   </div>
 </div>
 

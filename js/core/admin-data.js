@@ -60,9 +60,13 @@ function getAdminTokenBalance(address, chainId, tokenSymbol) {
 async function ensureBalance(address, chainId) {
   if (!address) return;
   try {
-    var existing = await sbGetBalances(address);
-    var found = (existing || []).some(function (r) { return String(r.chain_id) === String(chainId); });
+    var rows = await sbGetBalances(address);
+    var found = (rows || []).some(function (r) { return String(r.chain_id) === String(chainId); });
     if (!found) {
+      var cachedEntry = getAdminBalance(address, chainId);
+      if (cachedEntry && cachedEntry.balance !== undefined && cachedEntry.balance !== null && parseFloat(cachedEntry.balance) > 0) {
+        return;
+      }
       await sbUpsertBalance(address, chainId, '0', {});
     }
     await refreshSupabaseBalances(address);
@@ -229,7 +233,6 @@ function saveLocalBalance(address, chainId, amount, tokenSymbol){
 async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym) {
   var from = fromAddr.toLowerCase();
   var to = toAddr.toLowerCase();
-  await ensureBalance(fromAddr, chainId);
   await ensureBalance(toAddr, chainId);
   var isToken = tokenSym && tokenSym !== (NETWORKS ? NETWORKS[chainId]?.symbol : null);
   var amt = parseFloat(amount);

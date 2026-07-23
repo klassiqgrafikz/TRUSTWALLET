@@ -107,10 +107,11 @@
 .token-icon-sm{width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:white;font-size:10px;font-weight:700;flex-shrink:0}
 
 .send-address-wrap{position:relative;display:flex;align-items:stretch}
-.send-address-wrap .form-input{padding-right:80px}
+.send-address-wrap .form-input{padding-right:120px}
 .send-address-btn{position:absolute;right:4px;top:4px;bottom:4px;width:34px;border-radius:8px;background:var(--baseWhite);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;color:var(--lightBlack)}
 .send-address-btn:hover{background:var(--borderTint);color:var(--trustBlue)}
-.send-address-btn:last-child{right:42px}
+.send-address-btn:nth-last-child(2){right:42px}
+.send-address-btn:nth-last-child(3){right:80px}
 
 .dest-network{display:flex;align-items:center;gap:10px;padding:14px 16px;background:var(--baseWhite);border-radius:12px;border:1.5px solid var(--borderTint)}
 .dest-network span:last-child{font-size:14px;font-weight:600;color:var(--trustBlack)}
@@ -127,3 +128,13 @@
 .bottom-bar-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 4px;border-radius:12px;background:transparent;border:none;cursor:pointer;transition:all .2s;font-size:10px;font-weight:600;color:var(--lightBlack)}
 .bottom-bar-btn:hover{background:var(--baseWhite);color:var(--trustBlue)}
 .bottom-bar-btn svg{width:22px;height:22px}
+
+.wallet-picker-list{max-height:360px;overflow-y:auto}
+.wallet-picker-item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;cursor:pointer;transition:background .15s}
+.wallet-picker-item:hover{background:var(--baseWhite)}
+.wallet-picker-item .wpi-icon{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:var(--baseWhite)}
+.wallet-picker-item .wpi-icon img{width:100%;height:100%;object-fit:cover}
+.wallet-picker-item .wpi-info{flex:1;min-width:0}
+.wallet-picker-item .wpi-name{font-weight:600;font-size:14px}
+.wallet-picker-item .wpi-addr{font-size:11px;color:var(--lightBlack);font-family:monospace;word-break:break-all}
+.wallet-picker-item .wpi-chain{font-size:11px;color:var(--trustBlue)}

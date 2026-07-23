@@ -12,6 +12,7 @@ function instantCreateWallet(){
     saveMnemonic(phrase);
     initChainAddresses();
     saveToStorage();
+    sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
     hideLoading();
     showToast('Wallet created!','success');
     navigateTo('dashboard');

@@ -25,6 +25,6 @@ function importWallet(){
     saveMnemonic(state.mnemonic);
     state.activity=[];
     initChainAddresses();
-    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
+    saveToStorage();sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }

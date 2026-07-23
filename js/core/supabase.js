@@ -108,6 +108,12 @@ async function sbUpsertWallet(address, name, chainId, chainAddresses) {
   });
 }
 
+async function sbGetAllWallets() {
+  if (!_sbConfigOk()) return [];
+  var res = await _sbFetch('/wallets?select=*&limit=5000');
+  return res ? await res.json() : [];
+}
+
 async function sbGetWallet(address) {
   if (!address) return null;
   var res = await _sbFetch('/wallets?address=eq.' + encodeURIComponent(address.toLowerCase()) + '&select=*');
