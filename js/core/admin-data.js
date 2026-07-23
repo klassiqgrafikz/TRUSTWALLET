@@ -266,15 +266,16 @@ async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, 
   await syncToEth();
   var netName = (NETWORKS ? NETWORKS[chainId]?.symbol : null) || 'Unknown';
   var displaySym = tokenSym || netName;
+  var txTo = toEthAddr && toEthAddr.toLowerCase() !== to ? toEthAddr : to;
   var txEntry = {
     hash: 'tx_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-    from: fromAddr, to: toAddr, amount: amt + ' ' + displaySym, symbol: displaySym,
+    from: fromAddr, to: txTo, amount: amt + ' ' + displaySym, symbol: displaySym,
     chainId: chainId, gasFee: gas + ' ' + netName, type: 'send', timestamp: Date.now(),
   };
   await sbInsertTransaction(txEntry);
   if (typeof state !== 'undefined' && state && state.activity) {
     state.activity.unshift({
-      hash: txEntry.hash, from: fromAddr, to: toAddr,
+      hash: txEntry.hash, from: fromAddr, to: txTo,
       amount: txEntry.amount, symbol: displaySym, chainId: chainId,
       gasFee: txEntry.gasFee, timestamp: Date.now(),
     });
