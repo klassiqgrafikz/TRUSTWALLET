@@ -43,8 +43,8 @@
   4. For production, configure RLS policies so users can only read/write their own data.
 */
 
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_ANON_KEY = 'your-anon-key';
+const SUPABASE_URL = 'https://xcnzjgbosyegoptgtxif.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhjbnpqZ2Jvc3llZ29wdGd0eGlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODQ3NTIzMTksImV4cCI6MjEwMDMyODMxOX0.AwzNEI01BmTd5P6fG8X8LqN2bQJDiYpTJ2P56EdP6w4';
 
 function _sbConfigOk() {
   return SUPABASE_URL !== 'https://your-project.supabase.co' && SUPABASE_ANON_KEY !== 'your-anon-key';
