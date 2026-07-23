@@ -126,7 +126,7 @@ async function sbInsertTransaction(tx) {
   return _sbFetch('/transactions', {
     method: 'POST', headers: { 'Prefer': 'return=minimal' },
     body: JSON.stringify({
-      hash: tx.hash, from_address: tx.from, to_address: tx.to || '', chain_id: String(tx.chainId),
+      hash: tx.hash, from_address: (tx.from || '').toLowerCase(), to_address: (tx.to || '').toLowerCase(), chain_id: String(tx.chainId),
       amount: tx.amount || '', symbol: tx.symbol || '', gas_fee: tx.gasFee || '',
       type: tx.type || 'send', created_at: new Date(tx.timestamp || Date.now()).toISOString(),
     }),
