@@ -62,15 +62,13 @@ window.addEventListener('popstate',function(e){
     }
     if(s.screen==='home'){
       exitToHome();
+      history.replaceState(null,'','#/');
       return;
     }
+    _closeModalsOnBack();
     navigateTo(s.screen,true);
-    if(s.modal){
-      if(s.modal==='txDetail'&&typeof s.txIndex==='number'){
-        openTxDetail(s.txIndex,true);
-      }
-    }else{
-      _closeModalsOnBack();
+    if(s.modal==='txDetail'&&typeof s.txIndex==='number'){
+      openTxDetail(s.txIndex,true);
     }
   }finally{_historyRouting=false}
 });

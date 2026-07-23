@@ -58,7 +58,7 @@ async function fetchLivePrices(){
     for(let i=0;i<PRICE_PROXIES.length;i++){
       try{
         const r=await fetch(PRICE_PROXIES[i]+encodeURIComponent(url));
-        if(r.ok){cachedPrices=await r.json();ensureCachedPrices();lastPriceFetch=Date.now();updatePriceDisplays();return}
+        if(r.ok){cachedPrices=await r.json();ensureCachedPrices();lastPriceFetch=Date.now();updatePriceDisplays();if(typeof updateTablePrices==='function')updateTablePrices();return}
       }catch(e){}
     }
     throw new Error('All proxies failed');
@@ -110,6 +110,7 @@ function _updateAllPriceDisplays(){
   try{
     ensureCachedPrices();
     updatePriceDisplays();
+    if(typeof updateTablePrices==='function')updateTablePrices();
     var rows=document.querySelectorAll('.asset-row[data-coin-id]');
     for(var i=0;i<rows.length;i++){
       var row=rows[i];

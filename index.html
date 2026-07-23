@@ -37,16 +37,72 @@
       <span class="logo-text scramble-text" data-text="Trust Wallet">Trust Wallet</span>
     </a>
     <nav class="nav-links" id="navLinks">
-      <a href="#wallet-section">Wallet</a>
-      <a href="#features">Features</a>
-      <a href="#platform">Assets</a>
-      <a href="#community">Community</a>
+      <div class="nav-item">
+        <a href="#">Markets <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="/price">Prices <span class="nav-badge">NEW</span></a>
+          <a href="/converter">Converter <span class="nav-badge">NEW</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Wallet <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="/download">Mobile App</a>
+          <a href="/browser-extension">Browser Extension</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Features <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown nav-dropdown-wide">
+          <a href="/swap">Swaps</a>
+          <a href="/staking">Staking</a>
+          <a href="/nft">NFTs</a>
+          <a href="/security">Security</a>
+          <a href="/buy-crypto">Buy Crypto</a>
+          <a href="/swift">SWIFT: Smart Contract Wallet</a>
+          <a href="/rwa">RWAs <span class="nav-badge">NEW</span></a>
+          <a href="/perps">Perps <span class="nav-badge">NEW</span></a>
+          <a href="/prediction-markets">Prediction Markets <span class="nav-badge">NEW</span></a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Build <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown nav-dropdown-wide">
+          <a href="https://developer.trustwallet.com/developer/">Developer Docs</a>
+          <a href="https://developer.trustwallet.com/developer/wallet-core">Wallet Core</a>
+          <a href="https://developer.trustwallet.com/developer/listing-new-dapps">Submit dApp</a>
+          <a href="https://developer.trustwallet.com/developer/listing-new-assets">Get assets listed</a>
+          <a href="https://portal.trustwallet.com">Agent Kit <span class="nav-badge">NEW</span></a>
+          <a href="https://trustwallet.com/blog/announcements/introducing-trust-moon-the-web3-accelerator-by-trust-wallet">Trust Moon</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">Support <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown">
+          <a href="https://twtholders.trustwallet.com">FAQ</a>
+          <a href="https://twtholders.trustwallet.com">Contact Us</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <a href="#">About <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg></a>
+        <div class="nav-dropdown nav-dropdown-wide">
+          <a href="/about-us">About Us</a>
+          <a href="/careers">Careers</a>
+          <a href="/press">Press Kit</a>
+          <a href="/security">Security</a>
+          <a href="/blog">Blog</a>
+          <a href="/glossary">Glossary <span class="nav-badge">NEW</span></a>
+          <a href="/compare">Compare Wallets <span class="nav-badge">NEW</span></a>
+          <a href="/trust-squad-program">Trust Squad</a>
+          <a href="/terms-of-service">Terms of Service</a>
+          <a href="/privacy-notice">Privacy Policy</a>
+        </div>
+      </div>
     </nav>
     <div class="header-actions" id="headerActions">
       <button class="theme-toggle-btn" onclick="toggleTheme()" id="themeToggleMain" style="width:36px;height:36px;font-size:16px">
         <span id="themeIconMain">☀️</span>
       </button>
-       <button class="btn btn-outline btn-sm" onclick="openWalletModal('import')">Import Wallet</button>
       <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Create Wallet</button>
     </div>
     <button class="theme-toggle-btn mobile-theme-btn" onclick="toggleTheme()" id="themeToggleMobile" style="width:36px;height:36px;font-size:16px;display:none">
@@ -58,10 +114,38 @@
   </div>
 </header>
 <div class="mobile-menu">
-  <a href="#wallet-section" onclick="closeMobileMenu()">Wallet</a>
-  <a href="#features" onclick="closeMobileMenu()">Features</a>
-  <a href="#platform" onclick="closeMobileMenu()">Assets</a>
-  <a href="#community" onclick="closeMobileMenu()">Community</a>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">Markets</div>
+    <a href="/price" onclick="closeMobileMenu()">Prices <span class="nav-badge">NEW</span></a>
+    <a href="/converter" onclick="closeMobileMenu()">Converter <span class="nav-badge">NEW</span></a>
+  </div>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">Wallet</div>
+    <a href="/download" onclick="closeMobileMenu()">Mobile App</a>
+    <a href="/browser-extension" onclick="closeMobileMenu()">Browser Extension</a>
+  </div>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">Features</div>
+    <a href="/swap" onclick="closeMobileMenu()">Swaps</a>
+    <a href="/staking" onclick="closeMobileMenu()">Staking</a>
+    <a href="/nft" onclick="closeMobileMenu()">NFTs</a>
+    <a href="/security" onclick="closeMobileMenu()">Security</a>
+    <a href="/buy-crypto" onclick="closeMobileMenu()">Buy Crypto</a>
+    <a href="/swift" onclick="closeMobileMenu()">SWIFT</a>
+    <a href="/rwa" onclick="closeMobileMenu()">RWAs <span class="nav-badge">NEW</span></a>
+    <a href="/perps" onclick="closeMobileMenu()">Perps <span class="nav-badge">NEW</span></a>
+  </div>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">Build</div>
+    <a href="https://developer.trustwallet.com/developer/" onclick="closeMobileMenu()">Developer Docs</a>
+    <a href="https://developer.trustwallet.com/developer/wallet-core" onclick="closeMobileMenu()">Wallet Core</a>
+    <a href="https://developer.trustwallet.com/developer/listing-new-dapps" onclick="closeMobileMenu()">Submit dApp</a>
+  </div>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">Support</div>
+    <a href="https://twtholders.trustwallet.com" onclick="closeMobileMenu()">FAQ</a>
+    <a href="https://twtholders.trustwallet.com" onclick="closeMobileMenu()">Contact Us</a>
+  </div>
+  <div class="mobile-menu-section"><div class="mobile-menu-heading">About</div>
+    <a href="/about-us" onclick="closeMobileMenu()">About Us</a>
+    <a href="/careers" onclick="closeMobileMenu()">Careers</a>
+    <a href="/blog" onclick="closeMobileMenu()">Blog</a>
+  </div>
   <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="openWalletModal('import');closeMobileMenu()">Import Wallet</button>
   <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="instantCreateWallet();closeMobileMenu()">Create Wallet</button>
   <div style="display:flex;gap:8px;margin-top:16px;padding-top:16px;border-top:1px solid var(--borderTint)">
@@ -84,18 +168,20 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="container">
-    <h1 class="fade-up">True crypto ownership.<br/><span class="blue">Powerful Web3 experiences</span></h1>
-    <p class="subtitle fade-up fade-up-delay">Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trust Wallet.</p>
-    <div class="hero-cta fade-up fade-up-delay2">
-      <button class="btn btn-primary" onclick="instantCreateWallet()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-        Create Wallet
-      </button>
-      <button class="btn btn-outline" onclick="openWalletModal('import')">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Import Wallet
-      </button>
+  <div class="hero-inner">
+    <div class="hero-content">
+      <h1 class="fade-up">True crypto ownership.<br/><span class="blue">Powerful Web3 experiences</span></h1>
+      <p class="subtitle fade-up fade-up-delay">Unlock the power of your cryptocurrency assets and explore the world of Web3 with Trust Wallet.</p>
+      <div class="hero-cta fade-up fade-up-delay2">
+        <button class="btn btn-primary" onclick="instantCreateWallet()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Create Wallet
+        </button>
+        <button class="btn btn-outline" onclick="openWalletModal('import')">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Import Wallet
+        </button>
+      </div>
     </div>
     <div class="hero-image fade-up">
       <img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.93518954.png&w=1920&q=75" alt="Trust Wallet App" loading="eager" fetchpriority="high"/>
@@ -131,32 +217,36 @@
   </div>
 </section>
 
-<!-- YOUR ONE-STOP WALLET -->
-<section class="wallet-section" id="wallet-section">
+<!-- BUILDING ON TRUST -->
+<section class="gradient-section gradient-yellow-green tw-building-section">
+  <div class="container fade-up" style="max-width:700px;text-align:center">
+    <img src="https://trustwallet.com/_next/static/media/raw.b373ab3f.svg" alt="Building on Trust" style="width:64px;margin:0 auto 20px"/>
+    <h2>Building on Trust</h2>
+    <p style="font-size:16px;color:var(--lightBlack);margin-bottom:24px;line-height:1.7">We know that working together as a community is better for everyone. Our platform enables blockchain developers to build their dApps and wallets natively and connect with millions of users, without having to worry about the low-level implementation details.</p>
+    <button class="btn btn-white" onclick="window.open('https://developer.trustwallet.com/developer/','_blank')">Check out our Developer Docs</button>
+  </div>
+</section>
+
+<!-- ONE PLATFORM, MILLIONS OF ASSETS -->
+<section class="platform-section gradient-blue" id="platform">
   <div class="container">
-    <h2 class="fade-up">Your one-stop, Web3 wallet</h2>
-    <p class="fade-up">Buy, sell, and swap crypto, earn rewards, manage NFTs, and discover DApps, all in one place.</p>
-    <div class="wallet-tabs fade-up">
-      <button class="wallet-tab active" onclick="switchTab(this,'mobile')">Mobile</button>
-      <button class="wallet-tab" onclick="switchTab(this,'extension')">Extension</button>
+    <h2 class="fade-up">One Platform, Millions of Assets</h2>
+    <p class="fade-up">As a leading self-custody multi-chain platform, we support millions of assets across 100+ blockchains. From Bitcoin, Ethereum, and Solana, to Cosmos, Optimism, and much more.</p>
+    <div class="search-bar fade-up">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" placeholder="Search a chain..." id="chainSearch" oninput="filterChains()"/>
     </div>
-    <div class="wallet-video fade-up">
-      <div class="phone-frame">
-        <div class="video-placeholder" id="mobileView">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3">
-            <rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="18" r="1"/>
-          </svg>
-          <span style="font-size:14px">Mobile App</span>
-        </div>
-        <div class="video-placeholder" id="extensionView" style="display:none">
-          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3">
-            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
-          </svg>
-          <span style="font-size:14px">Browser Extension</span>
-        </div>
-      </div>
+    <div class="chains-table fade-up">
+      <table id="chainsTable">
+        <thead><tr><th>Chain</th><th>Buy</th><th>Sell</th><th>Swap</th><th>Earn</th><th>dApps</th></tr></thead>
+        <tbody id="chainsBody"></tbody>
+      </table>
     </div>
-    <button class="btn btn-primary fade-up" onclick="instantCreateWallet()">Download Trust Wallet</button>
+    <div class="platform-stats fade-up">
+      <div class="platform-stat"><h3>10M+</h3><p>Assets</p></div>
+      <div class="platform-stat"><h3>600M+</h3><p>NFTs</p></div>
+      <div class="platform-stat"><h3>100+</h3><p>Blockchains</p></div>
+    </div>
   </div>
 </section>
 
@@ -166,9 +256,12 @@
     <div class="feature-text">
       <h2>Simple. Seamless.</h2>
       <p>Enjoy a smooth mobile app and desktop experience with easy-to-use, powerful tools to support your entire Web3 journey.</p>
-      <div style="background:var(--trustWhite);border-radius:20px;padding:28px;margin-top:16px">
-        <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">Deposit crypto easily from exchanges</h3>
-        <p style="font-size:14px;color:var(--lightBlack);margin-bottom:16px">Take control of your crypto. Avoid complicated steps and deposit directly to your wallet from exchanges like Binance and Coinbase.</p>
+      <div class="tw-card-white">
+        <div style="margin-bottom:12px">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--trustBlue)" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="18" r="1"/></svg>
+        </div>
+        <h3>Deposit crypto easily from exchanges</h3>
+        <p>Take control of your crypto. Avoid complicated steps and deposit directly to your wallet from exchanges like Binance and Coinbase.</p>
         <button class="btn btn-outline btn-sm" onclick="instantCreateWallet()">Get started with deposits</button>
       </div>
     </div>
@@ -184,12 +277,12 @@
     <div class="feature-text">
       <h2>Stay private and secure</h2>
       <p>Rest easy knowing that our privacy and security measures keep you in control of your data and digital assets, while also keeping them safe.</p>
-      <div style="background:var(--trustWhite);border-radius:20px;padding:28px;margin-top:16px">
+      <div class="tw-card-white">
         <div style="margin-bottom:12px">
           <img src="https://trustwallet.com/_next/static/media/raw.0acff7b3.svg" alt="Security" style="width:48px;height:48px"/>
         </div>
-        <h3 style="font-size:18px;font-weight:700;margin-bottom:8px">True ownership of your crypto assets</h3>
-        <p style="font-size:14px;color:var(--lightBlack);margin-bottom:16px">We secure your wallet, but don't control or have access to your private keys or secret phrase - only you do.</p>
+        <h3>True ownership of your crypto assets</h3>
+        <p>We secure your wallet, but don't control or have access to your private keys or secret phrase - only you do.</p>
         <button class="btn btn-primary btn-sm" onclick="instantCreateWallet()">Get Started</button>
       </div>
     </div>
@@ -215,36 +308,32 @@
   </div>
 </section>
 
-<!-- ONE PLATFORM, MILLIONS OF ASSETS -->
-<section class="platform-section gradient-blue" id="platform">
+<!-- YOUR ONE-STOP WALLET -->
+<section class="wallet-section" id="wallet-section">
   <div class="container">
-    <h2 class="fade-up">One Platform, Millions of Assets</h2>
-    <p class="fade-up">As a leading self-custody multi-chain platform, we support millions of assets across 100+ blockchains.</p>
-    <div class="search-bar fade-up">
-      <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" placeholder="Search a chain..." id="chainSearch" oninput="filterChains()"/>
+    <h2 class="fade-up">Your one-stop, Web3 wallet</h2>
+    <p class="fade-up">Buy, sell, and swap crypto, earn rewards, manage NFTs, and discover DApps, all in one place.</p>
+    <div class="wallet-tabs fade-up">
+      <button class="wallet-tab active" onclick="switchTab(this,'mobile')">Mobile</button>
+      <button class="wallet-tab" onclick="switchTab(this,'extension')">Extension</button>
     </div>
-    <div class="chains-table fade-up">
-      <table id="chainsTable">
-        <thead><tr><th>Chain</th><th>Price</th><th>24h</th><th>Buy</th><th>Sell</th><th>Swap</th><th>Receive</th><th>Stake</th></tr></thead>
-        <tbody id="chainsBody"></tbody>
-      </table>
+    <div class="wallet-video fade-up">
+      <div class="phone-frame">
+        <div class="video-placeholder" id="mobileView">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3">
+            <rect x="5" y="2" width="14" height="20" rx="3"/><circle cx="12" cy="18" r="1"/>
+          </svg>
+          <span style="font-size:14px">Mobile App</span>
+        </div>
+        <div class="video-placeholder" id="extensionView" style="display:none">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".3">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
+          </svg>
+          <span style="font-size:14px">Browser Extension</span>
+        </div>
+      </div>
     </div>
-    <div class="platform-stats fade-up">
-      <div class="platform-stat"><h3>100+</h3><p>Blockchains</p></div>
-      <div class="platform-stat"><h3>10M+</h3><p>Assets</p></div>
-      <div class="platform-stat"><h3>600M+</h3><p>NFTs</p></div>
-    </div>
-  </div>
-</section>
-
-<!-- BUILDING ON TRUST -->
-<section class="gradient-section gradient-yellow-green" style="text-align:center">
-  <div class="container fade-up" style="max-width:700px">
-    <img src="https://trustwallet.com/_next/static/media/raw.b373ab3f.svg" alt="Building on Trust" style="width:120px;margin:0 auto 24px"/>
-    <h2 style="font-family:var(--font-heading);font-size:clamp(28px,4vw,40px);font-weight:800;margin-bottom:16px">Building on Trust</h2>
-    <p style="font-size:16px;color:var(--lightBlack);margin-bottom:24px;line-height:1.7">We know that working together as a community is better for everyone. Our platform enables blockchain developers to build their dApps and wallets natively and connect with millions of users.</p>
-    <button class="btn btn-white" onclick="window.open('https://developer.trustwallet.com/developer/','_blank')">Check out our Developer Docs</button>
+    <button class="btn btn-primary fade-up" onclick="instantCreateWallet()" style="margin-top:20px">Download Trust Wallet</button>
   </div>
 </section>
 
@@ -252,10 +341,11 @@
 <section class="ratings-section">
   <div class="container">
     <h2 class="fade-up">Trust Wallet is one of the highest-rated self-custody crypto wallets</h2>
-    <p class="fade-up">Rated 4.7 on the App Store and 4.6 on Google Play, across 2.7M verified reviews.</p>
+    <p class="fade-up">Rated 4.7 on the App Store and 4.6 on Google Play, across 2.7M verified reviews — trusted by millions of users on iOS and Android.</p>
     <div class="ratings-grid">
       <div class="rating-card fade-up">
         <div class="rating-score">4.7</div>
+        <div class="rating-card-sub">/ 5</div>
         <div class="rating-stars">
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
@@ -263,14 +353,14 @@
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
         </div>
-        <div class="rating-label">App Store</div>
-        <div class="rating-badge">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--trustBlack)"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-          App Store
-        </div>
+        <div class="rating-meta">197.1K Reviews</div>
+        <a href="https://apps.apple.com/app/apple-store/id1288339409?mt=8" target="_blank" class="rating-store-link">
+          <img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.a073b4c3.png&w=256&q=75" alt="App Store" style="height:40px;width:auto"/>
+        </a>
       </div>
       <div class="rating-card fade-up">
         <div class="rating-score">4.6</div>
+        <div class="rating-card-sub">/ 5</div>
         <div class="rating-stars">
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
@@ -278,92 +368,131 @@
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
           <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107" opacity=".4"/></svg>
         </div>
-        <div class="rating-label">Google Play</div>
-        <div class="rating-badge">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="var(--trustBlack)"><path d="M3.18 23.04c.72.47 1.63.42 2.3-.05l14.5-8.27c.66-.37 1.07-1.05 1.07-1.77 0-.72-.41-1.4-1.07-1.77L5.48 2.99c-.67-.47-1.58-.52-2.3-.05A1.99 1.99 0 002 4.69v14.62c0 .67.28 1.31.78 1.77z"/></svg>
-          Google Play
-        </div>
-      </div>
-      <div class="rating-card fade-up">
-        <div class="rating-score">2.7M</div>
-        <div class="rating-stars">
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
-          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" fill="#FFC107"/></svg>
-        </div>
-        <div class="rating-label">Verified Reviews</div>
+        <div class="rating-meta">2.5M Reviews</div>
+        <a href="https://play.google.com/store/apps/details?id=com.wallet.crypto.trustapp" target="_blank" class="rating-store-link">
+          <img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.5ee64b2e.png&w=256&q=75" alt="Google Play" style="height:40px;width:auto"/>
+        </a>
       </div>
     </div>
+    <button class="btn btn-primary" onclick="instantCreateWallet()" style="margin-top:32px">Join Trust Wallet</button>
   </div>
 </section>
 
 <!-- COMMUNITY -->
 <section class="community-section">
   <div class="container">
-    <h2 class="fade-up">Enjoy a Web3 experience powered by community</h2>
-    <p class="fade-up">Hear from our users around the world.</p>
+    <h2 class="fade-up">Enjoy a Web3 experience<br/>powered by community</h2>
+    <p class="fade-up">Join our vibrant and diverse community to learn about the power of self-custody, crypto, and Web3.</p>
     <div class="testimonials">
       <div class="testimonial fade-up">
-        <p>"Trust Wallet is the best crypto wallet I've ever used. Simple, secure, and supports all my favorite chains."</p>
-        <div class="testimonial-author">@cryptoFan42</div>
-        <div class="testimonial-platform">Twitter</div>
+        <div class="testimonial-avatar"><img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.73b058c8.png&w=828&q=75" alt="Juan"/></div>
+        <p>"The easiest way to understand DeFi is to get your hands dirty. The Trust Wallet dApp Browser helped me to use protocols with small amounts and learn what works and what doesn't work."</p>
+        <div class="testimonial-author">Juan</div>
       </div>
       <div class="testimonial fade-up">
-        <p>"Finally a wallet that makes DeFi easy. The staking features are amazing and the rewards are great."</p>
-        <div class="testimonial-author">@blockchain_dev</div>
-        <div class="testimonial-platform">Reddit</div>
+        <div class="testimonial-avatar"><img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.841a11f6.png&w=828&q=75" alt="Jen"/></div>
+        <p>"Secure your private keys like your life depends on it. #DoNotShare 🔑"</p>
+        <div class="testimonial-author">Jen</div>
       </div>
       <div class="testimonial fade-up">
-        <p>"Switched from MetaMask and never looked back. Trust Wallet is faster and supports way more tokens."</p>
-        <div class="testimonial-author">@nftCollector</div>
-        <div class="testimonial-platform">Twitter</div>
+        <div class="testimonial-avatar"><img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.04269c24.png&w=750&q=75" alt="Harry"/></div>
+        <p>"As a newcomer in this field, the introduction of blockchain technology has had a profound and transformative impact on my life."</p>
+        <div class="testimonial-author">Harry</div>
+      </div>
+      <div class="testimonial fade-up">
+        <div class="testimonial-avatar"><img src="https://trustwallet.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fimage.d4985031.png&w=828&q=75" alt="Esmart"/></div>
+        <p>"I thoroughly enjoy engaging with DeFi and have developed a passion for minting NFTs. I always conduct my own research and check the Trust Wallet Security Scanner."</p>
+        <div class="testimonial-author">Esmart</div>
       </div>
     </div>
+    <a href="https://t.me/trustwallet" target="_blank" class="btn btn-outline" style="margin-top:24px;display:inline-flex">Join our community on Telegram</a>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-columns">
-    <div class="footer-col">
-      <h4>Products</h4>
-      <a href="#">Mobile App</a>
-      <a href="#">Browser Extension</a>
+  <div class="footer-top">
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h4>Wallet</h4>
+        <a href="/download">Mobile App</a>
+        <a href="/browser-extension">Browser Extension</a>
+      </div>
+      <div class="footer-col">
+        <h4>Features</h4>
+        <a href="/buy-crypto">Buy Crypto</a>
+        <a href="/swap">Swaps</a>
+        <a href="/staking">Staking</a>
+        <a href="/nft">NFTs</a>
+        <a href="/swift">SWIFT: Smart Contract Wallet</a>
+        <a href="/rwa">RWAs <span class="nav-badge">NEW</span></a>
+        <a href="/perps">Perps <span class="nav-badge">NEW</span></a>
+        <a href="/prediction-markets">Prediction <span class="nav-badge">NEW</span></a>
+      </div>
+      <div class="footer-col">
+        <h4>Markets</h4>
+        <a href="/price">Prices <span class="nav-badge">NEW</span></a>
+        <a href="/converter">Converter <span class="nav-badge">NEW</span></a>
+        <h4 style="margin-top:16px">Wallets</h4>
+        <a href="/bitcoin-wallet">Bitcoin Wallet</a>
+        <a href="/usdt-wallet">USDT Wallet</a>
+        <a href="/tron-wallet">TRON Wallet</a>
+        <a href="/xrp-wallet">XRP Wallet</a>
+        <a href="/ton-wallet">TON Wallet</a>
+        <a href="/litecoin-wallet">Litecoin Wallet</a>
+        <a href="/bep20-wallet">BEP20 Wallet</a>
+      </div>
+      <div class="footer-col">
+        <h4>Build</h4>
+        <a href="https://developer.trustwallet.com/developer/">Developer Docs</a>
+        <a href="https://developer.trustwallet.com/developer/wallet-core">Wallet Core</a>
+        <a href="https://developer.trustwallet.com/developer/listing-new-dapps">Submit dApp</a>
+        <a href="https://developer.trustwallet.com/developer/listing-new-assets">Get assets listed</a>
+        <a href="https://portal.trustwallet.com">Agent Kit <span class="nav-badge">NEW</span></a>
+      </div>
+      <div class="footer-col">
+        <h4>About</h4>
+        <a href="/about-us">About Us</a>
+        <a href="/careers">Careers</a>
+        <a href="/press">Press Kit</a>
+        <a href="/security">Security</a>
+        <a href="/blog">Blog</a>
+        <a href="/glossary">Glossary <span class="nav-badge">NEW</span></a>
+        <a href="/compare">Compare Wallets <span class="nav-badge">NEW</span></a>
+        <a href="/trust-squad-program">Trust Squad</a>
+        <a href="/terms-of-service">Terms of Service</a>
+        <a href="/privacy-notice">Privacy Notice</a>
+        <a href="/cookie-notice">Cookie Notice</a>
+      </div>
     </div>
-    <div class="footer-col">
-      <h4>Features</h4>
-      <a href="#">Buy Crypto</a>
-      <a href="#">Swaps</a>
-      <a href="#">Staking</a>
-      <a href="#">NFTs</a>
+    <div class="footer-cert-badges">
+      <img src="https://trustwallet.com/_next/static/media/image.8354ab2c.svg" alt="ISO 27701" style="height:48px"/>
+      <img src="https://trustwallet.com/_next/static/media/image.7f0b3bc9.svg" alt="ISO 27001" style="height:48px"/>
     </div>
-    <div class="footer-col">
-      <h4>Developers</h4>
-      <a href="#">Developer Docs</a>
-      <a href="#">Wallet Core</a>
-      <a href="#">Submit dApp</a>
+  </div>
+  <div class="footer-download">
+    <div class="footer-download-text">
+      <h4>Download Trust Wallet</h4>
+      <p>The most trusted &amp; secure crypto wallet.</p>
     </div>
-    <div class="footer-col">
-      <h4>Company</h4>
-      <a href="#">About Us</a>
-      <a href="#">Careers</a>
-      <a href="#">Blog</a>
-      <a href="#">Security</a>
-      <a href="#">Support</a>
-      <a href="#">Terms of Service</a>
-      <a href="#">Privacy Policy</a>
+    <div class="footer-download-btns">
+      <a href="https://apps.apple.com/app/apple-store/id1288339409?mt=8" target="_blank" class="btn btn-primary btn-sm">Download for iOS</a>
+      <a href="https://chrome.google.com/webstore/detail/trust-wallet/egjidjbpglichdcondbcbdnbeeppgdph" target="_blank" class="btn btn-primary btn-sm">Download Extension</a>
+      <a href="/download/apk" target="_blank" class="btn btn-primary btn-sm">Download APK</a>
     </div>
   </div>
   <div class="footer-bottom">
-    <p>&copy; 2026 Trust Wallet</p>
     <div class="social-links">
-      <a href="https://twitter.com/trustwallet" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://facebook.com/trustweb3" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
       <a href="https://github.com/trustwallet" target="_blank" aria-label="GitHub"><svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></a>
       <a href="https://instagram.com/trustwallet" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5"/></svg></a>
+      <a href="https://twitter.com/trustwallet" target="_blank" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      <a href="https://reddit.com/r/trustapp" target="_blank" aria-label="Reddit"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="12" r="1.5" fill="currentColor"/><circle cx="15" cy="12" r="1.5" fill="currentColor"/><path d="M12 14c1.5 0 2.5 1 3 2H9c.5-1 1.5-2 3-2z" fill="currentColor"/></svg></a>
       <a href="https://t.me/trustwallet" target="_blank" aria-label="Telegram"><svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 000 12a12 12 0 0012 12 12 12 0 0012-12A12 12 0 0012 0a12 12 0 00-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 01.171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.33-.913.492-1.302.48-.428-.012-1.252-.242-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg></a>
+      <a href="https://www.linkedin.com/company/trustwallet" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+      <a href="https://www.youtube.com/@Trustwallet" target="_blank" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
     </div>
+    <p>&copy; 2026 Trust Wallet</p>
   </div>
 </footer>
 

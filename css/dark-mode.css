@@ -58,3 +58,16 @@ body.dark .theme-toggle-btn{background:#2A2A2E;border-color:#3A3A3E}
 body.dark .theme-toggle-btn:hover{border-color:var(--trustBlue)}
 body.dark .screen-layout{background:var(--trustWhite)}
 body.dark .screen-topbar{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
+body.dark .tw-card-white{background:#2A2A2E;border-color:#3A3A3E}
+body.dark .tw-card-white h3{color:var(--trustBlack)}
+body.dark .tw-card-white p{color:var(--lightBlack)}
+body.dark .mobile-menu{background:#1B1B1C}
+body.dark .mobile-menu a{color:var(--trustBlack);border-color:#3A3A3E}
+body.dark .mobile-menu-section{color:var(--trustBlack)}
+body.dark footer{background:#2A2A2E;border-color:#3A3A3E}
+body.dark .footer-col h4{color:var(--trustBlack)}
+body.dark .footer-download-text h4{color:var(--trustBlack)}
+body.dark .footer-download-text p{color:var(--lightBlack)}
+body.dark .platform-section .search-bar input{border-color:#3A3A3E;background:rgba(255,255,255,0.08)}
+body.dark .rating-card-sub{color:var(--lightBlack)}
+body.dark .rating-meta{color:var(--lightBlack)}

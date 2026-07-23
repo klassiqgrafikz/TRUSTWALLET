@@ -139,3 +139,23 @@ footer{background:var(--baseWhite);border:1px solid var(--borderTint);border-rad
 .social-links a{width:36px;height:36px;border-radius:50%;background:var(--trustWhite);border:1px solid var(--borderTint);display:flex;align-items:center;justify-content:center;transition:all .2s}
 .social-links a:hover{border-color:var(--trustBlue);background:#EEF0FF}
 .social-links svg{width:16px;height:16px;fill:var(--trustBlack)}
+
+.tw-card-white{background:var(--trustWhite);border-radius:24px;padding:28px;text-align:left;box-shadow:0 4px 24px rgba(0,0,0,0.04);border:1px solid var(--borderTint)}
+.tw-card-white h3{font-family:var(--font-heading);font-size:20px;font-weight:700;margin-bottom:8px}
+.tw-card-white p{font-size:14px;color:var(--lightBlack);line-height:1.6;margin-bottom:16px}
+
+.testimonial-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;margin-bottom:12px}
+.testimonial-avatar img{width:100%;height:100%;object-fit:cover}
+
+.mobile-menu-section{margin-bottom:8px}
+.mobile-menu-heading{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--lightBlack);padding:16px 0 4px}
+
+.footer-download{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 0;border-bottom:1px solid var(--borderTint);margin-bottom:24px;flex-wrap:wrap}
+.footer-download-text h4{font-family:var(--font-heading);font-size:18px;font-weight:700;margin-bottom:4px}
+.footer-download-text p{font-size:14px;color:var(--lightBlack)}
+.footer-download-btns{display:flex;gap:10px;flex-wrap:wrap}
+.footer-cert-badges{display:flex;gap:16px;align-items:center}
+
+.rating-card-sub{font-size:16px;color:var(--lightBlack);margin-bottom:8px}
+.rating-meta{font-size:14px;color:var(--lightBlack);margin-bottom:12px}
+.rating-store-link{display:inline-block}
