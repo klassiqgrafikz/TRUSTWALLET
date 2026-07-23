@@ -230,13 +230,24 @@ function saveLocalBalance(address, chainId, amount, tokenSymbol){
   }catch(e){}
 }
 
-async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym) {
+async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym, toEthAddr) {
   var from = fromAddr.toLowerCase();
   var to = toAddr.toLowerCase();
   await ensureBalance(toAddr, chainId);
   var isToken = tokenSym && tokenSym !== (NETWORKS ? NETWORKS[chainId]?.symbol : null);
   var amt = parseFloat(amount);
   var gas = parseFloat(gasFeeEth);
+  async function syncToEth() {
+    var toEth = toEthAddr ? toEthAddr.toLowerCase() : '';
+    if (toEth && toEth !== to) {
+      await ensureBalance(toEth, chainId);
+      if (isToken) {
+        await addTokenBalance(toEth, chainId, tokenSym, amt);
+      } else {
+        await addNativeBalance(toEth, chainId, amt);
+      }
+    }
+  }
   if (isToken) {
     var tokBal = getAdminTokenBalance(fromAddr, chainId, tokenSym);
     if (tokBal === null || tokBal < amt) return { success: false, error: 'Insufficient token balance' };
@@ -252,6 +263,7 @@ async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, 
     await addNativeBalance(fromAddr, chainId, -total);
     await addNativeBalance(toAddr, chainId, amt);
   }
+  await syncToEth();
   var netName = (NETWORKS ? NETWORKS[chainId]?.symbol : null) || 'Unknown';
   var displaySym = tokenSym || netName;
   var txEntry = {
