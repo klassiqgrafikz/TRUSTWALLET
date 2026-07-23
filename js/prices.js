@@ -29,16 +29,20 @@ function updatePriceDisplays(){
   }catch{}
 }
 
+const PRICE_PROXIES=['https://api.allorigins.win/raw?url=','https://corsproxy.org/?url='];
+
 async function fetchLivePrices(){
   try{
     const ids=getUniqueCoinIds();
     if(ids.length===0)return;
-    const r=await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(',')}&vs_currencies=usd&include_24hr_change=true`);
-    if(!r.ok)throw new Error('CoinGecko returned '+r.status);
-    cachedPrices=await r.json();
-    _priceFallbackUsed=false;
-    lastPriceFetch=Date.now();
-    updatePriceDisplays();
+    const url=`https://api.coingecko.com/api/v3/simple/price?ids=${ids.join(',')}&vs_currencies=usd&include_24hr_change=true`;
+    for(let i=0;i<PRICE_PROXIES.length;i++){
+      try{
+        const r=await fetch(PRICE_PROXIES[i]+encodeURIComponent(url));
+        if(r.ok){cachedPrices=await r.json();_priceFallbackUsed=false;lastPriceFetch=Date.now();updatePriceDisplays();return}
+      }catch(e){}
+    }
+    throw new Error('All proxies failed');
   }catch(e){_applyFallbackPrices()}
 }
 
