@@ -80,6 +80,7 @@ async function openWalletPicker(){
   }
   $('walletPickerList').innerHTML=html;
   $('walletPickerModal').classList.remove('hidden');
+  _pushModal('walletPicker');
 }
 
 function selectWalletPicker(chainAddr,wName){
@@ -92,6 +93,7 @@ function selectWalletPicker(chainAddr,wName){
 
 function closeWalletPicker(){
   $('walletPickerModal').classList.add('hidden');
+  if(!_historyRouting)history.back();
 }
 
 function filterWalletPicker(q){

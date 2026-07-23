@@ -143,10 +143,11 @@ function renderActivity(){
   }).join('');
 }
 
-function openTxDetail(index){
+function openTxDetail(index,skipHistory){
   var items=state.activity||[];
   var tx=items[index];
   if(!tx)return;
+  if(!skipHistory&&!_historyRouting)_pushModal('txDetail',{txIndex:index});
   var isIncoming=tx.from==='admin_faucet'||(state.walletAddress?.toLowerCase()&&tx.to?.toLowerCase()===state.walletAddress?.toLowerCase()&&tx.from?.toLowerCase()!==state.walletAddress?.toLowerCase());
   var isAdmin=tx.from==='admin_faucet';
   var net=NETWORKS?.[tx.chainId];
@@ -200,7 +201,7 @@ function openTxDetail(index){
     '</div>';
   $('txDetailModal').classList.remove('hidden');
 }
-function closeTxDetail(){$('txDetailModal').classList.add('hidden')}
+function closeTxDetail(){$('txDetailModal').classList.add('hidden');if(!_historyRouting)history.back()}
 function shareTx(){
   var memo=$('txMemoInput')?.value?.trim();
   var txt='Transaction from Trust Wallet';

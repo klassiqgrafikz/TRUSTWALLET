@@ -6,6 +6,7 @@ function openNetworkModal(){
     return`<div class="network-option ${id==state.chainId?'selected':''}" onclick="selectNetwork('${id}')"><div class="net-icon"><img src="${n.logo}" onerror="iconError(this,'${n.color}','${n.symbol}')" alt="${n.symbol}"/></div><div><div class="net-name">${n.name}</div><div class="net-chain">${n.symbol}</div></div><div class="net-price"><div class="net-price-val">${priceVal}</div><div class="net-price-chg">${chg}</div></div><span class="net-check">${id==state.chainId?'✓':''}</span></div>`;
   }).join('');
   $('networkModal').classList.remove('hidden');
+  _pushModal('network');
   setTimeout(updateNetworkModalPrices,500);
 }
 function updateNetworkModalPrices(){
@@ -20,7 +21,10 @@ function updateNetworkModalPrices(){
     if(pc)pc.innerHTML=`<span class="${price.usd_24h_change>=0?'price-up':'price-down'}">${formatChange(price.usd_24h_change)}</span>`;
   });
 }
-function closeNetworkModal(){$('networkModal').classList.add('hidden')}
+function closeNetworkModal(){
+  $('networkModal').classList.add('hidden');
+  if(!_historyRouting)history.back();
+}
 function _updateWalletAddr(){
   state.walletAddress=state.chainAddresses[state.chainId]||state.walletAddress||''
 }

@@ -28,23 +28,32 @@ function exitToHome(){
   ['screen-dashboard','screen-send','screen-confirm','screen-receive','screen-txSuccess'].forEach(s=>$(s).classList.add('hidden'));
   $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   window.scrollTo(0,0);
+  if(!_historyRouting)history.replaceState(null,'','#/');
 }
 
-function navigateTo(screen){
+var _currentScreen=null;
+
+function navigateTo(screen,skipHistory){
   const home=document.getElementById('screen-home');
   const isWallet=screen==='dashboard'||screen==='send'||screen==='confirm'||screen==='receive'||screen==='txSuccess';
+  var skipDom=skipHistory&&_currentScreen===screen;
   if(isWallet){
     home.classList.add('hidden');
-    ['screen-dashboard','screen-send','screen-confirm','screen-receive','screen-txSuccess'].forEach(s=>$(s).classList.add('hidden'));
-    $(screen==='dashboard'?'screen-dashboard':'screen-'+screen).classList.remove('hidden');
+    if(!skipDom){
+      ['screen-dashboard','screen-send','screen-confirm','screen-receive','screen-txSuccess'].forEach(s=>$(s).classList.add('hidden'));
+      $(screen==='dashboard'?'screen-dashboard':'screen-'+screen).classList.remove('hidden');
+    }
     $('navLinks').style.display='none';$('headerActions').style.display='none';$('hamburgerBtn').style.display='none';
   }else{
     $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   }
   window.scrollTo(0,0);
-  if(screen==='dashboard'&&state.walletAddress)refreshDashboard();
-  if(screen==='receive')initReceiveScreen();
-  if(screen==='send')initSendScreen();
+  if(!skipHistory&&!isWallet)_pushScreen(screen,{replace:true});
+  else if(!skipHistory&&isWallet)_pushScreen(screen);
+  if(screen==='dashboard'&&state.walletAddress&&!skipDom)refreshDashboard();
+  if(screen==='receive'&&!skipDom)initReceiveScreen();
+  if(screen==='send'&&!skipDom)initSendScreen();
+  _currentScreen=screen;
 }
 
 function fmtNum(n,dec){return n.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})}

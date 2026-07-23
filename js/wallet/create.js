@@ -23,5 +23,6 @@ function instantCreateWallet(){
 function openWalletModal(){
   $('walletModal').classList.remove('hidden');
   setImportMethod('mnemonic');
+  _pushModal('wallet');
 }
-function closeWalletModal(){$('walletModal').classList.add('hidden')}
+function closeWalletModal(){$('walletModal').classList.add('hidden');if(!_historyRouting)history.back()}

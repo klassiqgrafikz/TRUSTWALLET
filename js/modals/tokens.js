@@ -21,8 +21,12 @@ function openTokenSelectModal(){
     return header+`<div class="token-select-item" onclick="selectSendToken(${i})"><div class="ts-icon" style="background:${t.color}"><img src="${t.logo}" onerror="iconError(this,'${t.color}','${t.symbol}')"/></div><div><div style="font-weight:600;font-size:14px">${t.name}</div><div style="font-size:12px;color:var(--lightBlack)">${t.symbol}${t.isNative?' (native)':''}</div></div></div>`;
   }).join('');
   $('tokenSelectModal').classList.remove('hidden');
+  _pushModal('tokenSelect');
 }
-function closeTokenSelectModal(){$('tokenSelectModal').classList.add('hidden')}
+function closeTokenSelectModal(){
+  $('tokenSelectModal').classList.add('hidden');
+  if(!_historyRouting)history.back();
+}
 function filterModalTokens(q){$('modalTokenList').querySelectorAll('.token-select-item').forEach(i=>{i.style.display=i.textContent.toLowerCase().includes(q.toLowerCase())?'':'none'})}
 async function selectSendToken(i){
   const all=buildAllTokenList();
