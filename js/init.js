@@ -3,7 +3,7 @@ async function init(){
   populateChainTable();
   initAnimations();
   document.querySelectorAll('.scramble-text').forEach(function(el){scrambleText(el);});
-  await fetchLivePrices();
+  fetchLivePrices();
   setInterval(fetchLivePrices,60000);
   loadTheme();
   loadState();
