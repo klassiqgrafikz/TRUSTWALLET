@@ -5,7 +5,7 @@ function hideLoading(){$('loading').classList.add('hidden')}
 function closeMobileMenu(){$('screen-home')&&document.querySelector('.mobile-menu').classList.remove('open')}
 
 function goHome(){
-  if(state.wallet){navigateTo('dashboard');return}
+  if(state.walletAddress){navigateTo('dashboard');return}
   exitToHome();
 }
 function exitToHome(){
@@ -27,7 +27,7 @@ function navigateTo(screen){
     $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   }
   window.scrollTo(0,0);
-  if(screen==='dashboard'&&state.wallet)refreshDashboard();
+  if(screen==='dashboard'&&state.walletAddress)refreshDashboard();
   if(screen==='receive')initReceiveScreen();
   if(screen==='send')initSendScreen();
 }

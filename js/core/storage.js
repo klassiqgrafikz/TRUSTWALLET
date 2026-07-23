@@ -1,7 +1,7 @@
 function saveToStorage() {
   try {
     localStorage.setItem('tw_data', JSON.stringify({
-      address: state.wallet?.address, name: state.walletName,
+      walletAddress: state.walletAddress, name: state.walletName,
       chainId: state.chainId, chainAddresses: state.chainAddresses,
     }));
   } catch (e) {}
@@ -22,15 +22,14 @@ function loadState() {
     if (m && d) {
       state.mnemonic = m;
       var data = JSON.parse(d);
-      if (data.address) {
-        var wallet = deriveWallet(m);
-        if (wallet && wallet.address.toLowerCase() === data.address.toLowerCase()) {
-          state.wallet = wallet;
-          state.walletName = data.name || 'My Wallet';
-          state.chainId = data.chainId || 1;
-          state.chainAddresses = data.chainAddresses || {};
-        }
+      state.walletName = data.name || 'My Wallet';
+      state.chainId = data.chainId || 1;
+      if (data.chainAddresses && Object.keys(data.chainAddresses).length > 0) {
+        state.chainAddresses = data.chainAddresses;
+      } else {
+        initChainAddresses();
       }
+      state.walletAddress = data.walletAddress || state.chainAddresses[state.chainId] || '';
     }
   } catch (e) {}
 }

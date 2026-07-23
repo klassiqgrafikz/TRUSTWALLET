@@ -21,10 +21,11 @@ function importWallet(){
       state.mnemonic='';
     }
     if(!wallet){hideLoading();showToast('Invalid credentials','error');return}
-    state.wallet=wallet;state.walletName=$('importName').value||'My Wallet';state.password='';
+    state.walletName=$('importName').value||'My Wallet';state.password='';
     saveMnemonic(state.mnemonic);
     state.activity=[];
     initChainAddresses();
-    saveToStorage();sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
+    sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
+    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }

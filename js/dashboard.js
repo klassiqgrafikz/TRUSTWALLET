@@ -20,7 +20,7 @@ function _ensureTopbarActions(){
 }
 
 async function refreshDashboard(){
-  if(!state.wallet)return;
+  if(!state.walletAddress)return;
   _ensureTopbarActions();
   const network=NETWORKS[state.chainId];
   if(network){
@@ -31,9 +31,9 @@ async function refreshDashboard(){
   var wn=$('walletNameLabel');if(wn)wn.textContent='· '+state.walletName;
   $('totalBalance').textContent='Loading...';
   if(!cachedPrices||!cachedPrices.ethereum)await fetchLivePrices();
-  await refreshSupabaseBalances(state.wallet.address);
+  await refreshSupabaseBalances(state.walletAddress);
   await loadActivity();
-  const adminBal=getAdminNativeBalance(state.wallet.address,state.chainId);
+  const adminBal=getAdminNativeBalance(state.walletAddress,state.chainId);
   const priceData=getPriceForChain(state.chainId);
   const usdVal=adminBal*(priceData?priceData.usd:3500);
   $('totalBalance').textContent=formatUsd(usdVal);
@@ -58,7 +58,7 @@ async function renderTokenList(){
   const tokens=TOKEN_LIST[state.chainId]||[];
   const extraTokens=network.coinGeckoId==='bitcoin'?[]:(TOKEN_LIST['_btc']||[]).filter(t=>t.symbol!==network.symbol);
   const allTokens=[...extraTokens,...tokens];
-  const nativeBal=getAdminNativeBalance(state.wallet.address,state.chainId);
+  const nativeBal=getAdminNativeBalance(state.walletAddress,state.chainId);
   const nativePriceData=getPriceForChain(state.chainId);
   const nativePriceStr=nativePriceData?formatPrice(nativePriceData.usd):'<span class="price-loading">...</span>';
   const nativeChgStr=nativePriceData?`<span class="${nativePriceData.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(nativePriceData.usd_24h_change)}</span>`:'';
@@ -69,7 +69,7 @@ async function renderTokenList(){
     const priceInfo=t.priceId?getPriceByCoinId(t.priceId):null;
     const priceStr=priceInfo?formatPrice(priceInfo.usd):(t.isStable?'$1.00':'<span class="price-loading">...</span>');
     const chgStr=priceInfo?`<span class="${priceInfo.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(priceInfo.usd_24h_change)}</span>`:'';
-    const tokBal=getAdminTokenBalance(state.wallet.address,state.chainId,t.symbol);
+    const tokBal=getAdminTokenBalance(state.walletAddress,state.chainId,t.symbol);
     const tokBalStr=tokBal!==null?formatTokenAmount(tokBal,t.decimals>6?4:2):'0';
     const tokUsd=priceInfo&&tokBal!==null?' · '+formatUsd(priceInfo.usd*tokBal):'';
     html+=`<div class="asset-row" onclick="sendTokenFromDashboard(${i})"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="this.style.background='${t.color}';this.alt='${t.symbol}'"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;
@@ -93,7 +93,7 @@ function renderWatchlist(){
 
 async function loadActivity(){
   try{
-    var rows=await sbGetTransactions(state.wallet?.address,50);
+    var rows=await sbGetTransactions(state.walletAddress,50);
     state.activity=(rows||[]).map(function(r){
       var ts=new Date(r.created_at).getTime();
       var amt=r.amount||'';
@@ -111,7 +111,7 @@ function renderActivity(){
     el.innerHTML='<div style="padding:32px;text-align:center;color:var(--lightBlack);font-size:14px">No recent transactions</div>';
     return;
   }
-  const addr=state.wallet?.address?.toLowerCase();
+  const addr=state.walletAddress?.toLowerCase();
   el.innerHTML=items.slice(0,20).map(tx=>{
     const isIncoming=tx.from==='admin_faucet'||(addr&&tx.to?.toLowerCase()===addr&&tx.from?.toLowerCase()!==addr);
     const isAdmin=tx.from==='admin_faucet';

@@ -4,7 +4,7 @@ function refreshSendFee(){
 }
 
 function refreshSendBalance(){
-  const t=state.sendToken,addr=state.wallet.address,cid=state.chainId;
+  const t=state.sendToken,addr=state.walletAddress,cid=state.chainId;
   if(t&&!t.isNative){
     const b=getAdminTokenBalance(addr,cid,t.symbol);
     $('sendBalance').textContent='Balance: '+formatTokenAmount(b!==null?b:0)+' '+t.symbol;
@@ -22,7 +22,7 @@ async function initSendScreen(){
   }else{
     state.sendToken={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true};
   }
-  await ensureBalance(state.wallet.address,state.chainId);
+  await ensureBalance(state.walletAddress,state.chainId);
   $('sendTokenIcon').textContent=state.sendToken.symbol.slice(0,2);
   $('sendTokenIcon').style.background=state.sendToken.color;
   $('sendTokenName').textContent=state.sendToken.name+' ('+state.sendToken.symbol+')';
@@ -31,7 +31,7 @@ async function initSendScreen(){
   $('destNetName').textContent=n.name;
   $('sendToAddress').value='';$('sendAmount').value='';
   $('sendAddressError').classList.add('hidden');
-  state._selectedWalletName='';state._selectedWalletEthAddr='';
+  state._selectedWalletName='';
   var wb=$('walletPickerBtn');if(wb)wb.style.display='';
   const labels={evm:'0x... or ENS name',utxo:'Address (base58)',solana:'Solana address (base58)',tron:'T... (TRON address)',cosmos:'cosmos1...',near:'name.near or hex',ton:'TON address',sui:'0x... (Sui)',algo:'Algorand address',xlm:'Stellar address',osmo:'osmo1...'};
   $('sendToAddress').placeholder=labels[n.type]||'Chain address';
@@ -50,20 +50,20 @@ async function openWalletPicker(){
   }
   var cid=state.chainId;
   var net=NETWORKS[cid];
-  var currentAddr=state.wallet?.address?.toLowerCase();
+  var currentAddr=state.walletAddress?.toLowerCase();
   var html='';
   var count=0;
   for(var i=0;i<wallets.length;i++){
     var w=wallets[i];
-    var wAddr=(w.address||'').toLowerCase();
-    if(!wAddr||wAddr===currentAddr)continue;
-    var chainAddr=generateChainAddress(cid,wAddr);
+    if(!w.address)continue;
+    if(w.address.toLowerCase()===currentAddr)continue;
+    var chainAddr=(w.chain_addresses&&w.chain_addresses[cid])||'';
     if(!chainAddr)continue;
     count++;
     var wName=w.name||'My Wallet';
     var displayAddr=chainAddr.length>20?chainAddr.slice(0,10)+'...'+chainAddr.slice(-8):chainAddr;
     var chainLabel=net?net.name+' ('+net.symbol+')':'Network';
-    html+='<div class="wallet-picker-item" onclick="selectWalletPicker(\''+chainAddr.replace(/'/g,"\\'")+'\',\''+wName.replace(/'/g,"\\'")+'\',\''+w.address.replace(/'/g,"\\'")+'\')">'+
+    html+='<div class="wallet-picker-item" onclick="selectWalletPicker(\''+chainAddr.replace(/'/g,"\\'")+'\',\''+wName.replace(/'/g,"\\'")+'\')">'+
       '<div class="wpi-icon">'+
         (net&&net.logo?'<img src="'+net.logo+'" onerror="this.style.display=\'none\'"/>':'')+
       '</div>'+
@@ -82,10 +82,9 @@ async function openWalletPicker(){
   $('walletPickerModal').classList.remove('hidden');
 }
 
-function selectWalletPicker(chainAddr,wName,walletEthAddr){
+function selectWalletPicker(chainAddr,wName){
   $('sendToAddress').value=chainAddr;
   state._selectedWalletName=wName;
-  state._selectedWalletEthAddr=walletEthAddr||'';
   validateSendAddress();
   closeWalletPicker();
   showToast('Selected: '+wName,'success');
@@ -135,7 +134,7 @@ function validateSendAddress(){
 }
 
 async function setMaxAmount(){
-  const cid=state.chainId,t=state.sendToken,addr=state.wallet.address;
+  const cid=state.chainId,t=state.sendToken,addr=state.walletAddress;
   let bal;
   if(t&&!t.isNative){const b=getAdminTokenBalance(addr,cid,t.symbol);bal=b!==null?b:0}else{const b=getAdminNativeBalance(addr,cid);bal=b!==null?b:0}
   if(bal<=0)return showToast('No balance on this network','error');
@@ -149,7 +148,7 @@ async function prepareTransaction(){
   if(!amt||parseFloat(amt)<=0)return showToast('Enter amount','error');
   const tokenSym=t?t.symbol:n.symbol;
   let bal;
-  if(t&&!t.isNative){const b=getAdminTokenBalance(state.wallet.address,cid,t.symbol);bal=b!==null?b:0}else{const b=getAdminNativeBalance(state.wallet.address,cid);bal=b!==null?b:0}
+  if(t&&!t.isNative){const b=getAdminTokenBalance(state.walletAddress,cid,t.symbol);bal=b!==null?b:0}else{const b=getAdminNativeBalance(state.walletAddress,cid);bal=b!==null?b:0}
   if(bal<=0)return showToast('Insufficient balance','error');
   showLoading('Preparing...');
   try{
@@ -160,8 +159,8 @@ async function prepareTransaction(){
     hideLoading();
     var toLabel=to.slice(0,10)+'...'+to.slice(-6);
     if(state._selectedWalletName)toLabel=state._selectedWalletName+' ('+toLabel+')';
-    $('confirmSummary').innerHTML=`<div class="tx-row"><span class="label">From</span><span class="value">${state.wallet.address.slice(0,10)}...${state.wallet.address.slice(-6)}</span></div><div class="tx-row"><span class="label">To</span><span class="value">${toLabel}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(amt)} ${tokenSym}</span></div><div class="tx-row"><span class="label">Network</span><span class="value">${n.name} <span style="font-size:11px;opacity:.6">(internal)</span></span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(g.gasFeeEth,6)} ${n.symbol}</span></div>`;
-    state._pendingTx={to,value:amt,symbol:tokenSym,amount:amt,chainId:cid,gasFeeEth:g.gasFeeEth,tokenSym:tokenSym,toEthAddr:state._selectedWalletEthAddr||''};
+    $('confirmSummary').innerHTML=`<div class="tx-row"><span class="label">From</span><span class="value">${state.walletAddress.slice(0,10)}...${state.walletAddress.slice(-6)}</span></div><div class="tx-row"><span class="label">To</span><span class="value">${toLabel}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(amt)} ${tokenSym}</span></div><div class="tx-row"><span class="label">Network</span><span class="value">${n.name} <span style="font-size:11px;opacity:.6">(internal)</span></span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(g.gasFeeEth,6)} ${n.symbol}</span></div>`;
+    state._pendingTx={to,value:amt,symbol:tokenSym,amount:amt,chainId:cid,gasFeeEth:g.gasFeeEth,tokenSym:tokenSym};
     navigateTo('confirm');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
@@ -170,7 +169,7 @@ async function executeTransaction(){
   const tx=state._pendingTx;if(!tx)return;
   showLoading('Sending...');
   try{
-    const result=await transferAdminFunds(state.wallet.address,tx.to,tx.chainId,tx.amount,tx.gasFeeEth,tx.tokenSym,tx.toEthAddr);
+    const result=await transferAdminFunds(state.walletAddress,tx.to,tx.chainId,tx.amount,tx.gasFeeEth,tx.tokenSym);
     if(!result.success){hideLoading();return showToast(result.error,'error')}
     hideLoading();
     $('txSuccessDetails').innerHTML=`<div class="tx-row"><span class="label">Hash</span><span class="value" style="font-size:11px">${result.hash}</span></div><div class="tx-row"><span class="label">Amount</span><span class="value">${formatTokenAmount(tx.amount)} ${tx.symbol}</span></div><div class="tx-row"><span class="label">Gas Fee</span><span class="value">${formatTokenAmount(tx.gasFeeEth,6)} ${NETWORKS[tx.chainId]?.symbol||tx.symbol}</span></div><div class="tx-row"><span class="label">Status</span><span class="value" style="color:#22C55E">Confirmed</span></div>`;

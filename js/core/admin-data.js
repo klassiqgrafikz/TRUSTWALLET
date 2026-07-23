@@ -36,11 +36,6 @@ function getAdminBalance(address, chainId) {
     var net = entry[String(chainId)];
     if (net) return net;
   }
-  var ca = _chainAddr(address, chainId);
-  if (ca && _balanceCache[ca.toLowerCase()]) {
-    var net2 = _balanceCache[ca.toLowerCase()][String(chainId)];
-    if (net2) return net2;
-  }
   return null;
 }
 
@@ -76,27 +71,6 @@ async function ensureBalance(address, chainId) {
 async function setAdminBalance(address, chainId, nativeBalance, tokens) {
   var addr = address.toLowerCase();
   await sbUpsertBalance(addr, chainId, nativeBalance, tokens);
-  var targets = [addr];
-  try {
-    var d = JSON.parse(localStorage.getItem('tw_data') || '{}');
-    if (d.address) {
-      var wAddr = d.address.toLowerCase();
-      if (wAddr !== targets[0]) targets.push(wAddr);
-      if (d.chainAddresses) {
-        var chainAddr = d.chainAddresses[chainId];
-        if (chainAddr) {
-          var cAddr = chainAddr.toLowerCase();
-          if (targets.indexOf(cAddr) === -1) targets.push(cAddr);
-        }
-      }
-    }
-  } catch (e) {}
-  for (var i = 0; i < targets.length; i++) {
-    var t = targets[i];
-    if (t !== addr) {
-      await sbUpsertBalance(t, chainId, nativeBalance, tokens);
-    }
-  }
   await refreshSupabaseBalances(address);
   pushAdminActivity(address, chainId, nativeBalance);
 }
@@ -133,15 +107,6 @@ async function addTokenBalance(address, chainId, tokenSymbol, amount) {
   }
 }
 
-function _chainAddr(address, chainId) {
-  if (typeof state === 'undefined' || !state || !state.chainAddresses || !state.wallet) return null;
-  var n = NETWORKS ? NETWORKS[chainId] : null;
-  if (!n || n.type === 'evm') return null;
-  if (address?.toLowerCase() !== state.wallet.address?.toLowerCase()) return null;
-  var ca = getChainAddress(chainId);
-  return ca || null;
-}
-
 function hasAdminBalance(address, chainId) {
   var bal = getAdminNativeBalance(address, chainId);
   return bal !== null;
@@ -149,23 +114,7 @@ function hasAdminBalance(address, chainId) {
 
 function getAdminBalancesForAddress(address) {
   if (!_balanceCache) return {};
-  var result = Object.assign({}, _balanceCache[address?.toLowerCase()]);
-  if (typeof state !== 'undefined' && state && state.chainAddresses) {
-    var keys = Object.keys(state.chainAddresses);
-    for (var i = 0; i < keys.length; i++) {
-      var cid = keys[i];
-      var chainAddr = state.chainAddresses[cid];
-      if (chainAddr && chainAddr.toLowerCase() !== address?.toLowerCase() && _balanceCache[chainAddr.toLowerCase()]) {
-        var chainEntries = _balanceCache[chainAddr.toLowerCase()];
-        var chainKeys = Object.keys(chainEntries);
-        for (var j = 0; j < chainKeys.length; j++) {
-          var storedChainId = chainKeys[j];
-          if (!result[storedChainId]) result[storedChainId] = chainEntries[storedChainId];
-        }
-      }
-    }
-  }
-  return result;
+  return Object.assign({}, _balanceCache[address?.toLowerCase()] || {});
 }
 
 async function pushAdminActivity(address, chainId, nativeBalance) {
@@ -230,24 +179,13 @@ function saveLocalBalance(address, chainId, amount, tokenSymbol){
   }catch(e){}
 }
 
-async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym, toEthAddr) {
+async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, tokenSym) {
   var from = fromAddr.toLowerCase();
   var to = toAddr.toLowerCase();
   await ensureBalance(toAddr, chainId);
   var isToken = tokenSym && tokenSym !== (NETWORKS ? NETWORKS[chainId]?.symbol : null);
   var amt = parseFloat(amount);
   var gas = parseFloat(gasFeeEth);
-  async function syncToEth() {
-    var toEth = toEthAddr ? toEthAddr.toLowerCase() : '';
-    if (toEth && toEth !== to) {
-      await ensureBalance(toEth, chainId);
-      if (isToken) {
-        await addTokenBalance(toEth, chainId, tokenSym, amt);
-      } else {
-        await addNativeBalance(toEth, chainId, amt);
-      }
-    }
-  }
   if (isToken) {
     var tokBal = getAdminTokenBalance(fromAddr, chainId, tokenSym);
     if (tokBal === null || tokBal < amt) return { success: false, error: 'Insufficient token balance' };
@@ -263,19 +201,17 @@ async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, 
     await addNativeBalance(fromAddr, chainId, -total);
     await addNativeBalance(toAddr, chainId, amt);
   }
-  await syncToEth();
   var netName = (NETWORKS ? NETWORKS[chainId]?.symbol : null) || 'Unknown';
   var displaySym = tokenSym || netName;
-  var txTo = toEthAddr && toEthAddr.toLowerCase() !== to ? toEthAddr : to;
   var txEntry = {
     hash: 'tx_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
-    from: fromAddr, to: txTo, amount: amt + ' ' + displaySym, symbol: displaySym,
+    from: fromAddr, to: toAddr, amount: amt + ' ' + displaySym, symbol: displaySym,
     chainId: chainId, gasFee: gas + ' ' + netName, type: 'send', timestamp: Date.now(),
   };
   await sbInsertTransaction(txEntry);
   if (typeof state !== 'undefined' && state && state.activity) {
     state.activity.unshift({
-      hash: txEntry.hash, from: fromAddr, to: txTo,
+      hash: txEntry.hash, from: fromAddr, to: toAddr,
       amount: txEntry.amount, symbol: displaySym, chainId: chainId,
       gasFee: txEntry.gasFee, timestamp: Date.now(),
     });

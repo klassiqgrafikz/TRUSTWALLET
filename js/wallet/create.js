@@ -7,12 +7,13 @@ function instantCreateWallet(){
     var phrase=generateMnemonic();
     var wallet=deriveWallet(phrase);
     if(!wallet){hideLoading();showToast('Failed to create wallet','error');return}
-    state.wallet=wallet;state.walletName='My Wallet';state.mnemonic=phrase;state.password='';
+    state.mnemonic=phrase;state.walletName='My Wallet';state.password='';
     state.activity=[];
     saveMnemonic(phrase);
     initChainAddresses();
+    var ethAddr=wallet.address;
+    sbUpsertWallet(ethAddr, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
     saveToStorage();
-    sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
     hideLoading();
     showToast('Wallet created!','success');
     navigateTo('dashboard');

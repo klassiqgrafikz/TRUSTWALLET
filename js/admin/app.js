@@ -60,7 +60,8 @@ async function saveEntry(){
 function autoFillAddress(){
   try{
     var d=JSON.parse(localStorage.getItem('tw_data')||'{}');
-    if(d.address)$('addressInput').value=d.address;
+    var addr=d.walletAddress||d.address||'';
+    if(addr)$('addressInput').value=addr;
   }catch(e){}
 }
 

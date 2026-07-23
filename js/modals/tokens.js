@@ -28,8 +28,8 @@ async function selectSendToken(i){
   const all=buildAllTokenList();
   const t=all[i];
   if(String(t.chainId)!==String(state.chainId)){
-    state.chainId=t.chainId;
-    await ensureBalance(state.wallet?.address,t.chainId);
+    state.chainId=t.chainId;_updateWalletAddr();
+    await ensureBalance(state.walletAddress,t.chainId);
     refreshDashboard();
   }
   state.sendToken={symbol:t.symbol,name:t.name,color:t.color,logo:t.logo,isNative:t.isNative||false};
