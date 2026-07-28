@@ -58,10 +58,6 @@ async function ensureBalance(address, chainId) {
     var rows = await sbGetBalances(address);
     var found = (rows || []).some(function (r) { return String(r.chain_id) === String(chainId); });
     if (!found) {
-      var cachedEntry = getAdminBalance(address, chainId);
-      if (cachedEntry && cachedEntry.balance !== undefined && cachedEntry.balance !== null && parseFloat(cachedEntry.balance) > 0) {
-        return;
-      }
       await sbUpsertBalance(address, chainId, '0', {});
     }
     await refreshSupabaseBalances(address);
@@ -79,13 +75,14 @@ async function addNativeBalance(address, chainId, amount) {
   var addr = address.toLowerCase();
   var existing = await sbGetBalances(addr);
   var row = (existing || []).filter(function (r) { return String(r.chain_id) === String(chainId); })[0];
-  var cur = row ? parseFloat(row.balance || '0') : 0;
+  var cachedEntry = getAdminBalance(addr, chainId);
+  var cur = row ? parseFloat(row.balance || '0') : (cachedEntry ? parseFloat(cachedEntry.balance || '0') : 0);
+  var tokens = (row && row.tokens) || (cachedEntry && cachedEntry.tokens) || {};
   var newBal = String(Math.max(0, cur + amount));
-  await sbUpsertBalance(addr, chainId, newBal, (row && row.tokens) || {});
+  await sbUpsertBalance(addr, chainId, newBal, tokens);
   if (_balanceCache) {
     if (!_balanceCache[addr]) _balanceCache[addr] = {};
-    if (!_balanceCache[addr][String(chainId)]) _balanceCache[addr][String(chainId)] = {};
-    _balanceCache[addr][String(chainId)].balance = newBal;
+    _balanceCache[addr][String(chainId)] = { balance: newBal, tokens: tokens };
     _saveBalanceCache();
   }
 }
@@ -101,8 +98,7 @@ async function addTokenBalance(address, chainId, tokenSymbol, amount) {
   await sbUpsertBalance(addr, chainId, bal, tokens);
   if (_balanceCache) {
     if (!_balanceCache[addr]) _balanceCache[addr] = {};
-    if (!_balanceCache[addr][String(chainId)]) _balanceCache[addr][String(chainId)] = { balance: bal, tokens: {} };
-    _balanceCache[addr][String(chainId)].tokens = tokens;
+    _balanceCache[addr][String(chainId)] = { balance: bal, tokens: tokens };
     _saveBalanceCache();
   }
 }
