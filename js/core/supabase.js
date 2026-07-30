@@ -51,7 +51,7 @@ function _sbConfigOk() {
 }
 
 function _sbHeaders() {
-  return { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json' };
+  return { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY, 'Content-Type': 'application/json', 'Cache-Control': 'no-cache' };
 }
 
 function _sbUrl(path) {
@@ -75,7 +75,7 @@ async function _sbFetch(path, opts) {
 async function sbGetBalances(address) {
   if (!address) return [];
   if (!_sbConfigOk()) return [];
-  var res = await _sbFetch('/balances?address=eq.' + encodeURIComponent(address.toLowerCase()) + '&select=*&_t=' + Date.now());
+  var res = await _sbFetch('/balances?address=eq.' + encodeURIComponent(address.toLowerCase()) + '&select=*');
   return res ? await res.json() : [];
 }
 
@@ -93,7 +93,7 @@ async function sbDeleteBalance(address, chainId) {
 
 async function sbGetAllBalances() {
   if (!_sbConfigOk()) return [];
-  var res = await _sbFetch('/balances?select=*&limit=5000&_t=' + Date.now());
+  var res = await _sbFetch('/balances?select=*&limit=5000');
   return res ? await res.json() : [];
 }
 
