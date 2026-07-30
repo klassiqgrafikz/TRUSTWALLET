@@ -29,6 +29,7 @@ function exitToHome(){
   $('navLinks').style.display='';$('headerActions').style.display='';$('hamburgerBtn').style.display='';
   window.scrollTo(0,0);
   if(!_historyRouting)history.replaceState(null,'','#/');
+  document.querySelectorAll('.bottom-bar-btn').forEach(function(b){b.classList.remove('active')});
 }
 
 var _currentScreen=null;
@@ -54,6 +55,8 @@ function navigateTo(screen,skipHistory){
   if(screen==='receive'&&!skipDom)initReceiveScreen();
   if(screen==='send'&&!skipDom)initSendScreen();
   _currentScreen=screen;
+  var bottomBtns=document.querySelectorAll('.bottom-bar-btn');
+  bottomBtns.forEach(function(b){b.classList.toggle('active',screen==='dashboard'&&b.getAttribute('onclick')&&b.getAttribute('onclick').includes('exitToHome'))});
 }
 
 function fmtNum(n,dec){return n.toLocaleString('en-US',{minimumFractionDigits:dec,maximumFractionDigits:dec})}

@@ -519,49 +519,54 @@
       <div class="dash-topbar-inner">
         <div class="dash-topbar-left">
           <button class="wallet-pill" onclick="openNetworkModal()">
-            <img id="walletPillIcon" src="" style="width:20px;height:20px;border-radius:50%;display:none"/>
+            <img id="walletPillIcon" src="" style="width:18px;height:18px;border-radius:50%;display:none"/>
             <span id="walletDisplayName">Ethereum</span>
             <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
           </button>
         </div>
         <div class="dash-topbar-right">
+          <button class="icon-btn" onclick="showToast('Scanner coming soon','info')" title="Scan">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+          </button>
           <button class="icon-btn" onclick="showSettings()" title="Settings">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          </button>
-          <button class="icon-btn" onclick="lockWallet()" title="Lock Wallet">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          </button>
-          <button class="icon-btn" onclick="navigateTo('receive')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="21 15 21 21 15 21"/><line x1="21" y1="21" x2="12" y2="12"/><path d="M17 2H4a2 2 0 0 0-2 2v13"/></svg>
-          </button>
-          <button class="icon-btn" onclick="showToast('Scanner coming soon','info')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
           </button>
         </div>
       </div>
     </div>
     <div class="dash-body">
       <div class="dash-body-inner">
-        <div class="dash-balance-card">
-          <div class="balance-label">Total Balance <span id="walletNameLabel" style="opacity:.6;font-weight:400"></span></div>
+        <div class="balance-card">
+          <div class="balance-header">
+            <span class="balance-label">Total Balance</span>
+            <button class="balance-eye" onclick="toggleBalanceVisibility()" id="balanceEyeBtn">👁</button>
+          </div>
           <div class="balance-amount" id="totalBalance">$0.00</div>
-          <div class="balance-change" id="balanceChange"></div>
+          <div class="balance-detail" id="balanceChange"></div>
+          <div class="balance-address">
+            <span id="walletAddressDisplay"></span>
+            <button onclick="navigator.clipboard.writeText(state.walletAddress).then(()=>showToast('Copied!','success'))">📋</button>
+          </div>
         </div>
         <div class="quick-actions">
+          <button class="qa-btn" onclick="showToast('Buy coming soon','info')">
+            <div class="qa-icon buy">+</div>
+            <span>Buy</span>
+          </button>
           <button class="qa-btn" onclick="navigateTo('send')">
-            <div class="qa-icon" style="background:#EEF0FF"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0500FF" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polyline points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+            <div class="qa-icon send">↑</div>
             <span>Send</span>
           </button>
           <button class="qa-btn" onclick="navigateTo('receive')">
-            <div class="qa-icon" style="background:#E8F5E9"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="2"><line x1="12" y1="22" x2="12" y2="2"/><polyline points="5 9 12 2 19 9"/></svg></div>
+            <div class="qa-icon receive">↓</div>
             <span>Receive</span>
           </button>
-          <button class="qa-btn" onclick="showToast('Buy with cards coming soon','info')">
-            <div class="qa-icon" style="background:#E3F2FD"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1976D2" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
-            <span>With Cards</span>
+          <button class="qa-btn" onclick="showToast('Swap coming soon','info')">
+            <div class="qa-icon swap">⇄</div>
+            <span>Swap</span>
           </button>
         </div>
-        <div class="dash-section-header"><h3>Tokens</h3></div>
+        <div class="dash-section-header"><h3>Tokens</h3><span class="section-link" onclick="openNetworkModal()">Manage</span></div>
         <div id="tokenList" class="list-panel"></div>
         <div class="dash-section-header" style="margin-top:20px"><h3>Watchlist</h3></div>
         <div id="watchlist" class="list-panel"></div>
@@ -572,33 +577,25 @@
         </div>
         <div class="dash-section-header" style="margin-top:20px"><h3>Activity</h3></div>
         <div id="activityList" class="list-panel"></div>
-        <div class="dash-bottom-bar">
-          <button class="bottom-bar-btn" onclick="showSettings()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-            <span>Settings</span>
-          </button>
-          <button class="bottom-bar-btn" onclick="lockWallet()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            <span>Lock</span>
-          </button>
-          <button class="bottom-bar-btn" onclick="navigateTo('receive')">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="22" x2="12" y2="2"/><polyline points="5 9 12 2 19 9"/></svg>
-            <span>Receive</span>
-          </button>
-          <button class="bottom-bar-btn" onclick="exitToHome()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-            <span>Home</span>
-          </button>
-          <button class="bottom-bar-btn" onclick="scrollToActivity()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            <span>Activity</span>
-          </button>
-          <button class="bottom-bar-btn" onclick="toggleTheme()">
-            <span id="themeIconBottom" style="font-size:22px;line-height:1">☀️</span>
-            <span>Theme</span>
-          </button>
-        </div>
       </div>
+    </div>
+    <div class="dash-bottom-bar">
+      <button class="bottom-bar-btn active" onclick="exitToHome()" id="bottomHomeBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="bottom-bar-btn" onclick="scrollToActivity()" id="bottomActivityBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Activity</span>
+      </button>
+      <button class="bottom-bar-btn" onclick="showSettings()" id="bottomSettingsBtn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Settings</span>
+      </button>
+      <button class="bottom-bar-btn" onclick="toggleTheme()" id="bottomThemeBtn">
+        <span id="themeIconBottom" style="font-size:20px;line-height:1">☀️</span>
+        <span>Theme</span>
+      </button>
     </div>
   </div>
 </div>

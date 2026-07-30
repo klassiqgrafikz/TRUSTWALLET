@@ -52,10 +52,15 @@ body.dark .warning-box{background:#3a2a1a;border-color:#5a4a2a;color:var(--trust
 body.dark .mnemonic-grid .word-box{background:#2A2A2E;border-color:#3A3A3E;color:var(--trustBlack)}
 body.dark .platform-stats .platform-stat h3{color:var(--trustBlack)}
 body.dark .platform-stats .platform-stat p{color:var(--lightBlack)}
-body.dark .dash-layout{background:var(--trustWhite)}
+body.dark .dash-layout{background:var(--trustWhite);border-color:var(--borderTint)}
 body.dark .dash-topbar{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
 body.dark .theme-toggle-btn{background:#2A2A2E;border-color:#3A3A3E}
 body.dark .theme-toggle-btn:hover{border-color:var(--trustBlue)}
+body.dark .dash-bottom-bar{background:var(--trustWhite);border-top-color:var(--borderTint)}
+body.dark .bottom-bar-btn.active{color:var(--trustBlue)}
+body.dark .balance-address{background:rgba(255,255,255,0.1)}
+body.dark .nft-placeholder{background:#2A2A2E}
+body.dark .list-panel{border-color:var(--borderTint)}
 body.dark .screen-layout{background:var(--trustWhite)}
 body.dark .screen-topbar{background:rgba(27,27,28,0.95);border-bottom-color:var(--borderTint)}
 body.dark .tw-card-white{background:#2A2A2E;border-color:#3A3A3E}

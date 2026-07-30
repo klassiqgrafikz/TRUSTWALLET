@@ -13,4 +13,4 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 input,textarea{font-family:inherit;outline:none}
 img{max-width:100%;display:block}
 .hidden{display:none!important}
-.list-panel{background:var(--trustWhite);transition:background .3s}
+.list-panel{background:var(--trustWhite);transition:background .3s;border-radius:12px;overflow:hidden;border:1px solid var(--borderTint)}
