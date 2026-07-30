@@ -18,7 +18,7 @@
 .hamburger.open span{background:transparent}
 .hamburger.open span::before{top:0;transform:rotate(45deg)}
 .hamburger.open span::after{top:0;transform:rotate(-45deg)}
-@media(min-width:641px){.dash-layout{max-width:480px!important;border-radius:24px;margin:20px auto;min-height:calc(100vh-40px)}}
+@media(min-width:641px){.dash-layout{max-width:100%!important;border-radius:0;margin:0;min-height:100vh}}
 @media(max-width:640px){.dash-layout{max-width:100%!important;border-radius:0;margin:0;min-height:100vh}}
 @media(max-width:640px){
   .header-inner{padding:0 12px}

@@ -120,8 +120,7 @@
 .rating-stars{color:var(--starGold);font-size:20px;letter-spacing:4px;margin-bottom:6px}
 .rating-label{font-size:14px;color:var(--lightBlack);margin-bottom:10px}
 .rating-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;background:var(--baseWhite);border-radius:10px;font-size:13px;font-weight:600}
-.dash-layout{display:flex;flex-direction:column;min-height:100vh;background:var(--trustWhite);max-width:480px;margin:0 auto;position:relative;box-shadow:0 0 40px rgba(0,0,0,0.06)}
-@media(min-width:481px){.dash-layout{border-left:1px solid var(--borderTint);border-right:1px solid var(--borderTint)}}
+.dash-layout{display:flex;flex-direction:column;min-height:100vh;background:var(--trustWhite);position:relative}
 .dash-topbar{position:sticky;top:0;z-index:100;background:var(--trustWhite);border-bottom:1px solid var(--borderTint)}
 .dash-topbar-inner{display:flex;align-items:center;justify-content:space-between;height:56px;padding:0 16px}
 .dash-topbar-left{display:flex;align-items:center;gap:10px}
