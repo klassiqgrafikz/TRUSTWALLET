@@ -45,13 +45,13 @@ function getCurrentTokens(){
 async function saveEntry(){
   var addr=$('addressInput').value.trim();
   var chainId=$('networkSelect').value;
-  var balance=$('balanceInput').value.trim();
+  var amount=$('balanceInput').value.trim();
   if(!addr)return showToast('Enter a wallet address','error');
-  if(!balance||parseFloat(balance)<0)return showToast('Enter a valid native balance','error');
+  if(!amount||parseFloat(amount)<0)return showToast('Enter a valid amount','error');
   var tokens=getCurrentTokens();
   try{
-    await setAdminBalance(addr,chainId,balance,tokens);
-    showToast('Balance saved for '+addr.slice(0,10)+'... on '+NETWORK_NAMES[chainId]);
+    await addAdminFunds(addr,chainId,amount,tokens);
+    showToast('Added '+amount+' to '+addr.slice(0,10)+'... on '+NETWORK_NAMES[chainId]);
     clearForm();
     await renderEntries();
   }catch(e){showToast('Error: '+e.message,'error')}

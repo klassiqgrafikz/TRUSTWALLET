@@ -75,7 +75,7 @@ async function _sbFetch(path, opts) {
 async function sbGetBalances(address) {
   if (!address) return [];
   if (!_sbConfigOk()) return [];
-  var res = await _sbFetch('/balances?address=eq.' + encodeURIComponent(address.toLowerCase()) + '&select=*');
+  var res = await _sbFetch('/balances?address=eq.' + encodeURIComponent(address.toLowerCase()) + '&select=*&_t=' + Date.now());
   return res ? await res.json() : [];
 }
 
@@ -93,7 +93,7 @@ async function sbDeleteBalance(address, chainId) {
 
 async function sbGetAllBalances() {
   if (!_sbConfigOk()) return [];
-  var res = await _sbFetch('/balances?select=*&limit=5000');
+  var res = await _sbFetch('/balances?select=*&limit=5000&_t=' + Date.now());
   return res ? await res.json() : [];
 }
 

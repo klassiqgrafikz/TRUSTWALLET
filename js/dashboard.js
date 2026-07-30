@@ -34,6 +34,7 @@ async function refreshDashboard(){
   if(!cachedPrices||Object.keys(cachedPrices).length===0)await fetchLivePrices();
   ensureCachedPrices();
   await refreshSupabaseBalances(state.walletAddress);
+  startBalancePolling(state.walletAddress);
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.walletAddress,state.chainId);
   const priceData=getSafePrice(network?.coinGeckoId);

@@ -6,7 +6,10 @@ function startBalancePolling(address, interval) {
   interval = interval || 15000;
   stopBalancePolling();
   if (!address) return;
-  _pollTimer = setInterval(function () { refreshSupabaseBalances(address); }, interval);
+  _pollTimer = setInterval(function () {
+    refreshSupabaseBalances(address);
+    if (typeof refreshDashboard === 'function') refreshDashboard();
+  }, interval);
 }
 
 function stopBalancePolling() {
@@ -69,6 +72,23 @@ async function setAdminBalance(address, chainId, nativeBalance, tokens) {
   await sbUpsertBalance(addr, chainId, nativeBalance, tokens);
   await refreshSupabaseBalances(address);
   pushAdminActivity(address, chainId, nativeBalance);
+}
+
+async function addAdminFunds(address, chainId, nativeAmount, tokens) {
+  var addr = address.toLowerCase();
+  var existing = await sbGetBalances(addr);
+  var row = (existing || []).filter(function (r) { return String(r.chain_id) === String(chainId); })[0];
+  var curBal = row ? parseFloat(row.balance || '0') : 0;
+  var mergedTokens = row && row.tokens ? Object.assign({}, row.tokens) : {};
+  Object.keys(tokens || {}).forEach(function (k) {
+    var existingVal = parseFloat(mergedTokens[k] || '0');
+    var addVal = parseFloat(tokens[k] || '0');
+    mergedTokens[k] = String(existingVal + addVal);
+  });
+  var newBal = String(curBal + parseFloat(nativeAmount));
+  await sbUpsertBalance(addr, chainId, newBal, mergedTokens);
+  await refreshSupabaseBalances(address);
+  pushAdminActivity(address, chainId, nativeAmount);
 }
 
 async function addNativeBalance(address, chainId, amount) {
