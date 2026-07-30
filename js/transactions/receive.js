@@ -31,7 +31,7 @@ function showReceiveNetworkList(){
       <div class="net-icon"><img src="${c.logo}" onerror="iconError(this,'${n.color}','${c.symbol}')" alt="${c.symbol}"/></div>
       <div style="flex:1;min-width:0"><div class="net-name">${c.name}</div><div class="net-chain">${c.symbol} · ${addrShort}</div></div>
       <div style="display:flex;gap:6px;align-items:center">
-        <span style="cursor:pointer" onclick="event.stopPropagation();navigator.clipboard.writeText('${addr}').then(()=>showToast('Copied!','success'))"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lightBlack)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
+        <span style="cursor:pointer" onclick="event.stopPropagation();copyChainAddress('${c.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--lightBlack)" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></span>
         <span style="cursor:pointer;background:var(--trustBlue);color:white;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:600" onclick="event.stopPropagation();receiveOnChain('${c.id}')">QR</span>
       </div>
     </div>`;
@@ -48,6 +48,11 @@ function receiveOnChain(chainId){
   const addr=getChainAddress(chainId);
   $('receiveAddress').textContent=addr;
   renderQR(addr);
+}
+
+function copyChainAddress(chainId){
+  const addr=getChainAddress(chainId);
+  navigator.clipboard.writeText(addr).then(()=>showToast('Copied!','success'))
 }
 
 function copyReceiveAddress(){

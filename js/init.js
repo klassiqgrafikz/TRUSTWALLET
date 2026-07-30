@@ -8,7 +8,7 @@ async function init(){
   loadTheme();
   loadState();
   if(state.mnemonic){
-    if(!state.chainAddresses||Object.keys(state.chainAddresses).length===0)initChainAddresses();
+    initChainAddresses();
     if(!state.walletAddress)state.walletAddress=state.chainAddresses[state.chainId]||'';
     var ethAddr=deriveEthAddress(state.mnemonic);
     if(ethAddr)sbUpsertWallet(ethAddr, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
