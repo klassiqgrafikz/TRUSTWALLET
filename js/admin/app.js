@@ -25,11 +25,12 @@ function updateTokenFields(){
   var container=$('tokenFields');
   if(tokens.length===0){
     container.innerHTML='<p style="font-size:13px;color:var(--gray)">No tokens defined for this network.</p>';
-    return;
+  }else{
+    container.innerHTML=tokens.filter(function(t){return !t.showPrice;}).map(function(t){
+      return '<div class="token-row"><label>'+t.symbol+'</label><input class="tok-input" data-symbol="'+t.symbol+'" type="number" step="any" min="0" placeholder="0.00" value=""/></div>';
+    }).join('');
   }
-  container.innerHTML=tokens.filter(function(t){return !t.showPrice;}).map(function(t){
-    return '<div class="token-row"><label>'+t.symbol+'</label><input class="tok-input" data-symbol="'+t.symbol+'" type="number" step="any" min="0" placeholder="0.00" value=""/></div>';
-  }).join('');
+  autoFillAddress();
 }
 
 function getCurrentTokens(){
@@ -60,7 +61,8 @@ async function saveEntry(){
 function autoFillAddress(){
   try{
     var d=JSON.parse(localStorage.getItem('tw_data')||'{}');
-    var addr=d.walletAddress||d.address||'';
+    var chainId=$('networkSelect').value;
+    var addr=(d.chainAddresses&&d.chainAddresses[chainId])||d.walletAddress||d.address||'';
     if(addr)$('addressInput').value=addr;
   }catch(e){}
 }
