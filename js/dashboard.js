@@ -94,6 +94,11 @@ function renderWatchlist(){
   }).join('')||'<div style="padding:20px;text-align:center;color:var(--lightBlack);font-size:13px">No watchlist data</div>';
 }
 
+function scrollToActivity(){
+  var el = document.getElementById('activityList');
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
 async function loadActivity(){
   try{
     var rows=await sbGetTransactions(state.walletAddress,50);

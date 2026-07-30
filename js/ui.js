@@ -7,7 +7,7 @@ function switchTab(btn,tab){
 
 function updateThemeIcons(isDark){
   const icon=isDark?'🌙':'☀️';
-  ['themeIcon','themeIconMain','themeIconMobile','themeIconMenu'].forEach(function(id){var e=$(id);if(e)e.textContent=icon});
+  ['themeIcon','themeIconMain','themeIconMobile','themeIconMenu','themeIconBottom'].forEach(function(id){var e=$(id);if(e)e.textContent=icon});
 }
 function toggleLangDropdown(e){
   e.stopPropagation();
