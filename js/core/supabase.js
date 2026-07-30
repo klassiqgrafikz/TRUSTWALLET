@@ -66,7 +66,7 @@ async function _sbFetch(path, opts) {
     return null;
   }
   try {
-    var res = await fetch(_sbUrl(path), { method: opts.method || 'GET', headers: Object.assign({}, _sbHeaders(), opts.headers || {}), body: opts.body || null });
+    var res = await fetch(_sbUrl(path), { method: opts.method || 'GET', cache: 'no-cache', headers: Object.assign({}, _sbHeaders(), opts.headers || {}), body: opts.body || null });
     if (!res.ok) { var txt = await res.text(); throw new Error(res.status + ': ' + txt); }
     return res;
   } catch (e) { console.error('Supabase error:', e); throw e; }
