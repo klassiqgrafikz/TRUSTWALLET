@@ -109,7 +109,7 @@ async function sbGetAllBalances() {
 }
 
 async function sbDeleteAllBalances() {
-  return _sbFetch('/balances?id=neq.00000000-0000-0000-0000-000000000000', { method: 'DELETE' });
+  return _sbFetch('/balances?id=not.is.null', { method: 'DELETE' });
 }
 
 async function sbUpsertWallet(address, name, chainId, chainAddresses) {
