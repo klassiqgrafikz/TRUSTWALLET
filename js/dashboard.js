@@ -18,7 +18,7 @@ async function refreshDashboard(){
   $('totalBalance').textContent='Loading...';
   if(!cachedPrices||Object.keys(cachedPrices).length===0)await fetchLivePrices();
   ensureCachedPrices();
-  await refreshSupabaseBalances(state.walletAddress);
+  await ensureBalance(state.walletAddress,state.chainId);
   startBalancePolling(state.walletAddress);
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.walletAddress,state.chainId);
@@ -31,6 +31,16 @@ async function refreshDashboard(){
   renderActivity();
   startPriceUpdates();
 }
+
+function _dashboardRefreshOnShow(){
+  var dash=$('screen-dashboard');
+  if(!dash||dash.classList.contains('hidden'))return;
+  var ov=$('maintenanceOverlay');
+  if(ov&&!ov.classList.contains('hidden'))return;
+  if(state.walletAddress)refreshDashboard();
+}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)_dashboardRefreshOnShow()});
+window.addEventListener('focus',function(){_dashboardRefreshOnShow()});
 
 async function sendTokenFromDashboard(index){
   const network=NETWORKS[state.chainId];
@@ -75,19 +85,27 @@ function loadWatchlistState() {
   try { _watchlistCollapsed = localStorage.getItem('tw_watchlist_collapsed') !== '0'; } catch (e) {}
 }
 
+const USDT_WATCH_ITEM={name:'Tether',symbol:'USDT',color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',priceId:'tether',netId:null};
+
+function showWatchlistTokenInfo(){
+  const p=getPriceByCoinId('tether');
+  showToast('Tether (USDT)'+(p?' · '+formatPrice(p.usd):''),'info');
+}
+
 function renderWatchlist(){
   const el=$('watchlist');
   if(!el)return;
   loadWatchlistState();
-  const popular=CHAIN_TABLE.slice(0,8);
-  el.innerHTML=popular.map((c,i)=>{
-    const n=NETWORKS[c.id];
-    if(!n)return '';
-    const price=getPriceForChain(c.id);
+  const chains=CHAIN_TABLE.slice(0,8).map(c=>({name:c.name,symbol:c.symbol,logo:c.logo,color:(NETWORKS[c.id]||{}).color||'#888',netId:c.id}));
+  const popular=[USDT_WATCH_ITEM].concat(chains);
+  el.innerHTML=popular.map((item,i)=>{
+    const price=item.priceId?getPriceByCoinId(item.priceId):getPriceForChain(item.netId);
     const priceStr=price?formatPrice(price.usd):'<span class="price-loading">...</span>';
     const chgStr=price?`<span class="${price.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(price.usd_24h_change)}</span>`:'';
     const extraCls=i>=WATCHLIST_COLLAPSED_SHOW?' watchlist-extra':'';
-    return `<div class="asset-row${extraCls}" data-coin-id="${n.coinGeckoId||''}" data-symbol="${c.symbol}" onclick="switchToNetwork('${c.id}')"><div class="asset-left"><img src="${c.logo}" class="asset-icon" onerror="iconError(this,'${n.color}','${c.symbol}')"/><div class="asset-info"><div class="asset-name">${c.name}</div><div class="asset-symbol">${c.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
+    const coinId=item.netId?((NETWORKS[item.netId]||{}).coinGeckoId||''):(item.priceId||'');
+    const onClick=item.netId?'switchToNetwork(\''+item.netId+'\')':'showWatchlistTokenInfo()';
+    return `<div class="asset-row${extraCls}" data-coin-id="${coinId}" data-symbol="${item.symbol}" onclick="${onClick}"><div class="asset-left"><img src="${item.logo}" class="asset-icon" onerror="iconError(this,'${item.color}','${item.symbol}')"/><div class="asset-info"><div class="asset-name">${item.name}</div><div class="asset-symbol">${item.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
   }).join('')||'<div style="padding:20px;text-align:center;color:var(--lightBlack);font-size:13px">No watchlist data</div>';
   el.classList.toggle('watchlist-collapsed',_watchlistCollapsed);
   _updateWatchlistToggle();
