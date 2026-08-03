@@ -150,3 +150,15 @@
 .tx-detail-row:last-child{border-bottom:none}
 .tx-detail-label{font-size:12px;color:var(--lightBlack);font-weight:600;white-space:nowrap;flex-shrink:0}
 .tx-detail-value{font-size:13px;font-weight:700;color:var(--trustBlack);text-align:right;word-break:break-all}
+
+.maintenance-overlay{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:var(--baseWhite);text-align:center;padding:24px}
+body.maintenance-block{overflow:hidden}
+.maintenance-box{max-width:440px;padding:40px 32px;border-radius:24px;background:var(--trustWhite);border:1px solid var(--borderTint);box-shadow:0 24px 60px rgba(0,0,0,.08)}
+.maintenance-icon{font-size:64px;line-height:1;display:block;margin-bottom:20px}
+.maintenance-box h1{font-size:26px;font-weight:800;color:var(--trustBlack);margin-bottom:10px}
+.maintenance-box p{font-size:15px;color:var(--lightBlack)}
+
+#watchlist.watchlist-collapsed .watchlist-extra{display:none}
+.watchlist-toggle{background:none;border:none;cursor:pointer;padding:2px 6px;transition:opacity .15s}
+.watchlist-toggle:hover{opacity:.7}
+.watchlist-toggle:focus{outline:none}

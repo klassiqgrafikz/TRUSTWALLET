@@ -109,6 +109,36 @@ async function clearAll(){
   }catch(e){showToast('Error: '+e.message,'error')}
 }
 
+function setMaintenanceUI(on){
+  $('maintenanceToggle').checked = on;
+  $('maintenanceStatusText').innerHTML = '<span style="font-weight:700;color:' + (on ? '#FF3B30' : '#22C55E') + '">&#9679; MODE: ' + (on ? 'PAUSED' : 'LIVE') + '</span> &mdash; website is ' + (on ? 'hidden behind the under-development screen' : 'visible to all visitors') + '.';
+}
+
+async function loadMaintenanceStatus(){
+  try{
+    var cached = getMaintenanceCached();
+    setMaintenanceUI(cached);
+    var v = await sbGetConfig('maintenance');
+    if (v === 'on' || v === 'off') { setMaintenanceCached(v === 'on'); setMaintenanceUI(v === 'on'); }
+  }catch(e){ setMaintenanceUI(getMaintenanceCached()); }
+}
+
+async function toggleMaintenance(checked){
+  $('maintenanceToggle').disabled = true;
+  try{
+    await sbSetConfig('maintenance', checked ? 'on' : 'off');
+    setMaintenanceCached(checked);
+    setMaintenanceUI(checked);
+    showToast(checked ? 'Maintenance mode ON — site paused' : 'Maintenance mode OFF — site live');
+  }catch(e){
+    setMaintenanceUI(!checked);
+    showToast('Error saving status: '+e.message,'error');
+  }finally{
+    $('maintenanceToggle').disabled = false;
+  }
+}
+
 populateNetworkSelect();
 autoFillAddress();
 renderEntries();
+loadMaintenanceStatus();

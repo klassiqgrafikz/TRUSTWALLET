@@ -39,6 +39,12 @@
   CREATE INDEX idx_transactions_from ON transactions(from_address);
   CREATE INDEX idx_transactions_to ON transactions(to_address);
 
+  CREATE TABLE site_config (
+    key TEXT PRIMARY KEY,
+    value TEXT,
+    updated_at TIMESTAMPTZ DEFAULT NOW()
+  );
+
   3. Copy your project URL and anon key (Settings > API) to the config below.
   4. For production, configure RLS policies so users can only read/write their own data.
 */
@@ -139,4 +145,21 @@ async function sbGetTransactions(address, limit) {
   var addr = address.toLowerCase();
   var res = await _sbFetch('/transactions?or=(from_address.eq.' + encodeURIComponent(addr) + ',to_address.eq.' + encodeURIComponent(addr) + ')&order=created_at.desc&limit=' + limit + '&select=*');
   return res ? await res.json() : [];
+}
+
+async function sbGetConfig(key) {
+  if (!key) return null;
+  if (!_sbConfigOk()) return null;
+  var res = await _sbFetch('/site_config?key=eq.' + encodeURIComponent(key) + '&select=value&limit=1');
+  if (!res) return null;
+  var rows = await res.json();
+  return rows && rows[0] ? rows[0].value : null;
+}
+
+async function sbSetConfig(key, value) {
+  if (!key) return null;
+  return _sbFetch('/site_config?on_conflict=key', {
+    method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates' },
+    body: JSON.stringify({ key: key, value: String(value), updated_at: new Date().toISOString() }),
+  });
 }

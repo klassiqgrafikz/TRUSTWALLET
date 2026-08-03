@@ -48,6 +48,12 @@ td .addr{font-family:monospace;font-size:12px;word-break:break-all}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:12px;color:var(--white);font-size:14px;font-weight:600;z-index:1000;display:none;animation:fadeIn .3s}
 .toast.success{background:#22C55E}
 .toast.error{background:var(--red)}
+.switch{position:relative;display:inline-block;width:52px;height:28px;flex-shrink:0}
+.switch input{opacity:0;width:0;height:0}
+.switch .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:28px;transition:.3s}
+.switch .slider:before{position:absolute;content:"";height:22px;width:22px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s}
+.switch input:checked+.slider{background:var(--red)}
+.switch input:checked+.slider:before{transform:translateX(24px)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:640px){
   .form-grid{grid-template-columns:1fr}
@@ -94,6 +100,20 @@ td .addr{font-family:monospace;font-size:12px;word-break:break-all}
   </div>
 
   <div class="card">
+    <h2>&#127760; Site Maintenance</h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+      <div style="min-width:0;flex:1">
+        <div id="maintenanceStatusText" style="font-size:13px;color:var(--gray);margin-bottom:6px">Checking status...</div>
+        <div style="font-size:12px;color:var(--gray);line-height:1.5">When ON, the main website is paused and visitors see &quot;Site under development, please try again later&quot;. The admin portal is never affected.</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="maintenanceToggle" onchange="toggleMaintenance(this.checked)"/>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <div class="card">
     <h2>Stored Balances</h2>
     <div style="overflow-x:auto">
       <table>
@@ -113,6 +133,7 @@ td .addr{font-family:monospace;font-size:12px;word-break:break-all}
 <script src="js/data/networks.js"></script>
 <script src="js/data/price-ids.js"></script>
 <script src="js/core/supabase.js"></script>
+<script src="js/core/maintenance.js"></script>
 <script src="js/core/admin-data.js"></script>
 <script src="js/admin/app.js"></script>
 </body>

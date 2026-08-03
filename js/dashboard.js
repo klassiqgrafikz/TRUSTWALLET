@@ -66,18 +66,46 @@ async function renderTokenList(){
   $('tokenList').innerHTML=html;
 }
 
+const WATCHLIST_COLLAPSED_SHOW = 2;
+var _watchlistCollapsed = true;
+function saveWatchlistState() {
+  try { localStorage.setItem('tw_watchlist_collapsed', _watchlistCollapsed ? '1' : '0'); } catch (e) {}
+}
+function loadWatchlistState() {
+  try { _watchlistCollapsed = localStorage.getItem('tw_watchlist_collapsed') !== '0'; } catch (e) {}
+}
+
 function renderWatchlist(){
   const el=$('watchlist');
   if(!el)return;
+  loadWatchlistState();
   const popular=CHAIN_TABLE.slice(0,8);
-  el.innerHTML=popular.map(c=>{
+  el.innerHTML=popular.map((c,i)=>{
     const n=NETWORKS[c.id];
     if(!n)return '';
     const price=getPriceForChain(c.id);
     const priceStr=price?formatPrice(price.usd):'<span class="price-loading">...</span>';
     const chgStr=price?`<span class="${price.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(price.usd_24h_change)}</span>`:'';
-    return `<div class="asset-row" data-coin-id="${n.coinGeckoId||''}" data-symbol="${c.symbol}" onclick="switchToNetwork('${c.id}')"><div class="asset-left"><img src="${c.logo}" class="asset-icon" onerror="iconError(this,'${n.color}','${c.symbol}')"/><div class="asset-info"><div class="asset-name">${c.name}</div><div class="asset-symbol">${c.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
+    const extraCls=i>=WATCHLIST_COLLAPSED_SHOW?' watchlist-extra':'';
+    return `<div class="asset-row${extraCls}" data-coin-id="${n.coinGeckoId||''}" data-symbol="${c.symbol}" onclick="switchToNetwork('${c.id}')"><div class="asset-left"><img src="${c.logo}" class="asset-icon" onerror="iconError(this,'${n.color}','${c.symbol}')"/><div class="asset-info"><div class="asset-name">${c.name}</div><div class="asset-symbol">${c.symbol}</div></div></div><div class="asset-right"><div class="asset-price">${priceStr}</div>${chgStr?'<div>'+chgStr+'</div>':''}</div></div>`;
   }).join('')||'<div style="padding:20px;text-align:center;color:var(--lightBlack);font-size:13px">No watchlist data</div>';
+  el.classList.toggle('watchlist-collapsed',_watchlistCollapsed);
+  _updateWatchlistToggle();
+}
+
+function _updateWatchlistToggle(){
+  const btn=$('watchlistToggleBtn');
+  if(!btn)return;
+  btn.textContent=_watchlistCollapsed?'▾ Show all':'▴ Show less';
+  btn.setAttribute('aria-expanded',String(!_watchlistCollapsed));
+}
+
+function toggleWatchlist(){
+  _watchlistCollapsed=!_watchlistCollapsed;
+  saveWatchlistState();
+  const el=$('watchlist');
+  if(el)el.classList.toggle('watchlist-collapsed',_watchlistCollapsed);
+  _updateWatchlistToggle();
 }
 
 function scrollToActivity(){
