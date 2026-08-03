@@ -1,11 +1,38 @@
 var _swapPickerTarget=null;
+var _GLOBAL_SWAP_TOKENS=null;
 
-function getChainSwapTokens(chainId){
-  const n=NETWORKS[chainId];
-  if(!n)return[];
-  const native={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true,priceId:n.coinGeckoId};
-  const tokens=(TOKEN_LIST[chainId]||[]).map(t=>({symbol:t.symbol,name:t.name,color:t.color,logo:t.logo,isNative:false,priceId:t.priceId,isStable:t.isStable}));
-  return [native,...tokens];
+function _swapChainOrder(){
+  var keys=Object.keys(NETWORKS);
+  var numeric=[],other=[];
+  keys.forEach(function(k){if(/^\d+$/.test(k))numeric.push(k);else other.push(k)});
+  numeric.sort(function(a,b){return parseInt(a,10)-parseInt(b,10)});
+  other.sort();
+  return numeric.concat(other);
+}
+
+function buildGlobalSwapTokens(){
+  var list=[],seen={};
+  function add(t){
+    var key=t.symbol+'|'+(t.isNative?'n':'t');
+    if(seen[key])return;
+    seen[key]=1;list.push(t);
+  }
+  _swapChainOrder().forEach(function(id){
+    var n=NETWORKS[id];if(!n)return;
+    add({symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true,priceId:n.coinGeckoId,chainId:id});
+  });
+  _swapChainOrder().forEach(function(id){
+    var tokens=TOKEN_LIST[id];if(!tokens)return;
+    tokens.forEach(function(t){
+      add({symbol:t.symbol,name:t.name,color:t.color,logo:t.logo,isNative:false,isStable:t.isStable,priceId:t.priceId,chainId:id});
+    });
+  });
+  return list;
+}
+
+function getChainSwapTokens(){
+  if(!_GLOBAL_SWAP_TOKENS)_GLOBAL_SWAP_TOKENS=buildGlobalSwapTokens();
+  return _GLOBAL_SWAP_TOKENS;
 }
 
 function _sameSwapToken(a,b){
@@ -15,14 +42,15 @@ function _sameSwapToken(a,b){
 function openSwapModal(){
   const n=NETWORKS[state.chainId];
   if(!n)return;
-  const tokens=getChainSwapTokens(state.chainId);
-  if(tokens.length<2){showToast('Not enough tokens on this network to swap','error');return}
-  if(!state.swapFromToken||!tokens.some(t=>_sameSwapToken(t,state.swapFromToken)))state.swapFromToken={...tokens[0]};
-  if(!state.swapToToken||!tokens.some(t=>_sameSwapToken(t,state.swapToToken)))state.swapToToken={...tokens[1]};
+  const tokens=getChainSwapTokens();
+  if(tokens.length<2){showToast('Not enough tokens to swap','error');return}
+  const curNative=tokens.find(t=>t.isNative&&t.chainId===state.chainId)||tokens.find(t=>t.isNative)||tokens[0];
+  if(!state.swapFromToken||!tokens.some(t=>_sameSwapToken(t,state.swapFromToken)))state.swapFromToken={...curNative};
+  if(!state.swapToToken||!tokens.some(t=>_sameSwapToken(t,state.swapToToken)))state.swapToToken={...tokens.find(t=>!_sameSwapToken(t,state.swapFromToken))||tokens[1]};
   if(_sameSwapToken(state.swapFromToken,state.swapToToken)){
     state.swapToToken={...tokens.find(t=>!_sameSwapToken(t,state.swapFromToken))||tokens[1]};
   }
-  $('swapNetName').textContent=n.name;
+  $('swapNetName').textContent='all networks';
   renderSwapTokenDisplay();
   $('swapFromAmount').value='';
   $('swapToAmount').value='';
@@ -51,9 +79,11 @@ function renderSwapTokenDisplay(){
 }
 
 function getSwapTokenBalance(t){
-  const addr=state.walletAddress,cid=state.chainId;
+  if(!t)return 0;
+  const chainId=t.chainId||state.chainId;
+  const addr=(typeof getChainAddress==='function'?getChainAddress(chainId):null)||state.walletAddress;
   if(!addr)return 0;
-  const b=t.isNative?getAdminNativeBalance(addr,cid):getAdminTokenBalance(addr,cid,t.symbol);
+  const b=t.isNative?getAdminNativeBalance(addr,chainId):getAdminTokenBalance(addr,chainId,t.symbol);
   return b!==null?b:0;
 }
 
@@ -64,7 +94,7 @@ function refreshSwapBalances(){
 
 function getTokenUsdPrice(t){
   if(!t)return null;
-  const p=t.isNative?getPriceForChain(state.chainId):(t.priceId?getPriceByCoinId(t.priceId):null);
+  const p=t.isNative?(t.chainId?getPriceForChain(t.chainId):getPriceForChain(state.chainId)):(t.priceId?getPriceByCoinId(t.priceId):null);
   if(p&&p.usd)return p;
   if(t.isStable)return {usd:1};
   return null;
@@ -113,13 +143,14 @@ function flipSwap(){
 
 function openSwapPicker(target){
   _swapPickerTarget=target;
-  const tokens=getChainSwapTokens(state.chainId);
+  const tokens=getChainSwapTokens();
   $('swapPickerList').innerHTML=tokens.map((t,i)=>{
     const selected=_sameSwapToken(t,target==='from'?state.swapFromToken:state.swapToToken);
     const bal=formatTokenAmount(getSwapTokenBalance(t));
+    const chainName=(NETWORKS[t.chainId]||{}).name||'';
     return `<div class="token-select-item ${selected?'selected':''}" onclick="selectSwapToken(${i})">
       <div class="ts-icon" style="background:${t.color}"><img src="${t.logo}" onerror="iconError(this,'${t.color}','${t.symbol}')"/></div>
-      <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:14px">${t.name}</div><div style="font-size:12px;color:var(--lightBlack)">${t.symbol}${t.isNative?' (native)':''}</div></div>
+      <div style="flex:1;min-width:0"><div style="font-weight:600;font-size:14px">${t.name}</div><div style="font-size:12px;color:var(--lightBlack)">${t.symbol} · ${chainName}${t.isNative?' (native)':''}</div></div>
       <div style="font-size:12px;color:var(--lightBlack);flex-shrink:0">${bal} ${t.symbol}</div>
       ${selected?'<span style="color:var(--trustBlue);font-weight:700">✓</span>':''}
     </div>`;
@@ -134,7 +165,7 @@ function closeSwapPicker(){
 }
 
 function selectSwapToken(i){
-  const tokens=getChainSwapTokens(state.chainId);
+  const tokens=getChainSwapTokens();
   const t=tokens[i];
   if(!t)return;
   if(_swapPickerTarget==='from'){
@@ -173,7 +204,7 @@ async function executeSwap(){
   if(bal<need)return showToast('Insufficient balance','error');
   showLoading('Swapping...');
   try{
-    const result=await swapAdminFunds(state.walletAddress,state.chainId,f.symbol,amt,to.symbol,toAmt,f.isNative,to.isNative,gas);
+    const result=await swapAdminFundsCrossNetwork(f.chainId||state.chainId,to.chainId||state.chainId,f.symbol,amt,to.symbol,toAmt,f.isNative,to.isNative,gas);
     if(!result.success){hideLoading();return showToast(result.error,'error')}
     hideLoading();
     closeSwapModal();

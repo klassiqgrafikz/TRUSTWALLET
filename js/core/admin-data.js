@@ -277,6 +277,51 @@ async function swapAdminFunds(address, chainId, fromSym, fromAmt, toSym, toAmt, 
   return { success: true, hash: txEntry.hash, gasFee: gas };
 }
 
+async function swapAdminFundsCrossNetwork(fromChainId, toChainId, fromSym, fromAmt, toSym, toAmt, isFromNative, isToNative, gasFeeEth) {
+  var gas = parseFloat(gasFeeEth) || 0;
+  var fromAddr = (typeof getChainAddress === 'function' ? getChainAddress(fromChainId) : null) || (typeof state !== 'undefined' && state ? (state.chainAddresses || {})[fromChainId] : '') || '';
+  var toAddr = (typeof getChainAddress === 'function' ? getChainAddress(toChainId) : null) || (typeof state !== 'undefined' && state ? (state.chainAddresses || {})[toChainId] : '') || '';
+  var addr = fromAddr.toLowerCase();
+  var fromName = (NETWORKS ? NETWORKS[fromChainId]?.symbol : null) || 'Unknown';
+  var toName = (NETWORKS ? NETWORKS[toChainId]?.symbol : null) || 'Unknown';
+
+  if (isFromNative) {
+    var natBal = getAdminNativeBalance(addr, fromChainId);
+    if (natBal === null || natBal < parseFloat(fromAmt) + gas) return { success: false, error: 'Insufficient balance (amount + gas)' };
+    await addNativeBalance(addr, fromChainId, -parseFloat(fromAmt));
+    await addNativeBalance(addr, fromChainId, -gas);
+  } else {
+    var tokBal = getAdminTokenBalance(addr, fromChainId, fromSym);
+    if (tokBal === null || tokBal < parseFloat(fromAmt)) return { success: false, error: 'Insufficient ' + fromSym + ' balance' };
+    await addTokenBalance(addr, fromChainId, fromSym, -parseFloat(fromAmt));
+    var nativeForGas = getAdminNativeBalance(addr, fromChainId);
+    if (nativeForGas !== null && nativeForGas < gas) return { success: false, error: 'Insufficient ' + fromName + ' for gas' };
+    if (nativeForGas !== null) await addNativeBalance(addr, fromChainId, -gas);
+  }
+
+  if (isToNative) {
+    await addNativeBalance(toAddr.toLowerCase(), toChainId, parseFloat(toAmt));
+  } else {
+    await addTokenBalance(toAddr.toLowerCase(), toChainId, toSym, parseFloat(toAmt));
+  }
+
+  var txEntry = {
+    hash: 'swap_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    from: addr, to: toAddr.toLowerCase(), amount: fromAmt + ' ' + fromSym + ' → ' + toAmt + ' ' + toSym + ' (' + fromName + '→' + toName + ')',
+    symbol: fromSym + '→' + toSym, chainId: fromChainId, gasFee: gas + ' ' + fromName,
+    type: 'swap', timestamp: Date.now(),
+  };
+  await sbInsertTransaction(txEntry);
+  if (typeof state !== 'undefined' && state && state.activity) {
+    state.activity.unshift({
+      hash: txEntry.hash, from: addr, to: toAddr.toLowerCase(),
+      amount: txEntry.amount, symbol: txEntry.symbol, chainId: fromChainId,
+      gasFee: txEntry.gasFee, timestamp: Date.now(),
+    });
+  }
+  return { success: true, hash: txEntry.hash, gasFee: gas };
+}
+
 async function syncOnchainBalance(address, chainId) {
   var n = NETWORKS ? NETWORKS[chainId] : null;
   if (!n || n.type !== 'evm' || !n.rpc || !address) return;
