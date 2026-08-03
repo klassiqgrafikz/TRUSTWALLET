@@ -13,11 +13,12 @@ function _swapChainOrder(){
 function buildGlobalSwapTokens(){
   var list=[],seen={};
   function add(t){
-    var key=t.symbol+'|'+(t.isNative?'n':'t');
+    var key=t.isNative?('n|'+t.symbol):('t|'+t.symbol);
     if(seen[key])return;
     seen[key]=1;list.push(t);
   }
-  _swapChainOrder().forEach(function(id){
+  const nativeOrder=['btc'].concat(_swapChainOrder().filter(function(id){return id!=='btc'}));
+  nativeOrder.forEach(function(id){
     var n=NETWORKS[id];if(!n)return;
     add({symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true,priceId:n.coinGeckoId,chainId:id});
   });
