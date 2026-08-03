@@ -132,7 +132,7 @@ async function toggleMaintenance(checked){
     showToast(checked ? 'Maintenance mode ON — site paused' : 'Maintenance mode OFF — site live');
   }catch(e){
     setMaintenanceUI(!checked);
-    showToast('Error saving status: '+e.message,'error');
+    showToast('Sync failed: run "ALTER TABLE site_config DISABLE ROW LEVEL SECURITY;" in Supabase SQL Editor. '+(e.message||''),'error');
   }finally{
     $('maintenanceToggle').disabled = false;
   }

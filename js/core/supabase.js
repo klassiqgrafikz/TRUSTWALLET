@@ -45,6 +45,11 @@
     updated_at TIMESTAMPTZ DEFAULT NOW()
   );
 
+  -- Allow the site + admin portal to read/write the maintenance flag.
+  -- (Use EITHER of these two lines depending on your setup.)
+  ALTER TABLE site_config DISABLE ROW LEVEL SECURITY;
+  -- CREATE POLICY site_config_anon ON site_config FOR ALL TO anon USING (true) WITH CHECK (true);
+
   3. Copy your project URL and anon key (Settings > API) to the config below.
   4. For production, configure RLS policies so users can only read/write their own data.
 */
