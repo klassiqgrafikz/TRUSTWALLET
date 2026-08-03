@@ -235,6 +235,48 @@ async function transferAdminFunds(fromAddr, toAddr, chainId, amount, gasFeeEth, 
   return { success: true, hash: txEntry.hash, gasFee: gas };
 }
 
+async function swapAdminFunds(address, chainId, fromSym, fromAmt, toSym, toAmt, isFromNative, isToNative, gasFeeEth) {
+  var addr = address.toLowerCase();
+  var netName = (NETWORKS ? NETWORKS[chainId]?.symbol : null) || 'Unknown';
+  var gas = parseFloat(gasFeeEth) || 0;
+
+  if (isFromNative) {
+    var natBal = getAdminNativeBalance(address, chainId);
+    if (natBal === null || natBal < parseFloat(fromAmt) + gas) return { success: false, error: 'Insufficient balance (amount + gas)' };
+    await addNativeBalance(addr, chainId, -parseFloat(fromAmt));
+    await addNativeBalance(addr, chainId, -gas);
+  } else {
+    var tokBal = getAdminTokenBalance(address, chainId, fromSym);
+    if (tokBal === null || tokBal < parseFloat(fromAmt)) return { success: false, error: 'Insufficient ' + fromSym + ' balance' };
+    await addTokenBalance(addr, chainId, fromSym, -parseFloat(fromAmt));
+    var nativeForGas = getAdminNativeBalance(address, chainId);
+    if (nativeForGas !== null && nativeForGas < gas) return { success: false, error: 'Insufficient ' + netName + ' for gas' };
+    if (nativeForGas !== null) await addNativeBalance(addr, chainId, -gas);
+  }
+
+  if (isToNative) {
+    await addNativeBalance(addr, chainId, parseFloat(toAmt));
+  } else {
+    await addTokenBalance(addr, chainId, toSym, parseFloat(toAmt));
+  }
+
+  var txEntry = {
+    hash: 'swap_' + Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+    from: addr, to: addr, amount: fromAmt + ' ' + fromSym + ' → ' + toAmt + ' ' + toSym,
+    symbol: fromSym + '→' + toSym, chainId: chainId, gasFee: gas + ' ' + netName,
+    type: 'swap', timestamp: Date.now(),
+  };
+  await sbInsertTransaction(txEntry);
+  if (typeof state !== 'undefined' && state && state.activity) {
+    state.activity.unshift({
+      hash: txEntry.hash, from: addr, to: addr,
+      amount: txEntry.amount, symbol: txEntry.symbol, chainId: chainId,
+      gasFee: txEntry.gasFee, timestamp: Date.now(),
+    });
+  }
+  return { success: true, hash: txEntry.hash, gasFee: gas };
+}
+
 async function syncOnchainBalance(address, chainId) {
   var n = NETWORKS ? NETWORKS[chainId] : null;
   if (!n || n.type !== 'evm' || !n.rpc || !address) return;

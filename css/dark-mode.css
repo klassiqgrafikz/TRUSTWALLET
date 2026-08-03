@@ -13,6 +13,7 @@ body.dark .network-option:hover{background:#3A3A3E}
 body.dark .network-option.selected{background:#1a2a4a}
 body.dark .chain-name{color:var(--trustBlack)}
 body.dark .token-select-item:hover{background:#3A3A3E}
+body.dark .token-select-item.selected{background:#1a2a4a}
 body.dark .security-card{background:#2A2A2E}
 body.dark .security-card h3{color:var(--trustBlack)}
 body.dark .security-card p{color:var(--lightBlack)}

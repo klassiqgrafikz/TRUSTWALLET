@@ -42,6 +42,7 @@ function _closeModalsOnBack(){
   $('txDetailModal').classList.add('hidden');
   $('secretModal').classList.add('hidden');
   $('walletModal').classList.add('hidden');
+  $('swapModal').classList.add('hidden');
 }
 
 window.addEventListener('popstate',function(e){

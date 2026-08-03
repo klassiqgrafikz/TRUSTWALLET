@@ -55,6 +55,7 @@
 .token-select-list{max-height:300px;overflow-y:auto}
 .token-select-item{display:flex;align-items:center;gap:12px;padding:10px;border-radius:10px;cursor:pointer;transition:background .15s}
 .token-select-item:hover{background:var(--baseWhite)}
+.token-select-item.selected{background:#EEF0FF}
 .token-select-item .ts-icon{width:36px;height:36px;border-radius:50%;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--trustWhite)}
 .token-select-item .ts-icon img{width:100%;height:100%;object-fit:cover}
 

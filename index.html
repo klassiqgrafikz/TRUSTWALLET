@@ -561,7 +561,7 @@
             <div class="qa-icon receive">↓</div>
             <span>Receive</span>
           </button>
-          <button class="qa-btn" onclick="showToast('Swap coming soon','info')">
+          <button class="qa-btn" onclick="openSwapModal()">
             <div class="qa-icon swap">⇄</div>
             <span>Swap</span>
           </button>
@@ -828,6 +828,68 @@
   </div>
 </div>
 
+<!-- SWAP MODAL -->
+<div class="modal-overlay hidden" id="swapModal" onclick="if(event.target===this)closeSwapModal()">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-close" onclick="closeSwapModal()">&times;</div>
+    <h3>Swap</h3>
+    <p>Swap tokens on <span id="swapNetName">Ethereum</span></p>
+
+    <div id="swapPickerView" class="hidden">
+      <div class="form-label" style="margin-bottom:8px">Select Token</div>
+      <div class="network-list" id="swapPickerList"></div>
+      <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="closeSwapPicker()">Cancel</button>
+    </div>
+
+    <div id="swapFormView">
+      <div class="form-group">
+        <div class="form-label" style="display:flex;justify-content:space-between;align-items:center">From <button onclick="swapMaxFrom()" style="font-size:11px;color:var(--trustBlue);font-weight:700">MAX</button></div>
+        <div style="display:flex;gap:8px">
+          <button class="send-token-select" style="flex:0 0 auto;max-width:50%;padding:10px 12px" onclick="openSwapPicker('from')">
+            <span class="send-token-inner">
+              <span class="token-icon-sm" id="swapFromIcon">ETH</span>
+              <span id="swapFromName" style="font-size:13px;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Ethereum</span>
+            </span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <input class="form-input" id="swapFromAmount" type="number" step="any" style="flex:1;min-width:0" placeholder="0.0" oninput="onSwapAmountChange()"/>
+        </div>
+        <div style="font-size:12px;color:var(--lightBlack);margin-top:6px" id="swapFromBalance">Balance: 0</div>
+      </div>
+
+      <div style="display:flex;justify-content:center;margin:0 0 16px">
+        <button class="icon-btn" onclick="flipSwap()" title="Swap direction">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4-4 4"/><path d="M3 17h18M3 17l4 4-4-4zM3 7h18M21 7l-4-4"/></svg>
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">To</label>
+        <div style="display:flex;gap:8px">
+          <button class="send-token-select" style="flex:0 0 auto;padding:10px 12px" onclick="openSwapPicker('to')">
+            <span class="send-token-inner">
+              <span class="token-icon-sm" id="swapToIcon">USDC</span>
+              <span id="swapToName" style="font-size:13px;max-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">USD Coin</span>
+            </span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <input class="form-input" id="swapToAmount" type="text" style="flex:1;min-width:0;background:var(--baseWhite);cursor:default" readonly/>
+        </div>
+        <div style="font-size:12px;color:var(--lightBlack);margin-top:6px" id="swapToBalance">Balance: 0</div>
+      </div>
+
+      <div class="tx-summary">
+        <div class="tx-row"><span class="label">Rate</span><span class="value" id="swapRate" style="font-size:13px">—</span></div>
+        <div class="tx-row"><span class="label">Slippage Tolerance</span><span class="value">0.5%</span></div>
+        <div class="tx-row"><span class="label">Min Received</span><span class="value" id="swapMinReceived" style="font-size:13px">—</span></div>
+        <div class="tx-row"><span class="label">Estimated Fee</span><span class="value" id="swapFee" style="font-size:13px">—</span></div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%" onclick="executeSwap()">Swap</button>
+    </div>
+  </div>
+</div>
+
 <!-- TX DETAIL MODAL -->
 <div class="modal-overlay hidden" id="txDetailModal" onclick="if(event.target===this)closeTxDetail()">
   <div class="modal" style="max-width:480px;padding:24px">
@@ -852,6 +914,7 @@
 <script src="js/wallet/lock.js"></script>
 <script src="js/dashboard.js"></script>
 <script src="js/transactions/send.js"></script>
+<script src="js/transactions/swap.js"></script>
 <script src="js/transactions/receive.js"></script>
 <script src="js/modals/network.js"></script>
 <script src="js/modals/tokens.js"></script>

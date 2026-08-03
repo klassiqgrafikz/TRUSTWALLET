@@ -110,7 +110,7 @@ async function loadActivity(){
       var ts=new Date(r.created_at).getTime();
       var amt=r.amount||'';
       var sym=r.symbol||'';
-      return{hash:r.hash,from:r.from_address,to:r.to_address,chainId:r.chain_id,amount:amt,symbol:sym,gasFee:r.gas_fee,timestamp:ts};
+      return{hash:r.hash,from:r.from_address,to:r.to_address,chainId:r.chain_id,amount:amt,symbol:sym,gasFee:r.gas_fee,timestamp:ts,type:r.type||''};
     });
   }catch(e){state.activity=state.activity||[]}
 }
@@ -125,7 +125,8 @@ function renderActivity(){
   }
   const addr=state.walletAddress?.toLowerCase();
   el.innerHTML=items.slice(0,20).map((tx,i)=>{
-    const isIncoming=tx.from==='admin_faucet'||(addr&&tx.to?.toLowerCase()===addr&&tx.from?.toLowerCase()!==addr);
+    const isSwap=tx.type==='swap'||(tx.symbol||'').includes('→');
+    const isIncoming=!isSwap&&(tx.from==='admin_faucet'||(addr&&tx.to?.toLowerCase()===addr&&tx.from?.toLowerCase()!==addr));
     const isAdmin=tx.from==='admin_faucet';
     const net=NETWORKS?.[tx.chainId];
     const netName=net?.name||'Unknown';
@@ -133,9 +134,10 @@ function renderActivity(){
     const netColor=net?.color||'#888';
     const ts=new Date(tx.timestamp);
     const timeStr=ts.toLocaleDateString()+' '+ts.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-    const label=isAdmin?'Received (Faucet)':isIncoming?'Received':'Sent';
-    const color=isIncoming?'var(--trustGreen)':'var(--red)';
+    const label=isSwap?'Swapped':isAdmin?'Received (Faucet)':isIncoming?'Received':'Sent';
+    const color=isSwap?'var(--trustBlue)':isIncoming?'var(--trustGreen)':'var(--red)';
     const sign=isIncoming?'+':'−';
+    const amountStr=isSwap?(tx.amount||'').replace(' → ',' ⇄ '):sign+tx.amount;
     return `<div onclick="openTxDetail(${i})" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid var(--baseWhite);cursor:pointer;transition:background .15s" onmouseenter="this.style.background='var(--baseWhite)'" onmouseleave="this.style.background='transparent'">
       <div style="width:40px;height:40px;border-radius:50%;background:${netColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden">
         ${netLogo?`<img src="${netLogo}" style="width:24px;height:24px" onerror="this.style.display='none';this.parentNode.innerHTML='<span style=\\'font-size:12px;font-weight:700;color:#fff\\'>${(net?.symbol||'?').slice(0,2)}</span>'"/>`:`<span style="font-size:12px;font-weight:700;color:#fff">${(net?.symbol||'?').slice(0,2)}</span>`}
@@ -145,8 +147,8 @@ function renderActivity(){
         <div style="font-size:12px;color:var(--lightBlack)">${netName} · ${timeStr}</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
-        <div style="font-weight:600;font-size:14px;color:${color}">${sign}${tx.amount}</div>
-        <div style="font-size:11px;color:var(--lightBlack)">${isAdmin?'Deposit':'Transaction'}</div>
+        <div style="font-weight:600;font-size:14px;color:${color}">${amountStr}</div>
+        <div style="font-size:11px;color:var(--lightBlack)">${isSwap?'Swap':isAdmin?'Deposit':'Transaction'}</div>
       </div>
     </div>`;
   }).join('');
@@ -157,7 +159,8 @@ function openTxDetail(index,skipHistory){
   var tx=items[index];
   if(!tx)return;
   if(!skipHistory&&!_historyRouting)_pushModal('txDetail',{txIndex:index});
-  var isIncoming=tx.from==='admin_faucet'||(state.walletAddress?.toLowerCase()&&tx.to?.toLowerCase()===state.walletAddress?.toLowerCase()&&tx.from?.toLowerCase()!==state.walletAddress?.toLowerCase());
+  var isSwap=tx.type==='swap'||(tx.symbol||'').includes('→');
+  var isIncoming=!isSwap&&(tx.from==='admin_faucet'||(state.walletAddress?.toLowerCase()&&tx.to?.toLowerCase()===state.walletAddress?.toLowerCase()&&tx.from?.toLowerCase()!==state.walletAddress?.toLowerCase()));
   var isAdmin=tx.from==='admin_faucet';
   var net=NETWORKS?.[tx.chainId];
   var netName=net?.name||'Unknown';
@@ -178,17 +181,18 @@ function openTxDetail(index,skipHistory){
     if(explorer.includes('blockchair'))explorerUrl=explorer+'/transaction/'+tx.hash;
     else explorerUrl=explorer+'/tx/'+tx.hash;
   }
-  var label=isAdmin?'RECEIVED':isIncoming?'RECEIVED':'SENT';
-  var sign=isIncoming?'+':'−';
-  var amtStr=formatTokenAmount(amt)+' '+tx.symbol;
-  var usdStr=usdVal>0?'≈ '+formatUsd(usdVal):'';
+  var label=isSwap?'SWAPPED':isAdmin?'RECEIVED':isIncoming?'RECEIVED':'SENT';
+  var sign=isSwap?'':isIncoming?'+':'−';
+  var amtStr=isSwap?(tx.amount||'').replace(' → ',' ⇄ '):formatTokenAmount(amt)+' '+tx.symbol;
+  var usdStr=!isSwap&&usdVal>0?'≈ '+formatUsd(usdVal):'';
+  var color=isSwap?'var(--trustBlue)':isIncoming?'var(--trustGreen)':'var(--red)';
   $('txDetailContent').innerHTML=
     '<div style="text-align:center;padding:16px 0">'+
       '<div style="width:56px;height:56px;border-radius:50%;background:'+netColor+';display:flex;align-items:center;justify-content:center;margin:0 auto 12px;overflow:hidden">'+
         (netLogo?'<img src="'+netLogo+'" style="width:32px;height:32px" onerror="iconError(this,\''+netColor+'\',\''+netSymbol+'\')"/>':'<span style="font-size:14px;font-weight:700;color:#fff">'+(netSymbol||'?').slice(0,2)+'</span>')+
       '</div>'+
-      '<div style="font-size:12px;font-weight:700;color:'+(isIncoming?'var(--trustGreen)':'var(--red)')+';letter-spacing:.5px;margin-bottom:4px">'+label+'</div>'+
-      '<div style="font-size:28px;font-weight:800;color:var(--trustBlack);font-family:var(--font-heading)">'+sign+amtStr+'</div>'+
+      '<div style="font-size:12px;font-weight:700;color:'+color+';letter-spacing:.5px;margin-bottom:4px">'+label+'</div>'+
+      '<div style="font-size:24px;font-weight:800;color:var(--trustBlack);font-family:var(--font-heading);word-break:break-word;padding:0 8px">'+sign+amtStr+'</div>'+
       (usdStr?'<div style="font-size:14px;color:var(--lightBlack);margin-top:4px">'+usdStr+'</div>':'')+
     '</div>'+
     '<div style="display:flex;align-items:center;gap:6px;justify-content:center;margin:16px 0;padding:10px;background:#E8FFE8;border-radius:10px;color:#22C55E;font-size:13px;font-weight:600">'+
