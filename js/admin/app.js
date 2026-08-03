@@ -141,6 +141,7 @@ async function toggleMaintenance(checked){
 }
 
 populateNetworkSelect();
+updateTokenFields();
 autoFillAddress();
 renderEntries();
 loadMaintenanceStatus();
