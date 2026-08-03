@@ -25,4 +25,4 @@ function openWalletModal(){
   setImportMethod('mnemonic');
   _pushModal('wallet');
 }
-function closeWalletModal(){$('walletModal').classList.add('hidden');if(!_historyRouting)history.back()}
+function closeWalletModal(){$('walletModal').classList.add('hidden')}

@@ -26,6 +26,8 @@ function importWallet(){
     state.activity=[];
     initChainAddresses();
     sbUpsertWallet(wallet.address, state.walletName, state.chainId, state.chainAddresses).catch(function(){});
-    saveToStorage();hideLoading();showToast('Wallet imported!','success');closeWalletModal();navigateTo('dashboard');
+    saveToStorage();hideLoading();showToast('Wallet imported!','success');
+    $('walletModal').classList.add('hidden');
+    navigateTo('dashboard');
   }catch(e){hideLoading();showToast('Error: '+e.message,'error')}
 }
