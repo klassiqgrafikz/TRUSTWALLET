@@ -28,15 +28,19 @@ function closeNetworkModal(){
 function _updateWalletAddr(){
   state.walletAddress=state.chainAddresses[state.chainId]||state.walletAddress||''
 }
+function _applyNetworkHome(id){
+  if(!id||!NETWORKS[id])return;
+  state.chainId=String(id);
+  _updateWalletAddr();
+  closeNetworkModal();
+  navigateTo('dashboard');
+  showToast('Switched to '+NETWORKS[id].name,'success');
+}
 async function selectNetwork(id){
-  state.chainId=id;_updateWalletAddr();closeNetworkModal();
-  await ensureBalance(state.walletAddress,id);
-  refreshDashboard();showToast('Switched to '+NETWORKS[id].name,'success')
+  _applyNetworkHome(id);
 }
 async function switchToNetwork(priceId){
-  state.chainId=priceId;_updateWalletAddr();
-  await ensureBalance(state.walletAddress,priceId);
-  refreshDashboard();showToast('Switched to '+NETWORKS[priceId].name,'success')
+  _applyNetworkHome(priceId);
 }
 async function sendFromChain(chainKey){
   state.chainId=chainKey;state.activeSendChain=chainKey;_updateWalletAddr();

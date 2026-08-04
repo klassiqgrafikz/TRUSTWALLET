@@ -26,13 +26,13 @@ function refreshSendBalance(){
 
 async function initSendScreen(){
   const n=NETWORKS[state.chainId];
+  const cid=state.chainId;
   if(state._preselectToken){
     state.sendToken=state._preselectToken;
     delete state._preselectToken;
   }else{
     state.sendToken={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true};
   }
-  await ensureBalance(state.walletAddress,state.chainId);
   $('sendTokenIcon').textContent=state.sendToken.symbol.slice(0,2);
   $('sendTokenIcon').style.background=state.sendToken.color;
   $('sendTokenName').textContent=state.sendToken.name+' ('+state.sendToken.symbol+')';
@@ -47,6 +47,11 @@ async function initSendScreen(){
   $('sendToAddress').placeholder=labels[n.type]||'Chain address';
   refreshSendBalance();
   refreshSendFee();
+  ensureBalance(state.walletAddress,cid).then(function(){
+    if(cid!==state.chainId)return;
+    refreshSendBalance();
+    refreshSendFee();
+  }).catch(function(){});
 }
 
 async function openWalletPicker(){
