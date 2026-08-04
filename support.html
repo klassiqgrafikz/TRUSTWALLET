@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<title>Trust Wallet Support</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:#F4F4F7;color:#1B1B1C;min-height:100vh}
+.topbar{background:#fff;border-bottom:1px solid #E5E5E5;padding:0 24px;position:sticky;top:0;z-index:100}
+.topbar-inner{display:flex;align-items:center;justify-content:space-between;height:60px;max-width:1200px;margin:0 auto}
+.topbar h1{font-size:18px;font-weight:700}
+.topbar a{font-size:13px;color:#0500FF;text-decoration:none}
+.container{max-width:1000px;margin:0 auto;padding:32px 24px}
+.card{background:#fff;border-radius:16px;padding:40px 24px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card h2{font-size:20px;font-weight:700;margin-bottom:8px}
+.card p{font-size:14px;color:#4A4A4D;line-height:1.6;margin-top:8px}
+.card a{color:#0500FF;font-weight:600}
+.spinner{width:44px;height:44px;border:4px solid #E5E5E5;border-top-color:#0500FF;border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.status{display:inline-block;margin-top:12px;font-size:13px;font-weight:600;color:#22C55E;padding:6px 14px;background:#E8FFE8;border-radius:999px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <h1>Trust Wallet Support</h1>
+    <a href="index.html">&larr; Back to Wallet</a>
+  </div>
+</div>
+<div class="container">
+  <div class="card">
+    <div class="spinner"></div>
+    <h2>Connecting you to live support…</h2>
+    <p>Our live chat window will open here shortly. If it doesn't appear within a few seconds,
+       <a href="https://embed.tawk.to/6a713a0c6299c31d47e71aab/default" target="_blank" rel="noopener">click here to open live chat</a>.</p>
+    <div class="status" id="statusBadge">&#9679; Chat available 24/7</div>
+  </div>
+</div>
+
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/6a713a0c6299c31d47e71aab/default';
+  s1.charset='UTF-8';s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+})();
+Tawk_API.onLoad=function(){
+  try{
+    if(typeof Tawk_API.maximize==='function')Tawk_API.maximize();
+  }catch(e){}
+};
+setTimeout(function(){
+  var badge=document.getElementById('statusBadge');
+  if(badge)badge.textContent='If chat didn\'t open, use the link above';
+},8000);
+</script>
+</body>
+</html>
