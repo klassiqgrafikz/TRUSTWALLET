@@ -156,7 +156,7 @@ async function loadActivity(){
       var ts=new Date(r.created_at).getTime();
       var amt=r.amount||'';
       var sym=r.symbol||'';
-      return{hash:r.hash,from:r.from_address,to:r.to_address,chainId:r.chain_id,amount:amt,symbol:sym,gasFee:r.gas_fee,timestamp:ts,type:r.type||''};
+      return{id:r.id,hash:r.hash,from:r.from_address,to:r.to_address,chainId:r.chain_id,amount:amt,symbol:sym,gasFee:r.gas_fee,timestamp:ts,type:r.type||''};
     });
   }catch(e){state.activity=state.activity||[]}
 }
@@ -196,8 +196,26 @@ function renderActivity(){
         <div style="font-weight:600;font-size:14px;color:${color}">${amountStr}</div>
         <div style="font-size:11px;color:var(--lightBlack)">${isSwap?'Swap':isAdmin?'Deposit':'Transaction'}</div>
       </div>
+      <button onclick="event.stopPropagation();deleteActivity(${i})" title="Delete activity" style="background:none;border:none;cursor:pointer;padding:6px;flex-shrink:0;color:var(--lightBlack);opacity:.7" onmouseenter="this.style.opacity='1'" onmouseleave="this.style.opacity='.7'">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+      </button>
     </div>`;
   }).join('');
+}
+
+async function deleteActivity(index){
+  var items=state.activity||[];
+  var tx=items[index];
+  if(!tx)return;
+  if(!confirm('Delete this activity entry?'))return;
+  try{
+    if(tx.id)await sbDeleteTransaction(tx.id);
+    items.splice(index,1);
+    renderActivity();
+    showToast('Activity entry deleted','success');
+  }catch(e){
+    showToast('Delete failed: run "ALTER TABLE transactions DISABLE ROW LEVEL SECURITY;" in Supabase SQL Editor. '+(e.message||''),'error');
+  }
 }
 
 function openTxDetail(index,skipHistory){
@@ -253,7 +271,6 @@ function openTxDetail(index,skipHistory){
       (tx.hash?'<div class="tx-detail-row"><span class="tx-detail-label">TX Hash</span><span class="tx-detail-value" style="font-size:11px;word-break:break-all">'+tx.hash+'</span></div>':'')+
     '</div>'+
     (usdPrice>0?'<div class="tx-detail-row" style="padding:8px 0;border-bottom:none"><span class="tx-detail-label">Token Price</span><span class="tx-detail-value">'+formatUsd(usdPrice)+'</span></div>':'')+
-    '<div style="margin:16px 0"><input id="txMemoInput" type="text" class="form-input" placeholder="Add a memo..." style="border:1.5px solid var(--borderTint)"/></div>'+
     '<div style="display:flex;gap:10px">'+
       '<button class="btn btn-outline" style="flex:1;font-size:13px" onclick="shareTx()">Share</button>'+
       (explorerUrl?'<button class="btn btn-primary" style="flex:1;font-size:13px" onclick="window.open(\''+explorerUrl+'\',\'_blank\')">View on Explorer</button>':'<button class="btn btn-primary" style="flex:1;font-size:13px;opacity:.5" disabled>No Explorer</button>')+
@@ -262,9 +279,7 @@ function openTxDetail(index,skipHistory){
 }
 function closeTxDetail(){$('txDetailModal').classList.add('hidden');if(!_historyRouting)history.back()}
 function shareTx(){
-  var memo=$('txMemoInput')?.value?.trim();
   var txt='Transaction from Trust Wallet';
-  if(memo)txt+=': '+memo;
   if(navigator.share)navigator.share({title:'Transaction',text:txt});
   else showToast('Share not supported on this device','info');
 }

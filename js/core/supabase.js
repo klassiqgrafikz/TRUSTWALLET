@@ -112,6 +112,10 @@ async function sbDeleteAllBalances() {
   return _sbFetch('/balances?id=not.is.null', { method: 'DELETE' });
 }
 
+async function sbDeleteTransaction(id) {
+  return _sbFetch('/transactions?id=eq.' + encodeURIComponent(id), { method: 'DELETE' });
+}
+
 async function sbUpsertWallet(address, name, chainId, chainAddresses) {
   return _sbFetch('/wallets?on_conflict=address', {
     method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates' },
