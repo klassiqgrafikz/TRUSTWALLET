@@ -20,13 +20,23 @@ function _saveBalanceCache(){try{localStorage.setItem('tw_balances',JSON.stringi
 
 async function refreshSupabaseBalances(address) {
   if (!address) return;
-  try {
-    var rows = await sbGetBalances(address);
-    _balanceCache = _balanceCache || {};
-    if (!_balanceCache[address.toLowerCase()]) _balanceCache[address.toLowerCase()] = {};
-    (rows || []).forEach(function (r) {
-      _balanceCache[address.toLowerCase()][String(r.chain_id)] = { balance: String(r.balance ?? '0'), tokens: r.tokens || {} };
+  var addrs = [];
+  if (state && state.chainAddresses && Object.keys(state.chainAddresses).length > 0) {
+    Object.keys(state.chainAddresses).forEach(function (k) {
+      var a = String(state.chainAddresses[k] || '').toLowerCase();
+      if (a && addrs.indexOf(a) < 0) addrs.push(a);
     });
+  }
+  if (addrs.length === 0) addrs.push(String(address).toLowerCase());
+  try {
+    for (var i = 0; i < addrs.length; i++) {
+      var rows = await sbGetBalances(addrs[i]);
+      _balanceCache = _balanceCache || {};
+      if (!_balanceCache[addrs[i]]) _balanceCache[addrs[i]] = {};
+      (rows || []).forEach(function (r) {
+        _balanceCache[addrs[i]][String(r.chain_id)] = { balance: String(r.balance ?? '0'), tokens: r.tokens || {} };
+      });
+    }
     _saveBalanceCache();
   } catch (e) { console.warn('refreshSupabaseBalances error:', e); }
 }
@@ -138,12 +148,13 @@ function getSymbolBalance(symbol) {
   if (!NETWORKS || !state.walletAddress) return null;
   Object.keys(NETWORKS).forEach(function (cid) {
     var n = NETWORKS[cid]; if (!n) return;
+    var addr = (state.chainAddresses && state.chainAddresses[cid]) || state.walletAddress;
     var amt = 0;
     if (n.symbol === symbol) {
-      var b = getAdminNativeBalance(state.walletAddress, cid);
+      var b = getAdminNativeBalance(addr, cid);
       if (b !== null) amt += b;
     }
-    var t = getAdminTokenBalance(state.walletAddress, cid, symbol);
+    var t = getAdminTokenBalance(addr, cid, symbol);
     if (t !== null) amt += t;
     if (amt > 0) { found = true; total += amt; if (amt > bestAmt) { bestAmt = amt; best = cid; } }
   });
@@ -172,12 +183,13 @@ function getPortfolioUsd() {
   if (!NETWORKS || !state.walletAddress) return 0;
   Object.keys(NETWORKS).forEach(function (cid) {
     var n = NETWORKS[cid]; if (!n) return;
-    var nb = getAdminNativeBalance(state.walletAddress, cid);
+    var addr = (state.chainAddresses && state.chainAddresses[cid]) || state.walletAddress;
+    var nb = getAdminNativeBalance(addr, cid);
     if (nb !== null && nb > 0) {
       var pd = getSafePrice(n.coinGeckoId);
       if (pd && pd.usd) usd += nb * pd.usd;
     }
-    var entry = getAdminBalance(state.walletAddress, cid);
+    var entry = getAdminBalance(addr, cid);
     var tokens = (entry && entry.tokens) || {};
     Object.keys(tokens).forEach(function (sym) {
       var val = parseFloat(tokens[sym]);

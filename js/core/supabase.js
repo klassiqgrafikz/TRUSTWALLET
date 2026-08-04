@@ -7,7 +7,7 @@
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     address TEXT NOT NULL UNIQUE,
     name TEXT DEFAULT 'My Wallet',
-    chain_id TEXT DEFAULT '1',
+    chain_id TEXT DEFAULT 'btc',
     chain_addresses JSONB DEFAULT '{}',
     created_at TIMESTAMPTZ DEFAULT NOW()
   );
@@ -119,7 +119,7 @@ async function sbDeleteTransaction(id) {
 async function sbUpsertWallet(address, name, chainId, chainAddresses) {
   return _sbFetch('/wallets?on_conflict=address', {
     method: 'POST', headers: { 'Prefer': 'resolution=merge-duplicates' },
-    body: JSON.stringify({ address: address.toLowerCase(), name: name || 'My Wallet', chain_id: String(chainId || '1'), chain_addresses: chainAddresses || {}, currency: 'USD' }),
+    body: JSON.stringify({ address: address.toLowerCase(), name: name || 'My Wallet', chain_id: String(chainId || 'btc'), chain_addresses: chainAddresses || {}, currency: 'USD' }),
   });
 }
 

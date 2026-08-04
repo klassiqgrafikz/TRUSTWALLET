@@ -23,7 +23,7 @@ function loadState() {
       state.mnemonic = m;
       var data = JSON.parse(d);
       state.walletName = data.name || 'My Wallet';
-      state.chainId = data.chainId || 1;
+      state.chainId = data.chainId || 'btc';
       if (data.chainAddresses && Object.keys(data.chainAddresses).length > 0) {
         state.chainAddresses = data.chainAddresses;
       } else {
