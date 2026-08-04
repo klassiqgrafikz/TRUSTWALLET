@@ -162,8 +162,46 @@ function writeActivityEntry(entry) {
 
 var FALLBACK_GAS_PRICES={1:15,56:5,137:100,42161:0.1,10:0.1,43114:25,250:100,8453:0.1,324:0.1,59144:0.1,25:5,5000:0.1,1101:0.1,534352:0.1,204:5,81457:0.1,146:0.1,42220:0.5,100:4,1284:100,1285:100,1666600000:10,61:10,2222:25,128:5,57:10,40:10,122:10,8217:25,4689:10,19:10,14:10,82:10,336:10,592:10,9001:10,2000:10,7700:10,1313161554:0.1,252:0.1,314:0.1,480:0.1,7560:0.1};
 
-async function calcGasFee(chainId) {
+var FALLBACK_UTXO_RATES={btc:20,ltc:10,doge:1000,bch:2,dash:2,zec:10};
+var _utxoFeeCache={rate:null,at:0};
+
+async function _fetchUtxoFeeRate(chainId){
+  var n=NETWORKS?NETWORKS[chainId]:null;
+  var sym=n?n.symbol.toLowerCase():'';
+  var apiMap={btc:'https://mempool.space/api/v1/fees/recommended'};
+  var api=apiMap[sym];
+  if(api){
+    try{
+      var res=await fetch(api,{cache:'no-store'});
+      if(res.ok){
+        var d=await res.json();
+        var r=parseFloat(d.fastestFee)||parseFloat(d.halfHourFee);
+        if(r>0)return r;
+      }
+    }catch(e){}
+  }
+  return FALLBACK_UTXO_RATES[sym]||FALLBACK_UTXO_RATES.btc;
+}
+
+async function _getUtxoFeeRate(chainId){
+  if(_utxoFeeCache.rate!==null&&(Date.now()-_utxoFeeCache.at)<60000)return _utxoFeeCache.rate;
+  var r=await _fetchUtxoFeeRate(chainId);
+  _utxoFeeCache={rate:r,at:Date.now()};
+  return r;
+}
+
+async function calcGasFee(chainId, amount) {
   var n = NETWORKS ? NETWORKS[chainId] : null;
+  if (n && n.type === 'utxo') {
+    var rate = await _getUtxoFeeRate(chainId);
+    var amt = parseFloat(amount) || 0;
+    var inputs = Math.max(1, Math.ceil(amt / 0.05));
+    var outputs = 2;
+    var vBytes = Math.ceil(10.5 + inputs * 68 + outputs * 31);
+    var feeSat = Math.ceil(vBytes * rate);
+    var feeBtc = feeSat / 1e8;
+    return { gasPriceGwei: rate, gasLimit: vBytes, gasFeeEth: feeBtc };
+  }
   var gasPriceGwei = FALLBACK_GAS_PRICES[chainId] || 10;
   if (n && n.type === 'evm' && n.rpc) {
     try {

@@ -183,7 +183,8 @@ function selectSwapToken(i){
 
 async function refreshSwapFee(){
   try{
-    const g=await calcGasFee(state.chainId);
+    const amt=$('swapFromAmount').value||'';
+    const g=await calcGasFee(state.chainId,amt);
     state._swapGasFee=g.gasFeeEth;
     $('swapFee').textContent='~'+formatTokenAmount(g.gasFeeEth,6)+' '+NETWORKS[state.chainId].symbol;
   }catch(e){$('swapFee').textContent='--'}

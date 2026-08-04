@@ -1,6 +1,16 @@
 function refreshSendFee(){
   const cid=state.chainId,n=NETWORKS[cid];
-  calcGasFee(cid).then(g=>{$('gasPrice').textContent=formatTokenAmount(g.gasPriceGwei,1)+' Gwei';$('estGasFee').textContent='~'+formatTokenAmount(g.gasFeeEth,6)+' '+n.symbol}).catch(()=>{$('gasPrice').textContent='--';$('estGasFee').textContent='--'});
+  if(!n)return;
+  const amt=$('sendAmount').value||'';
+  calcGasFee(cid,amt).then(g=>{
+    if(n.type==='utxo'){
+      $('gasPrice').textContent=g.gasPriceGwei+' sat/vB';
+      $('estGasFee').textContent='~'+formatTokenAmount(g.gasFeeEth,8)+' '+n.symbol+' (≈'+g.gasLimit+' vB)';
+    }else{
+      $('gasPrice').textContent=formatTokenAmount(g.gasPriceGwei,1)+' Gwei';
+      $('estGasFee').textContent='~'+formatTokenAmount(g.gasFeeEth,6)+' '+n.symbol;
+    }
+  }).catch(()=>{$('gasPrice').textContent='--';$('estGasFee').textContent='--'});
 }
 
 function refreshSendBalance(){
@@ -140,7 +150,7 @@ async function setMaxAmount(){
   let bal;
   if(t&&!t.isNative){const b=getAdminTokenBalance(addr,cid,t.symbol);bal=b!==null?b:0}else{const b=getAdminNativeBalance(addr,cid);bal=b!==null?b:0}
   if(bal<=0)return showToast('No balance on this network','error');
-  if(t&&t.isNative){const gas=await calcGasFee(cid);bal=Math.max(0,bal-gas.gasFeeEth)}
+  if(t&&t.isNative){const gas=await calcGasFee(cid,bal);bal=Math.max(0,bal-gas.gasFeeEth)}
   $('sendAmount').value=bal.toFixed(6);
 }
 
@@ -154,7 +164,7 @@ async function prepareTransaction(){
   if(bal<=0)return showToast('Insufficient balance','error');
   showLoading('Preparing...');
   try{
-    const g=await calcGasFee(cid);
+    const g=await calcGasFee(cid,parseFloat(amt));
     if((!t||t.isNative)&&parseFloat(amt)+g.gasFeeEth>bal){hideLoading();return showToast('Insufficient funds (amount + gas)','error')}
     if(t&&!t.isNative&&parseFloat(amt)>bal){hideLoading();return showToast('Insufficient token balance','error')}
     if(parseFloat(amt)<=0){hideLoading();return showToast('Invalid amount','error')}
