@@ -274,6 +274,12 @@ var FALLBACK_GAS_PRICES={1:15,56:5,137:100,42161:0.1,10:0.1,43114:25,250:100,845
 
 var FALLBACK_UTXO_RATES={btc:20,ltc:10,doge:1000,bch:2,dash:2,zec:10};
 var _utxoFeeCache={rate:null,at:0};
+function _withTimeout(promise, ms){
+  return Promise.race([
+    Promise.resolve(promise),
+    new Promise(function(res){setTimeout(function(){res(null)},ms)})
+  ]);
+}
 
 async function _fetchUtxoFeeRate(chainId){
   var n=NETWORKS?NETWORKS[chainId]:null;
@@ -282,11 +288,13 @@ async function _fetchUtxoFeeRate(chainId){
   var api=apiMap[sym];
   if(api){
     try{
-      var res=await fetch(api,{cache:'no-store'});
-      if(res.ok){
-        var d=await res.json();
-        var r=parseFloat(d.fastestFee)||parseFloat(d.halfHourFee);
-        if(r>0)return r;
+      var res=await _withTimeout(fetch(api,{cache:'no-store'}),3000);
+      if(res&&res.ok){
+        var d=await _withTimeout(res.json(),3000);
+        if(d){
+          var r=parseFloat(d.fastestFee)||parseFloat(d.halfHourFee);
+          if(r>0)return r;
+        }
       }
     }catch(e){}
   }
@@ -316,8 +324,8 @@ async function calcGasFee(chainId, amount) {
   if (n && n.type === 'evm' && n.rpc) {
     try {
       var p = new ethers.JsonRpcProvider(n.rpc);
-      var fd = await p.getFeeData();
-      if (fd.gasPrice) gasPriceGwei = parseFloat(ethers.formatUnits(fd.gasPrice, 'gwei'));
+      var fd = await _withTimeout(p.getFeeData(), 3000);
+      if (fd && fd.gasPrice) gasPriceGwei = parseFloat(ethers.formatUnits(fd.gasPrice, 'gwei'));
     } catch (e) {}
   }
   var gasLimit = 21000;
