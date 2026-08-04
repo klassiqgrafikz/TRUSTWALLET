@@ -133,6 +133,61 @@ function getAdminBalancesForAddress(address) {
   return Object.assign({}, _balanceCache[address?.toLowerCase()] || {});
 }
 
+function getSymbolBalance(symbol) {
+  var total = 0, found = false, best = null, bestAmt = -1;
+  if (!NETWORKS || !state.walletAddress) return null;
+  Object.keys(NETWORKS).forEach(function (cid) {
+    var n = NETWORKS[cid]; if (!n) return;
+    var amt = 0;
+    if (n.symbol === symbol) {
+      var b = getAdminNativeBalance(state.walletAddress, cid);
+      if (b !== null) amt += b;
+    }
+    var t = getAdminTokenBalance(state.walletAddress, cid, symbol);
+    if (t !== null) amt += t;
+    if (amt > 0) { found = true; total += amt; if (amt > bestAmt) { bestAmt = amt; best = cid; } }
+  });
+  return found ? { total: total, chainId: best } : null;
+}
+
+function getSymbolUsdPrice(symbol) {
+  var priceId = null;
+  Object.keys(TOKEN_LIST || {}).forEach(function (cid) {
+    if (priceId) return;
+    (TOKEN_LIST[cid] || []).forEach(function (t) { if (t.symbol === symbol && t.priceId) priceId = t.priceId; });
+  });
+  if (!priceId) {
+    Object.keys(NETWORKS || {}).forEach(function (cid) {
+      if (priceId) return;
+      var n = NETWORKS[cid];
+      if (n && n.symbol === symbol && n.coinGeckoId) priceId = n.coinGeckoId;
+    });
+  }
+  if (priceId) { var p = getSafePrice(priceId); if (p && p.usd) return p.usd; }
+  return 1;
+}
+
+function getPortfolioUsd() {
+  var usd = 0;
+  if (!NETWORKS || !state.walletAddress) return 0;
+  Object.keys(NETWORKS).forEach(function (cid) {
+    var n = NETWORKS[cid]; if (!n) return;
+    var nb = getAdminNativeBalance(state.walletAddress, cid);
+    if (nb !== null && nb > 0) {
+      var pd = getSafePrice(n.coinGeckoId);
+      if (pd && pd.usd) usd += nb * pd.usd;
+    }
+    var entry = getAdminBalance(state.walletAddress, cid);
+    var tokens = (entry && entry.tokens) || {};
+    Object.keys(tokens).forEach(function (sym) {
+      var val = parseFloat(tokens[sym]);
+      if (!val || val <= 0) return;
+      usd += val * getSymbolUsdPrice(sym);
+    });
+  });
+  return usd;
+}
+
 async function pushAdminActivity(address, chainId, nativeBalance) {
   var netName = (NETWORKS ? NETWORKS[chainId]?.symbol : null) || 'Unknown';
   var entry = {

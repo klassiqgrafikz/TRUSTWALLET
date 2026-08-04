@@ -23,8 +23,7 @@ async function refreshDashboard(){
   await loadActivity();
   const adminBal=getAdminNativeBalance(state.walletAddress,state.chainId);
   const priceData=getSafePrice(network?.coinGeckoId);
-  const usdVal=adminBal&&priceData?adminBal*priceData.usd:0;
-  $('totalBalance').textContent=formatUsd(usdVal);
+  $('totalBalance').textContent=formatUsd(getPortfolioUsd());
   $('balanceChange').innerHTML=`${formatTokenAmount(adminBal)} ${network?.symbol||''} <span style="opacity:.6">· ${priceData?formatPrice(priceData.usd):'...'}</span>`;
   await renderTokenList();
   renderWatchlist();
@@ -48,8 +47,26 @@ async function sendTokenFromDashboard(index){
   const extraTokens=network.coinGeckoId==='bitcoin'?[]:(TOKEN_LIST['_btc']||[]).filter(t=>t.symbol!==network.symbol);
   const all=[...extraTokens,...tokens];
   const t=all[index];
-  state._preselectToken={symbol:t.symbol,name:t.name,color:t.color,logo:t.logo,isNative:t.isNative||false};
-  await sendFromChain(state.chainId);
+  if(!t)return;
+  await sendSymbolFromDashboard(t.symbol,t.isNative||false);
+}
+
+async function sendSymbolFromDashboard(symbol,isNative){
+  const balInfo=getSymbolBalance(symbol);
+  const chain=(balInfo&&balInfo.chainId)?balInfo.chainId:state.chainId;
+  const n=NETWORKS[chain];
+  if(!n)return;
+  let def;
+  if(isNative){
+    def={symbol:n.symbol,name:n.name,color:n.color,logo:n.logo,isNative:true};
+  }else{
+    def=(TOKEN_LIST[chain]||[]).find(t=>t.symbol===symbol)||null;
+    if(!def)def=(n.coinGeckoId==='bitcoin'?[]:TOKEN_LIST['_btc']||[]).find(t=>t.symbol===symbol)||null;
+    if(!def)def={symbol:symbol,name:symbol,color:'#888',logo:'',isNative:false};
+  }
+  state._preselectToken={symbol:def.symbol,name:def.name,color:def.color,logo:def.logo,isNative:def.isNative||false};
+  if(chain!==state.chainId)await switchToNetwork(chain);
+  await sendFromChain(chain);
 }
 
 async function renderTokenList(){
@@ -57,18 +74,20 @@ async function renderTokenList(){
   const tokens=TOKEN_LIST[state.chainId]||[];
   const extraTokens=network.coinGeckoId==='bitcoin'?[]:(TOKEN_LIST['_btc']||[]).filter(t=>t.symbol!==network.symbol);
   const allTokens=[...extraTokens,...tokens];
-  const nativeBal=getAdminNativeBalance(state.walletAddress,state.chainId);
+  const nativeBalInfo=getSymbolBalance(network.symbol);
+  const nativeBal=nativeBalInfo?nativeBalInfo.total:null;
   const nativePriceData=getPriceForChain(state.chainId);
   const nativePriceStr=nativePriceData?formatPrice(nativePriceData.usd):'<span class="price-loading">...</span>';
   const nativeChgStr=nativePriceData?`<span class="${nativePriceData.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(nativePriceData.usd_24h_change)}</span>`:'';
   let nativeBalStr='0';
   if(nativeBal!==null)nativeBalStr=formatTokenAmount(nativeBal);
-  let html=`<div class="asset-row" data-coin-id="${network.coinGeckoId||''}" data-symbol="${network.symbol}" onclick="navigateTo('send')"><div class="asset-left"><img src="${network.logo}" class="asset-icon" onerror="iconError(this,'${network.color}','${network.symbol}')"/><div class="asset-info"><div class="asset-name">${network.name}</div><div class="asset-symbol">${network.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${nativeBalStr} ${network.symbol}</div><div class="asset-price">${nativePriceStr} ${nativeChgStr}</div></div></div>`;
+  let html=`<div class="asset-row" data-coin-id="${network.coinGeckoId||''}" data-symbol="${network.symbol}" onclick="sendSymbolFromDashboard('${network.symbol}',true)"><div class="asset-left"><img src="${network.logo}" class="asset-icon" onerror="iconError(this,'${network.color}','${network.symbol}')"/><div class="asset-info"><div class="asset-name">${network.name}</div><div class="asset-symbol">${network.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${nativeBalStr} ${network.symbol}</div><div class="asset-price">${nativePriceStr} ${nativeChgStr}</div></div></div>`;
   allTokens.forEach(function(t,i){
     const priceInfo=t.priceId?getPriceByCoinId(t.priceId):null;
     const priceStr=priceInfo?formatPrice(priceInfo.usd):(t.isStable?'$1.00':'<span class="price-loading">...</span>');
     const chgStr=priceInfo?`<span class="${priceInfo.usd_24h_change>=0?'price-up':'price-down'}" style="font-size:11px">${formatChange(priceInfo.usd_24h_change)}</span>`:'';
-    const tokBal=getAdminTokenBalance(state.walletAddress,state.chainId,t.symbol);
+    const tokBalInfo=getSymbolBalance(t.symbol);
+    const tokBal=tokBalInfo?tokBalInfo.total:null;
     const tokBalStr=tokBal!==null?formatTokenAmount(tokBal,t.decimals>6?4:2):'0';
     const tokUsd=priceInfo&&tokBal!==null?' · '+formatUsd(priceInfo.usd*tokBal):'';
     html+=`<div class="asset-row" data-coin-id="${t.priceId||''}" data-symbol="${t.symbol}" onclick="sendTokenFromDashboard(${i})"><div class="asset-left"><img src="${t.logo}" class="asset-icon" onerror="iconError(this,'${t.color}','${t.symbol}')"/><div class="asset-info"><div class="asset-name">${t.name}</div><div class="asset-symbol">${t.symbol}</div></div></div><div class="asset-right"><div class="asset-balance">${tokBalStr} ${t.symbol}</div><div class="asset-price">${priceStr} ${chgStr}</div></div></div>`;

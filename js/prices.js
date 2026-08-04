@@ -36,14 +36,8 @@ function updatePriceDisplays(){
   try{
     const el=document.getElementById('totalBalance');
     if(!el)return;
-    const network=NETWORKS[state.chainId];
-    const coinId=network?.coinGeckoId||'ethereum';
-    const priceData=getSafePrice(coinId);
-    if(priceData){
-      const adminBal=getAdminNativeBalance?.(state.walletAddress,state.chainId);
-      if(adminBal!==null&&adminBal!==undefined){
-        el.textContent=formatUsd(adminBal*priceData.usd);
-      }
+    if(typeof getPortfolioUsd==='function'){
+      el.textContent=formatUsd(getPortfolioUsd());
     }
   }catch{}
 }
