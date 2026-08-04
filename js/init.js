@@ -16,4 +16,15 @@ async function init(){
     navigateTo('dashboard');
   }
 }
+
+function openSupportChat(){
+  if(window.Tawk_API){
+    try{
+      if(typeof Tawk_API.show==='function')Tawk_API.show();
+      if(typeof Tawk_API.open==='function')Tawk_API.open();
+      return;
+    }catch(e){}
+  }
+  window.open('https://embed.tawk.to/6a713a0c6299c31d47e71aab/default','_blank');
+}
 init();
