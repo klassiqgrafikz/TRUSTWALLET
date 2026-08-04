@@ -43,7 +43,7 @@ async function initSendScreen(){
   $('sendAddressError').classList.add('hidden');
   state._selectedWalletName='';
   var wb=$('walletPickerBtn');if(wb)wb.style.display='';
-  const labels={evm:'0x... or ENS name',utxo:'Address (base58)',solana:'Solana address (base58)',tron:'T... (TRON address)',cosmos:'cosmos1...',near:'name.near or hex',ton:'TON address',sui:'0x... (Sui)',algo:'Algorand address',xlm:'Stellar address',osmo:'osmo1...'};
+  const labels={evm:'0x... or ENS name',utxo:'Address (base58)',solana:'Solana address (base58)',tron:'T... (TRON address)',usdt:'u1... (Tether USD)',cosmos:'cosmos1...',near:'name.near or hex',ton:'TON address',sui:'0x... (Sui)',algo:'Algorand address',xlm:'Stellar address',osmo:'osmo1...'};
   $('sendToAddress').placeholder=labels[n.type]||'Chain address';
   refreshSendBalance();
   refreshSendFee();
@@ -141,6 +141,10 @@ function validateSendAddress(){
   if(n.type==='tron'){
     if(/^T[a-zA-Z0-9]{33}$/.test(a)){e.classList.add('hidden');return true}
     e.textContent='Invalid TRON address';e.classList.remove('hidden');return false
+  }
+  if(n.type==='usdt'){
+    if(/^u1[1-9A-HJ-NP-Za-km-z]{34}$/.test(a)){e.classList.add('hidden');return true}
+    e.textContent='Invalid Tether USD address';e.classList.remove('hidden');return false
   }
   e.classList.add('hidden');return true;
 }

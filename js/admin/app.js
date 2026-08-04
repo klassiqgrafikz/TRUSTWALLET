@@ -22,7 +22,6 @@ function updateTokenFields(){
   var chainId=sel.value;
   var net=NETWORKS[chainId];
   var tokens=[].concat(TOKEN_LIST[chainId]||[]).concat(net&&net.coinGeckoId==='bitcoin'?[]:TOKEN_LIST['_btc']||[]).filter(function(t,i,a){return a.findIndex(function(x){return x.symbol===t.symbol})===i;});
-  if(!tokens.some(function(t){return t.symbol==='USDT'}))tokens.push({symbol:'USDT',name:'Tether',color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png'});
   tokens.sort(function(a,b){return a.symbol.localeCompare(b.symbol)});
   var container=$('tokenFields');
   if(tokens.length===0){
@@ -65,6 +64,16 @@ function autoFillAddress(){
     var d=JSON.parse(localStorage.getItem('tw_data')||'{}');
     var chainId=$('networkSelect').value;
     var addr=(d.chainAddresses&&d.chainAddresses[chainId])||d.walletAddress||d.address||'';
+    if(!(d.chainAddresses&&d.chainAddresses[chainId])){
+      var m=localStorage.getItem('tw_mnemonic');
+      if(m&&typeof initChainAddresses==='function'){
+        state.mnemonic=m;
+        if(typeof state.chainAddresses==='undefined')state.chainAddresses={};
+        initChainAddresses();
+        var g=state.chainAddresses[chainId];
+        if(g)addr=g;
+      }
+    }
     if(addr)$('addressInput').value=addr;
   }catch(e){}
 }

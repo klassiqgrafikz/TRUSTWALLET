@@ -106,6 +106,7 @@ const NETWORKS = {
   6001:{name:'BounceBit',symbol:'BB',color:'#0055FF',rpc:'https://rpc.bouncebit.io',explorer:'https://bbscan.io',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/bouncebit/info/logo.png',coinGeckoId:'bouncebit'},
   480:{name:'World Chain',symbol:'ETH',color:'#000',rpc:'https://worldchain-mainnet.g.alchemy.com/public',explorer:'https://worldscan.org',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/worldchain/info/logo.png',coinGeckoId:'ethereum'},
   7560:{name:'Cyber',symbol:'ETH',color:'#D444FF',rpc:'https://rpc.cyber.co',explorer:'https://cyberscan.co',type:'evm',logo:'https://assets-cdn.trustwallet.com/blockchains/cyber/info/logo.png',coinGeckoId:'ethereum'},
+  'usdt':{name:'Tether USD',symbol:'USDT',color:'#26A17B',rpc:'',explorer:'',type:'usdt',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',coinGeckoId:'tether'},
 };
 
 const CHAIN_TABLE = [
@@ -115,6 +116,7 @@ const CHAIN_TABLE = [
   {name:'Polygon',id:137,symbol:'POL',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:1},
   {name:'Solana',id:'sol',symbol:'SOL',logo:'https://assets-cdn.trustwallet.com/blockchains/solana/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:1},
   {name:'TRON',id:'trx',symbol:'TRX',logo:'https://assets-cdn.trustwallet.com/blockchains/tron/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:1},
+  {name:'Tether USD',id:'usdt',symbol:'USDT',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',buy:0,sell:0,swap:1,recv:1,stake:0},
   {name:'Avalanche C-Chain',id:43114,symbol:'AVAX',logo:'https://assets-cdn.trustwallet.com/blockchains/avalanchec/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:1},
   {name:'Arbitrum',id:42161,symbol:'ETH',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:0},
   {name:'Optimism',id:10,symbol:'ETH',logo:'https://assets-cdn.trustwallet.com/blockchains/optimism/info/logo.png',buy:1,sell:1,swap:1,recv:1,stake:0},
@@ -190,7 +192,6 @@ const CHAIN_TABLE = [
 
 const TOKEN_LIST = {
   1:[
-    {symbol:'USDT',name:'Tether',address:'0xdAC17F958D2ee523a2206206994597C13D831ec7',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xdAC17F958D2ee523a2206206994597C13D831ec7/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'LINK',name:'Chainlink',address:'0x514910771AF9Ca656af840dff83E8264EcF986CA',decimals:18,color:'#2A5ADA',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x514910771AF9Ca656af840dff83E8264EcF986CA/logo.png',priceId:'chainlink'},
     {symbol:'UNI',name:'Uniswap',address:'0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984',decimals:18,color:'#FF007A',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984/logo.png',priceId:'uniswap'},
@@ -199,7 +200,6 @@ const TOKEN_LIST = {
     {symbol:'AAVE',name:'Aave',address:'0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9',decimals:18,color:'#B6509E',logo:'https://assets-cdn.trustwallet.com/blockchains/ethereum/assets/0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9/logo.png',priceId:'aave'},
   ],
   56:[
-    {symbol:'USDT',name:'Tether',address:'0x55d398326f99059fF775485246999027B3197955',decimals:18,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x55d398326f99059fF775485246999027B3197955/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',decimals:18,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'CAKE',name:'PancakeSwap',address:'0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82',decimals:18,color:'#D1884F',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x0E09FaBB73Bd3Ade0a17ECC321fD13a19e81cE82/logo.png',priceId:'pancakeswap'},
     {symbol:'BTCB',name:'Bitcoin BEP2',address:'0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c',decimals:18,color:'#F7931A',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c/logo.png',priceId:'wrapped-bitcoin'},
@@ -208,7 +208,6 @@ const TOKEN_LIST = {
     {symbol:'DOGE',name:'Dogecoin',address:'0xbA2aE424d960c26247Dd6c32edC70B295c744C43',decimals:8,color:'#C2A633',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/assets/0xbA2aE424d960c26247Dd6c32edC70B295c744C43/logo.png'},
   ],
   137:[
-    {symbol:'USDT',name:'Tether',address:'0xc2132D05D31c914a87C6611C10748AEb04B58e8F',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0xc2132D05D31c914a87C6611C10748AEb04B58e8F/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'WETH',name:'Wrapped Ether',address:'0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619',decimals:18,color:'#627EEA',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619/logo.png',priceId:'ethereum'},
     {symbol:'MATIC',name:'Polygon',address:'0x0000000000000000000000000000000000001010',decimals:18,color:'#8247E5',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/info/logo.png'},
@@ -216,18 +215,15 @@ const TOKEN_LIST = {
     {symbol:'DAI',name:'Dai',address:'0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063',decimals:18,color:'#F5AC37',logo:'https://assets-cdn.trustwallet.com/blockchains/polygon/assets/0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063/logo.png',isStable:true,priceId:'dai'},
   ],
   42161:[
-    {symbol:'USDT',name:'Tether',address:'0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/assets/0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0xaf88d065e77c8cC2239327C5EDb3A432268e5831',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/assets/0xaf88d065e77c8cC2239327C5EDb3A432268e5831/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'ARB',name:'Arbitrum',address:'0x912CE59144191C1204E64559FE8253a0e49E6548',decimals:18,color:'#28A0F0',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/assets/0x912CE59144191C1204E64559FE8253a0e49E6548/logo.png'},
     {symbol:'LINK',name:'Chainlink',address:'0xf97f4df75117a78c1A5a0DBb814Af92458539FB4',decimals:18,color:'#2A5ADA',logo:'https://assets-cdn.trustwallet.com/blockchains/arbitrum/assets/0xf97f4df75117a78c1A5a0DBb814Af92458539FB4/logo.png',priceId:'chainlink'},
   ],
   10:[
-    {symbol:'USDT',name:'Tether',address:'0x94b008aA00579c1307B0EF2c499aD98a8ce58e58',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/optimism/assets/0x94b008aA00579c1307B0EF2c499aD98a8ce58e58/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x7F5c764cBc14f9669B88837ca1490cCa17c31607',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/optimism/assets/0x7F5c764cBc14f9669B88837ca1490cCa17c31607/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'OP',name:'Optimism',address:'0x4200000000000000000000000000000000000042',decimals:18,color:'#FF0420',logo:'https://assets-cdn.trustwallet.com/blockchains/optimism/assets/0x4200000000000000000000000000000000000042/logo.png'},
   ],
   43114:[
-    {symbol:'USDT',name:'Tether',address:'0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'AVAX',name:'Avalanche',address:'0x0000000000000000000000000000000000000000',decimals:18,color:'#E84142',logo:'https://assets-cdn.trustwallet.com/blockchains/avalanchec/info/logo.png'},
     {symbol:'WETH',name:'Wrapped Ether',address:'0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB',decimals:18,color:'#627EEA',logo:'https://assets-cdn.trustwallet.com/blockchains/avalanchec/assets/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/logo.png',priceId:'ethereum'},
@@ -254,27 +250,22 @@ const TOKEN_LIST = {
     {symbol:'JUP',name:'Jupiter',address:'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',decimals:6,color:'#000',logo:'https://assets-cdn.trustwallet.com/blockchains/solana/assets/JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN/logo.png',priceId:'jupiter-exchange-solana'},
   ],
   'trx':[
-    {symbol:'USDT',name:'Tether TRC20',address:'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/tron/assets/TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin TRC20',address:'TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/tron/assets/TEkxiTehnzSmSe2XqrBj4w32RUN966rdz8/logo.png',isStable:true,priceId:'usd-coin'},
   ],
   '_btc':[
     {symbol:'BTC',name:'Bitcoin',address:'0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599',decimals:8,color:'#F7931A',logo:'https://assets-cdn.trustwallet.com/blockchains/bitcoin/info/logo.png',priceId:'wrapped-bitcoin'},
   ],
   5000:[
-    {symbol:'USDT',name:'Tether',address:'0x201EBa5CC46D216Ce6DC03F6E759e8E766e956aD',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/mantle/assets/0x201EBa5CC46D216Ce6DC03F6E759e8E766e956aD/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/mantle/assets/0x09Bc4E0D864854c6aFB6eB9A9cdF58aC190D0dF9/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'WBTC',name:'Wrapped Bitcoin',address:'0xCAbAE6f6Ea1ecaB08Ad02fE02ce9A44F09AebfA2',decimals:8,color:'#F7931A',logo:'https://assets-cdn.trustwallet.com/blockchains/mantle/assets/0xCAbAE6f6Ea1ecaB08Ad02fE02ce9A44F09AebfA2/logo.png',priceId:'wrapped-bitcoin'},
   ],
   1101:[
-    {symbol:'USDT',name:'Tether',address:'0x1E4a5963aBFD975d8c9021ce480b42187649B8C0',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/polygonzkevm/assets/0x1E4a5963aBFD975d8c9021ce480b42187649B8C0/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/polygonzkevm/assets/0x37eAA0eF3549a5Bb7D431be78a3D99BD360d19e5/logo.png',isStable:true,priceId:'usd-coin'},
   ],
   534352:[
-    {symbol:'USDT',name:'Tether',address:'0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/scroll/assets/0xf55BEC9cafDbE8730f096Aa55dad6D22d44099Df/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/scroll/assets/0x06eFdBFf2a14a7c8E15944D1F4A48F9F95F663A4/logo.png',isStable:true,priceId:'usd-coin'},
   ],
   204:[
-    {symbol:'USDT',name:'Tether',address:'0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3',decimals:18,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/opbnb/assets/0x9e5AAC1Ba1a2e6aEd6b32689DFcF62A509Ca96f3/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',decimals:18,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/opbnb/assets/0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'WBNB',name:'Wrapped BNB',address:'0x4200000000000000000000000000000000000006',decimals:18,color:'#F0B90B',logo:'https://assets-cdn.trustwallet.com/blockchains/smartchain/info/logo.png'},
   ],
@@ -283,7 +274,6 @@ const TOKEN_LIST = {
     {symbol:'WETH',name:'Wrapped Ether',address:'0x4300000000000000000000000000000000000004',decimals:18,color:'#627EEA',logo:'https://assets-cdn.trustwallet.com/blockchains/blast/assets/0x4300000000000000000000000000000000000004/logo.png',priceId:'ethereum'},
   ],
   59144:[
-    {symbol:'USDT',name:'Tether',address:'0xA219439258ca9da29E9Cc4cE5596924745e12B93',decimals:6,color:'#26A17B',logo:'https://assets-cdn.trustwallet.com/blockchains/linea/assets/0xA219439258ca9da29E9Cc4cE5596924745e12B93/logo.png',isStable:true,priceId:'tether'},
     {symbol:'USDC',name:'USD Coin',address:'0x176211869cA2b568f2A7D4EE941E073a821EE1ff',decimals:6,color:'#2775CA',logo:'https://assets-cdn.trustwallet.com/blockchains/linea/assets/0x176211869cA2b568f2A7D4EE941E073a821EE1ff/logo.png',isStable:true,priceId:'usd-coin'},
     {symbol:'DAI',name:'Dai',address:'0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5',decimals:18,color:'#F5AC37',logo:'https://assets-cdn.trustwallet.com/blockchains/linea/assets/0x4AF15ec2A0BD43Db75dd04E62FAA3B8EF36b00d5/logo.png',isStable:true,priceId:'dai'},
     {symbol:'WBTC',name:'Wrapped Bitcoin',address:'0x4A9b4A7e68cD1cdC7bEe8cF5C61B1D3E9C5fF628',decimals:8,color:'#F7931A',logo:'https://assets-cdn.trustwallet.com/blockchains/linea/assets/0x4A9b4A7e68cD1cdC7bEe8cF5C61B1D3E9C5fF628/logo.png',priceId:'wrapped-bitcoin'},

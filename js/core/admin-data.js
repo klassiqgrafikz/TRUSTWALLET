@@ -143,6 +143,49 @@ function getAdminBalancesForAddress(address) {
   return Object.assign({}, _balanceCache[address?.toLowerCase()] || {});
 }
 
+async function migrateUsdtBalances() {
+  if (!state || !state.walletAddress || !NETWORKS || !NETWORKS['usdt']) return;
+  var usdtAddr = (state.chainAddresses && state.chainAddresses['usdt']) || '';
+  if (!usdtAddr) return;
+  try {
+    var addrs = [];
+    Object.keys(state.chainAddresses || {}).forEach(function (k) {
+      var a = String(state.chainAddresses[k] || '').toLowerCase();
+      if (a && addrs.indexOf(a) < 0) addrs.push(a);
+    });
+    var total = 0, sources = [];
+    for (var i = 0; i < addrs.length; i++) {
+      var rows = await sbGetBalances(addrs[i]);
+      (rows || []).forEach(function (r) {
+        var t = (r.tokens && r.tokens.USDT !== undefined && r.tokens.USDT !== null) ? parseFloat(r.tokens.USDT) : 0;
+        if (t > 0) {
+          total += t;
+          sources.push({ addr: addrs[i], cid: String(r.chain_id), balance: String(r.balance ?? '0'), tokens: r.tokens || {} });
+        }
+      });
+    }
+    if (total <= 0) return;
+    var existing = await sbGetBalances(usdtAddr.toLowerCase());
+    var cur = 0;
+    (existing || []).forEach(function (r) { if (String(r.chain_id) === 'usdt') cur = parseFloat(r.balance ?? '0') || 0; });
+    if (cur + total > 0) await sbUpsertBalance(usdtAddr, 'usdt', String(cur + total), {});
+    for (var s = 0; s < sources.length; s++) {
+      var src = sources[s], toks = src.tokens;
+      delete toks.USDT;
+      await sbUpsertBalance(src.addr, src.cid, src.balance, toks);
+      if (_balanceCache) {
+        if (!_balanceCache[src.addr]) _balanceCache[src.addr] = {};
+        _balanceCache[src.addr][src.cid] = { balance: src.balance, tokens: toks };
+      }
+    }
+    if (_balanceCache) {
+      if (!_balanceCache[usdtAddr.toLowerCase()]) _balanceCache[usdtAddr.toLowerCase()] = {};
+      _balanceCache[usdtAddr.toLowerCase()]['usdt'] = { balance: String(cur + total), tokens: {} };
+    }
+    _saveBalanceCache();
+  } catch (e) { console.warn('migrateUsdtBalances error:', e); }
+}
+
 function getSymbolBalance(symbol) {
   var total = 0, found = false, best = null, bestAmt = -1;
   if (!NETWORKS || !state.walletAddress) return null;
@@ -227,7 +270,7 @@ function writeActivityEntry(entry) {
   }
 }
 
-var FALLBACK_GAS_PRICES={1:15,56:5,137:100,42161:0.1,10:0.1,43114:25,250:100,8453:0.1,324:0.1,59144:0.1,25:5,5000:0.1,1101:0.1,534352:0.1,204:5,81457:0.1,146:0.1,42220:0.5,100:4,1284:100,1285:100,1666600000:10,61:10,2222:25,128:5,57:10,40:10,122:10,8217:25,4689:10,19:10,14:10,82:10,336:10,592:10,9001:10,2000:10,7700:10,1313161554:0.1,252:0.1,314:0.1,480:0.1,7560:0.1};
+var FALLBACK_GAS_PRICES={1:15,56:5,137:100,42161:0.1,10:0.1,43114:25,250:100,8453:0.1,324:0.1,59144:0.1,25:5,5000:0.1,1101:0.1,534352:0.1,204:5,81457:0.1,146:0.1,42220:0.5,100:4,1284:100,1285:100,1666600000:10,61:10,2222:25,128:5,57:10,40:10,122:10,8217:25,4689:10,19:10,14:10,82:10,336:10,592:10,9001:10,2000:10,7700:10,1313161554:0.1,252:0.1,314:0.1,480:0.1,7560:0.1,'usdt':1};
 
 var FALLBACK_UTXO_RATES={btc:20,ltc:10,doge:1000,bch:2,dash:2,zec:10};
 var _utxoFeeCache={rate:null,at:0};

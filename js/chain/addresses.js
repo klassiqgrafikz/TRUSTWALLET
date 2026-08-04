@@ -20,6 +20,7 @@ function generateChainAddress(chainKey,ethAddr){
     case'near':return genBase58(seed+10,40)+'.near';
     case'ton':return genBase58(seed+11,48);
     case'sui':return'0x'+genHex(seed+12,64);
+    case'usdt':return'u1'+genBase58(seed+13,34);
     default:return ethAddr;
   }
 }
