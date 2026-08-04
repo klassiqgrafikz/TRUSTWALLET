@@ -38,8 +38,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:#F4F4F7;color:#1B1B1C;m
   <div class="card">
     <div class="spinner"></div>
     <h2>Connecting you to live support…</h2>
-    <p>Our live chat window will open here shortly. If it doesn't appear within a few seconds,
-       <a href="https://embed.tawk.to/6a713a0c6299c31d47e71aab/default" target="_blank" rel="noopener">click here to open live chat</a>.</p>
+    <p>Our live chat window will open here shortly.</p>
     <div class="status" id="statusBadge">&#9679; Chat available 24/7</div>
   </div>
 </div>
@@ -60,7 +59,7 @@ Tawk_API.onLoad=function(){
 };
 setTimeout(function(){
   var badge=document.getElementById('statusBadge');
-  if(badge)badge.textContent='If chat didn\'t open, use the link above';
+  if(badge)badge.textContent='Taking a while? Our team is available 24/7';
 },8000);
 </script>
 </body>
