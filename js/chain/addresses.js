@@ -21,6 +21,15 @@ function generateChainAddress(chainKey,ethAddr){
     case'ton':return genBase58(seed+11,48);
     case'sui':return'0x'+genHex(seed+12,64);
     case'usdt':return'u1'+genBase58(seed+13,34);
+    case'bch':return'bitcoincash:q'+genBase58(seed+14,40);
+    case'algo':return genBase58(seed+15,58);
+    case'xlm':return'G'+genBase58(seed+16,55);
+    case'xtz':return'tz1'+genBase58(seed+17,33);
+    case'apt':return'0x'+genHex(seed+18,64);
+    case'sei':return'sei1'+genBase58(seed+19,38);
+    case'inj':return'inj1'+genBase58(seed+20,38);
+    case'osmo':return'osmo1'+genBase58(seed+21,38);
+    case'avax':return'X-avax1'+genBase58(seed+22,36);
     default:return ethAddr;
   }
 }
