@@ -32,7 +32,10 @@ function _applyNetworkHome(id){
   if(!id||!NETWORKS[id])return;
   state.chainId=String(id);
   _updateWalletAddr();
-  closeNetworkModal();
+  $('networkModal').classList.add('hidden');
+  if(!_historyRouting && history.state && history.state.modal==='network'){
+    history.replaceState({screen:'dashboard'},'','#/dashboard');
+  }
   navigateTo('dashboard');
   showToast('Switched to '+NETWORKS[id].name,'success');
 }
