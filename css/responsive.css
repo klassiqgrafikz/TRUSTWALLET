@@ -19,6 +19,12 @@
 .hamburger.open span::before{top:0;transform:rotate(45deg)}
 .hamburger.open span::after{top:0;transform:rotate(-45deg)}
 @media(min-width:641px){.dash-layout{max-width:100%!important;border-radius:0;margin:0;min-height:100vh}}
+@media(min-width:641px){
+  .quick-actions{max-width:none;margin-left:auto;margin-right:auto;gap:16px}
+  .quick-actions .qa-btn{max-width:none}
+  .qa-btn{font-size:14px;padding:20px 6px}
+  .qa-icon{width:64px;height:64px;font-size:26px}
+}
 @media(max-width:640px){.dash-layout{max-width:100%!important;border-radius:0;margin:0;min-height:100vh}}
 @media(max-width:640px){
   .header-inner{padding:0 12px}
